@@ -267,7 +267,7 @@ Sub AbbrechenButtonZeigen()
 	Abbrechen.y2 =  breite - breite/15 + 18
 	
 	ZeigeRechteck(Abbrechen,RGB(250,100,100))
-	Draw String ((Abbrechen.x1+Abbrechen.X2)/2-8*4.5,(Abbrechen.y1+Abbrechen.y2)/2-(Text_y/2)), UebersetzterText(2)
+	Draw String ((Abbrechen.x1+Abbrechen.X2)/2-len(UebersetzterText(2))*Text_x/2,(Abbrechen.y1+Abbrechen.y2)/2-(Text_y/2)), UebersetzterText(2)
 End Sub
 
 Declare Function AbbrechenButton() As Integer
@@ -355,9 +355,9 @@ Function Weiterspielen() As Integer
 	  'Auswahlbuttons anzeigen:
 
 	  ZeigeRechteck(Levelauswahl(1),RGB(0,100,255))
-	  Draw String ((Levelauswahl(1).x1+Levelauswahl(1).x2)/2-10,(Levelauswahl(1).y1+Levelauswahl(1).y2)/2-Text_y/2),UebersetzterText(4)
+	  Draw String ((Levelauswahl(1).x1+Levelauswahl(1).x2)/2-len(UebersetzterText(4))*Text_x/2,(Levelauswahl(1).y1+Levelauswahl(1).y2)/2-Text_y/2),UebersetzterText(4)
 	  ZeigeRechteck(Levelauswahl(2),RGB(0,100,255))
-	  Draw String ((Levelauswahl(2).x1+Levelauswahl(2).x2)/2-20,(Levelauswahl(2).y1+Levelauswahl(2).y2)/2-Text_y/2),UebersetzterText(5)
+	  Draw String ((Levelauswahl(2).x1+Levelauswahl(2).x2)/2-len(UebersetzterText(5))*Text_x/2,(Levelauswahl(2).y1+Levelauswahl(2).y2)/2-Text_y/2),UebersetzterText(5)
 	  GET (0,0)-(hoehe-1,breite-1) , img1
  	  Put(0,0),img2,pset
  	unlockscreen
@@ -394,7 +394,7 @@ Sub Warten(Abbrechen As Integer = 0)
 	Weiter.y2 =  breite - breite/15 + 18
 	
 	ZeigeRechteck(Weiter,RGB(100,250,100))
-	Draw String ((Weiter.x1+Weiter.X2)/2-8*3,(Weiter.y1+Weiter.y2)/2-Text_y/2), UebersetzterText(6)
+	Draw String ((Weiter.x1+Weiter.X2)/2-len(UebersetzterText(6))*Text_x/2,(Weiter.y1+Weiter.y2)/2-Text_y/2), UebersetzterText(6)
 	Do
 		If Abbrechen <>0 Then
 			If AbbrechenButton() = 1 Then
@@ -530,11 +530,11 @@ Sub Sprachauswahl()
 		ZeigeRechteck(SprachAuswahlButton(i),RGB(0,100,255))
 	  	Select Case i
 			Case 1 
-	  	        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-10,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Deutsch"
+	  	        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("Deutsch")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Deutsch"
 			Case 2
-			    Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-10,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"English"
+			    Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("English")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"English"
 		    Case 3
-		        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-10,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Francais"
+		        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("Francais")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Francais"
 	  	End select
 	  Next
 	  get (0,0)-(hoehe-1,breite-1),img1
@@ -813,7 +813,7 @@ Sub Spielen()
 						'Print 
 						'Print
 						Color RGB(0,255,0),RGB(255,255,255)
-						Draw String (0,0+Abstand*8),UebersetzterText(16),RGB(0,255,0)
+						Draw String (0,0+Abstand*Text_x),UebersetzterText(16),RGB(0,255,0)
 						Color RGB(0,0,0),RGB(255,255,255)
 						Punkte = Punkte + 10
 						
@@ -939,7 +939,7 @@ Sub Spielen()
 					Draw String (0,0+Abstand*16),"play the game at all..",RGB(255,200,15)
 			End Select
 		Case 3:
-		    'TODO: Muss noch übersetzt werden
+		    'TODO: Muss noch übersetzt werden (auf Französisch)
 			Select Case level
 				Case 1 
 					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte und damit das Level geloest!  ",RGB(255,200,15)
