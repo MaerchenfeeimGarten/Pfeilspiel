@@ -1,5 +1,9 @@
 #Include Once "fbgfx.bi"
 #Include "textbox.bi"
+
+#ifdef __FB_DOS__ 
+ScreenRes  640,480 ,32,2, &h04 Or 8 
+#endif
 '========================================Dim's==========================================
 Dim Shared As Integer i,j,Eingabe,Level, Sprache
 Dim Shared As Single x,y
@@ -206,10 +210,11 @@ Sub FensterSchliessen()
 End Sub
 Sub Ueberblenden()
     for i = 0 to 255 Step 2
+       lockScreen()
        cls
        put (0,0),img2,ALPHA,255
        put (0,0),img1,ALPHA,i
-       
+       unlockScreen()
        sleep 10
     Next
 End sub
