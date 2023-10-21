@@ -67,13 +67,13 @@ Function UebersetzterText(TextId as Integer) As String
             select case Sprache
 			    case 1: return "weiter"
 			    case 2: return "proceed"
-			    case 3: return "à partir de"
+			    case 3: return "a partir de"
 			end select
 		case 7:
             select case Sprache
 			    case 1: return "Levelcode? "
 			    case 2: return "Password for this level? "
-			    case 3: return "Mot de passe pour ce niveau?"
+			    case 3: return "Mot de passe pour ce niveau? "
 			end select
 		case 8:
             select case Sprache
@@ -91,25 +91,25 @@ Function UebersetzterText(TextId as Integer) As String
             select case Sprache
 			    case 1: return " Punkte von 100, die noetig sind, um das Level zu beenden."
 			    case 2: return " points out of 100, which are necessary to finish the level."
-			    case 3: return " points sur 100, qui sont nécessaires pour terminer le niveau."
+			    case 3: return " points sur 100, qui sont necessaires pour terminer le niveau."
 			end select
 		case 11:
             select case Sprache
 			    case 1: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
 			    case 2: return "Task: Which rectangle does the red arrow point to?"
-			    case 3: return "Task: sur lequel le rectangle la flèche rouge pointe-t-elle?"
+			    case 3: return "Task: sur lequel le rectangle la fleche rouge pointe-t-elle?"
 			end select
 		case 12:
             select case Sprache
 			    case 1: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil?"
 			    case 2: return "Task: Which rectangle does the red arrow flies to?"
-			    case 3: return "Tâche: à quel rectangle la flèche rouge vole-t-elle?"
+			    case 3: return "Tâche: a quel rectangle la fleche rouge vole-t-elle?"
 			end select
 		case 13:
             select case Sprache
 			    case 1: return "Zur Auswahl auf das Rechteck klicken."
 			    case 2: return "Click on the rectangle to select."
-			    case 3: return "Cliquez sur le rectangle pour sélectionner."
+			    case 3: return "Cliquez sur le rectangle pour selectionner."
 			end select
 		case 14:
             select case Sprache
