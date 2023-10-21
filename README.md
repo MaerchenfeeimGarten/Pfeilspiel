@@ -12,8 +12,8 @@ Ein Pfeil zeigt irgendwo hin und man muss herausfinden, wohin genau.
 # Varianten
 
  - Pfeilspiel TOS: (Tas Originale Spiel) nur auf Deutsch, da der Quellcode seit der Schulzeit nicht mehr verändert worden ist und wird (!).
- - Geplant: Pfeilspiel TOS international: (The Original Spiel) auf Deutsch, auf Englisch, in vielleicht noch ein paar mehr Sprachen.
- - Geplant: Pfeilspiel TNG: (The Next Game) übersetzt, (leicht) verbeserte Grafik, andere Spielprinzipien, mehr Farben, mehr Abwechslung.
+ - Pfeilspiel TOS international: (The Original Spiel) auf Deutsch, auf Englisch, in vielleicht noch ein paar mehr Sprachen. Der schlechte Programmierstiel bleibt aus Authentizitätsgründen bestehen. Es ist wirklich nur eine Übersetztung der TOS-Variante - mehr nicht.
+ - Geplant: Pfeilspiel TNG: (The Next Game) übersetzt, (leicht) verbeserte Grafik, andere Spielprinzipien, mehr Farben, mehr Abwechslung und besserer Programmierstil.
  
 # Lizenz
 
