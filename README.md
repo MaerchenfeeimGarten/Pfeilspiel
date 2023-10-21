@@ -20,6 +20,6 @@ Ein Pfeil zeigt irgendwo hin und man muss herausfinden, wohin genau.
  
 ## Lizenz
 
-Das Programm steht unter der agpl-3.0-Lizenz. 
+Das Programm bzw. die Programme in diesem Repo stehen unter der agpl-3.0-Lizenz. 
 
 https://www.gnu.org/licenses/agpl-3.0.txt
