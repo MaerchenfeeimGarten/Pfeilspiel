@@ -1,0 +1,99 @@
+  | Klasse Uebersetzungen static
+  | 	Enum Text #Deutschsprachige Texte in Enum-Namen
+  | 	Enum Sprache
+  | 	uebersetzteText(Sprache, Text)
+  | 	
+  | Klasse VergroeßerungsBuffer
+  | 	FB.Image buffer
+  | 	Vergroessern(int Faktor)
+  | 	Bereinigen(int Faktor)
+  | 	
+  | Klasse TextZeichenHelfer static
+  | 	intern ZeichneTextVergroeßert(int Faktor, Punkt Position, String Text) #nur verwenden, wenn nötig, mit Rückgriff auf BildschirmService(Skalierung herausfinden) und VergroeßerungsBuffer(skalieren).
+  | 	ZeichneText(Punkt Position, String Text)
+  | 	ZeichneText(int Zeile, int Spalte, String Text)
+  | 	ZeichneTextFortlaufend(&int Zeile, int Spalte, String Text)
+  | 	ZeichneTextMittig(Punkt position, Text)
+  | 	HoeheUndBreiteVonText(String Text) Punkt
+  | 	
+  | Klasse BildschirmService static oder Singelton
+  | 	lockScreen()
+  | 	unlockScreen()
+  | 	zuBildschirmkoordinaten(Punkt relativ, Punkt absoluteKorrektur)
+  | 	vonBildschirmkoordinaten(Punkt absolut) Punkt # relativ
+  | 	berechneSkalierungsFaktorFuerText() int > 1
+  | 	
+  | Struct Farbe(r,g,b) # oder RGBA verwenden, scheint schon da zu sein
+  | 
+  | Klasse Rechteck
+  | 	Farbe Farbe
+  | 	String Text = ""
+  | 	Punkt Ecke1
+  | 	Punkt Ecke2
+  | 	zeichnen()
+  | 	PunktAufRechteck(Punkt)
+  | 	MausAufRechteck()
+  | 	MausklickAufRechteck()
+  | 
+  | Klasse GrafikService static oder Singelton
+  | 	static Zeit DauerDesUeberblendens
+  | 	Hintergrund(FarbeOben as Farbe, FarbeUnten as Farbe)
+  | 	FensterSchliessen()
+  | 	Ueberblenden()
+  | 	init() # alt: FensterOeffnen
+  | 
+  | Klasse KleinerSchließenButton static #[x] oben rechts in der Ecke. Man muss länger oder öfter draufklicken, um zu beenden.
+  | 	Rechteck Button
+  | 	zeichnen()
+  | 	schliessenAnbieten()
+  | 	
+  | #Klasse Kugel:
+  | #	Punkt position
+  | #	bewegen(Winkel single)
+  | 	
+  | Klasse Rechteck: AbbrechenButton
+  | 	AbbruchAnbieten()
+  | 	
+  | Klasse Menuefuehrung:
+  | 	Weiterspielen() bool
+  | 	Warten(MitAbbruchbutton bool)
+  | 	LevelCodeInput(TextField textfeld)
+  | 	Sprachauswahl() Uebersetzen.Sprache
+  | 	FrageNachLevel() int
+  | 	GlueckwunschAnzeigen(text)
+  | 	Spielauswahl() Spiellogik
+  | 	
+  | Klasse Spiellogik abstract
+  | 	Farbe HintergrundFarbeOben abstract
+  | 	Farbe HintergrundFarbeUnten abstract
+  | 	int anzahl_level abstract
+  | 	GameLoop() abstract
+  | 	getLevelCode(int level) abstract
+  | 	pruefeLevelCode(String) bool abstract
+  | 	
+  | Klasse Spiellogik: Klassisch
+  | 
+  | Klasse Spiellogik: AbwechslungPunktPpt
+  | 
+  | Klasse Spiellogik: InBewegung
+  | 	
+  | Klasse Programm Singelton #main
+  | 	main()
+  | 
+  | Klasse Logo static oder Singelton:
+  | 	Anzeigen(Punkt obenLink, Punkt untenRechts)
+  | 	
+  | Klasse Pfeil
+  | 	Farbe 
+  | 	Punkt Start
+  | 	Single Laenge
+  | 	Single Richtung
+  | 	ZeigePfeil()
+  | 	
+  | Klasse PunktInt
+  | 	int x, int y
+  | 	
+  | Klasse MatheService static
+  | 	Wurfparabel (Pfeil pfeil, Geschwindigkeit As Single,Gravitation As Single = 9.81) As Integer
+  | 
+  | 
