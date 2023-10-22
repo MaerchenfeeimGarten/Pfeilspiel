@@ -9,19 +9,23 @@ OK| 	uebersetzteText(SpracheEnum, TextEnum)
   | 	Bereinigen(int Faktor)
   | 	
   | Klasse TextZeichenHelfer static
-  | 	intern ZeichneTextVergroeßert(int Faktor, Punkt Position, String Text) #nur verwenden, wenn nötig, mit Rückgriff auf BildschirmService(Skalierung herausfinden) und VergroeßerungsBuffer(skalieren).
-  | 	ZeichneText(Punkt Position, String Text)
-  | 	ZeichneText(int Zeile, int Spalte, String Text)
-  | 	ZeichneTextFortlaufend(&int Zeile, int Spalte, String Text)
-  | 	ZeichneTextMittig(Punkt position, Text)
-  | 	HoeheUndBreiteVonText(String Text) Punkt
+  | 	BildschirmService(Programmeinstellungen.SkalierungsFaktorFuerText)
+  | 	intern TextZeichenHelfer_ZeichneTextVergroessert(int Faktor, Punkt Position, String Text)
+  | 	TextZeichenHelfer_ZeichneText(Punkt Position, String Text)
+  | 	TextZeichenHelfer_ZeichneText(int Zeile, int Spalte, String Text)
+  | 	TextZeichenHelfer_ZeichneTextFortlaufend(&int Zeile, int Spalte, String Text)
+  | 	TextZeichenHelfer_ZeichneTextMittig(Punkt position, Text)
+  | 	TextZeichenHelfer_HoeheUndBreiteVonText(String Text) Punkt
   | 	
-  | Klasse BildschirmService static oder Singelton
+  | Klasse SkalierungsFaktorFuerText
+  | 	public int get
+  |
+  | Klasse BildschirmService
+  | 	BildschirmService(*Programmeinstellungen)->{Programmeinstellungen.SkalierungsFaktorFuerText,Programmeinstellungen.SkalierungsFaktorFuerLinien, Programmeinstellungen.Bildschirmgroesse as Punkt}
   | 	lockScreen()
   | 	unlockScreen()
   | 	zuBildschirmkoordinaten(Punkt relativ, Punkt absoluteKorrektur)
   | 	vonBildschirmkoordinaten(Punkt absolut) Punkt # relativ
-  | 	berechneSkalierungsFaktorFuerText() int > 1
   | 	
   | Struct Farbe(r,g,b) # oder RGBA verwenden, scheint schon da zu sein
   | 
@@ -36,8 +40,8 @@ OK| 	uebersetzteText(SpracheEnum, TextEnum)
   | 	MausklickAufRechteck()
   | 
   | Klasse GrafikService static oder Singelton
-  | 	static Zeit DauerDesUeberblendens
-  | 	Hintergrund(FarbeOben as Farbe, FarbeUnten as Farbe)
+  | 	GrafikService(*Programmeinstellungen)
+  | 	Hintergrund(Self.Programmeinstellungen.FarbeOben as Farbe, Self.Programmeinstellungen.FarbeUnten as Farbe)
   | 	FensterSchliessen()
   | 	Ueberblenden()
   | 	init() # alt: FensterOeffnen
@@ -47,27 +51,32 @@ OK| 	uebersetzteText(SpracheEnum, TextEnum)
   | 	zeichnen()
   | 	schliessenAnbieten()
   | 	
-  | #Klasse Kugel:
-  | #	Punkt position
-  | #	bewegen(Winkel single)
+  | Löschen: Klasse Kugel:
+  | Löschen: 	Punkt position
+  | Löschen: 	bewegen(Winkel single)
   | 	
   | Klasse Rechteck: AbbrechenButton
   | 	AbbruchAnbieten()
   | 	
   | Klasse Menuefuehrung:
-  | 	Weiterspielen() bool
-  | 	Warten(MitAbbruchbutton bool)
-  | 	LevelCodeInput(TextField textfeld)
-  | 	Sprachauswahl() Uebersetzen.Sprache
-  | 	FrageNachLevel() int
-  | 	GlueckwunschAnzeigen(text)
-  | 	Spielauswahl() Spiellogik
+  | 	priv Weiterspielen() bool
+  | 	priv Warten(MitAbbruchbutton bool)
+  | 	priv LevelCodeInput(TextField textfeld)
+  | 	priv Sprachauswahl() Uebersetzen.Sprache
+  | 	priv FrageNachLevel() int
+  | 	priv GlueckwunschAnzeigen(text)
+  | 	priv Spielauswahl() Spiellogik
+  |   Spielmenu(Programmeinstellungen)
   | 	
-  | Klasse Spiellogik abstract
+  | Klasse Spieleinstellungen:
   | 	Farbe HintergrundFarbeOben abstract
   | 	Farbe HintergrundFarbeUnten abstract
+  | 	int aktuellesLevel
+  |
+  | Klasse Spiellogik abstract
+  | 	priv Spieleinstellungen Einstellungen
   | 	int anzahl_level abstract
-  | 	GameLoop() abstract
+  | 	GameLoop(Programmeinstellungen, Self.Spieleinstellungen) abstract
   | 	getLevelCode(int level) abstract
   | 	pruefeLevelCode(String) bool abstract
   | 	
@@ -77,11 +86,17 @@ OK| 	uebersetzteText(SpracheEnum, TextEnum)
   | 
   | Klasse Spiellogik: InBewegung
   | 	
+  | Klasse Programmeinstellungen
+  | 	Zeit DauerDesUeberblendens
+  | 	SpracheEnum Sprache
+  |
   | Klasse Programm Singelton #main
+  |   privat Programmeinstellungen
+  |   Programm(Programmeinstellungen)
   | 	main()
   | 
   | Klasse Logo static oder Singelton:
-  | 	Anzeigen(Punkt obenLink, Punkt untenRechts)
+  | 	Anzeigen(Programmeinstellungen, Punkt obenLink, Punkt untenRechts)
   | 	
   | Klasse Pfeil
   | 	Farbe 
