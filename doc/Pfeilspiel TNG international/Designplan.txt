@@ -51,9 +51,9 @@ OK| 	uebersetzteText(SpracheEnum, TextEnum)
   | 	zeichnen()
   | 	schliessenAnbieten()
   | 	
-  | Löschen: Klasse Kugel:
-  | Löschen: 	Punkt position
-  | Löschen: 	bewegen(Winkel single)
+OK| Löschen: Klasse Kugel:
+OK| Löschen: 	Punkt position
+OK| Löschen: 	bewegen(Winkel single)
   | 	
   | Klasse Rechteck: AbbrechenButton
   | 	AbbruchAnbieten()

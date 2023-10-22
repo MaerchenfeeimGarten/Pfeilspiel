@@ -499,11 +499,6 @@ Sub FensterOeffnen()
     Next
     IMAGEDESTROY img'/
 End Sub
-/'Declare Sub KugelBewegen(Kugel As BKugel, Winkel As Integer)
- Sub KugelBewegen(Kugel As BKugel, Winkel As Integer)
-	Kugel.x=Kugel.x+COS((Winkel*Pi)/180)*Kugel.Geschwindigkeit
-	Kugel.y=Kugel.y+SIN((Winkel*Pi)/180)*Kugel.Geschwindigkeit
- End Sub'/
 
 Declare function LevelCodeInput( TextField as TextBoxType) as string
 function LevelCodeInput( TextField as TextBoxType) as string
