@@ -368,7 +368,8 @@ Declare Function Weiterspielen() As Integer
 Function Weiterspielen() As Integer
     lockscreen
       GET (0,0)-(hoehe-1,breite-1) , img2
-	  Hintergrund(140,0,250,3,250,150)
+	  Hintergrund(215,133,44,129,47,90)
+
 	  Color RGB(0,0,0),RGB(140,0,250)
  	  draw string (10,breite/2-Text_y/2), uebersetzteText(Sprache, TextEnum.WOLLEN_NEUES_SPIEL)
 
@@ -484,7 +485,8 @@ Sub FensterOeffnen()
 	/'Dim As FB.Image Ptr img
 	img = Imagecreate(hoehe, breite, RGBA(0, 0, 255, 255),32)
     screenlock
-       Hintergrund(140,0,250,3,250,150)
+	  Hintergrund(215,133,44,129,47,90)
+
        GET (0,0)-(hoehe-1,breite-1) , img
        cls
     screenunlock
@@ -529,7 +531,8 @@ Declare Sub Sprachauswahl()
 Sub Sprachauswahl()
       lockscreen
       get (0,0)-(hoehe-1,breite-1),img2
-	  Hintergrund(140,0,250,3,250,150)
+	  Hintergrund(215,133,44,129,47,90)
+
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  Draw String (Text_x*2, Text_y*1),  "DE: Bitte eine Sprache waehlen."
 	  Draw String (Text_x*2, Text_y*2),  "EN: Please choose a language."
@@ -543,7 +546,7 @@ Sub Sprachauswahl()
 	
 	
 	
-	  ZeigeLogo(RGB(255,0,0))
+	  ZeigeLogo(RGB(0,70,100))
 	  j = 3 'Anzahl der Sprachen
 	  'Auswahlbuttons laden:
 	  Dim SprachAuswahlButton(100) As rechteck
@@ -586,7 +589,7 @@ Declare Sub FrageNachLevel()
 Sub FrageNachLevel()
     lockscreen
       get (0,0)-(hoehe-1,breite-1),img2
-	  Hintergrund(140,0,250,3,250,150)
+	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  Draw String (Text_x*2, Text_y*1),  uebersetzteText(Sprache, TextEnum.WELCHES_LEVEL)', Level
 	  'init Textbox
@@ -598,7 +601,7 @@ Sub FrageNachLevel()
 	
 	
 	
-	  ZeigeLogo(RGB(255,0,0))
+	  ZeigeLogo(RGB(0,70,100))
 	  j = 6 'Anzahl der Level
 	  'Auswahlbuttons laden:
 	  Dim LevelAuswahl(100) As rechteck
@@ -744,7 +747,7 @@ Sub Spielen()
 	    GET (0,0)-(hoehe-1,breite-1) , img2
 	    lockscreen
 		'Cls
-		Hintergrund(140,0,250,3,250,150)
+		Hintergrund(215,133,44,129,47,90)
 		Draw String (0,0), uebersetzteText(Sprache, TextEnum.L_E_V_E_L) & Level  
 		Draw String (0,0+Abstand*1), "" & Punkte & uebersetzteText(Sprache, TextEnum.PUNKTE_VON_PUNKTE)
 		
