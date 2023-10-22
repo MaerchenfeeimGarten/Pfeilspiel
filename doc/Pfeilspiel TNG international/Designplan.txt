@@ -1,7 +1,7 @@
   | Klasse Uebersetzungen static
-  | 	Enum Text #Deutschsprachige Texte in Enum-Namen
-  | 	Enum Sprache
-  | 	uebersetzteText(Sprache, Text)
+OK| 	Enum TextEnum #Deutschsprachige Texte in Enum-Namen
+OK| 	Enum SpracheEnum
+OK| 	uebersetzteText(SpracheEnum, TextEnum)
   | 	
   | Klasse VergroeßerungsBuffer
   | 	FB.Image buffer
