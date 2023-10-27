@@ -14,169 +14,190 @@ Dim Shared As integer hoehe,breite'Im ganzen Programm vertauscht!!!!!!!
 Pi = 3.14159265358979323846
 Randomize Timer
 Dim Shared As FB.Image Ptr img1, img2
-    
-'========================================Type===========================================
+
+'====================================Grafik=============================================
+
+Namespace GrafikHelfer
+    Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String)
+	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String)
+		Draw String ((xxx-len(text)*Text_x/2),(yyy-Text_y/2)), text
+	end sub
+End Namespace
+
 Type Pfeil
 	AS INTEGER x1
 	AS INTEGER y1
 	As INTEGER laenge
 	AS INTEGER Richtung
 End Type
+
 Type Rechteck
 	AS INTEGER x1
 	AS INTEGER y1
 	AS INTEGER x2
 	AS INTEGER y2
+	AS String beschriftung
+	Declare Sub beschriftenMit(text as String)
 End Type
+
+sub Rechteck.beschriftenMit(text as String)
+	GrafikHelfer.zentriertSchreiben( (x1+x2)/2, (y1 + y2)/2, text)
+end sub
+
 
 
 
 '==================================Internationalisation=================================
 
-
-enum TextEnum explicit
-	WELCHES_LEVEL 
-	ABBRECHEN 
-	WOLLEN_NEUES_SPIEL 
-	JA 
-	NEIN 
-	WEITER 
-	LEVELCODE_PROMPT
-	WILLKOMMEN_BEI_LEVEL 
-	FALSCHE_EINGABE_ENDE
-	PUNKTE_VON_PUNKTE 
-	AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK 
-	AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK 
-	AUSWAHL_RECHTECK_KLICK 
-	FALSCH_NEUER_VERSUCH 
-	L_E_V_E_L 
-	RICHTIG_PLUS_10 
-	FALSCH_MINUS_10 
-	FALSCH 
-end enum 
-
-enum SpracheEnum explicit
-	DEUTSCH = 1
-	ENGLISCH
-	FRANZOESISCH
-end enum
+Namespace Uebersetzungen
 	
-Declare Function uebersetzteText(s as SpracheEnum, t as TextEnum) As String
+	enum TextEnum explicit
+		WELCHES_LEVEL 
+		ABBRECHEN 
+		WOLLEN_NEUES_SPIEL 
+		JA 
+		NEIN 
+		WEITER 
+		LEVELCODE_PROMPT
+		WILLKOMMEN_BEI_LEVEL 
+		FALSCHE_EINGABE_ENDE
+		PUNKTE_VON_PUNKTE 
+		AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK 
+		AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK 
+		AUSWAHL_RECHTECK_KLICK 
+		FALSCH_NEUER_VERSUCH 
+		L_E_V_E_L 
+		RICHTIG_PLUS_10 
+		FALSCH_MINUS_10 
+		FALSCH 
+	end enum 
 
-Function uebersetzteText(s as SpracheEnum, t as TextEnum) As String
-    select case T
-        case TextEnum.WELCHES_LEVEL:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Welches Level wollen sie spielen?"
-			    case SpracheEnum.ENGLISCH: return "Which level do you want to play?"
-			    case SpracheEnum.FRANZOESISCH: return "Quel niveau voulez-vous jouer? "
+	enum SpracheEnum explicit
+		DEUTSCH = 1
+		ENGLISCH
+		FRANZOESISCH
+	end enum
+		
+	Dim Shared Sprache as SpracheEnum
+	
+	Declare Function uebersetzteText(s as SpracheEnum, t as TextEnum) As String
+
+End Namespace
+
+Function Uebersetzungen.uebersetzteText(s as Uebersetzungen.SpracheEnum, t as Uebersetzungen.TextEnum) As String
+	select case T
+		case TextEnum.WELCHES_LEVEL:
+			select case s
+				case SpracheEnum.DEUTSCH: return "Welches Level wollen sie spielen?"
+				case SpracheEnum.ENGLISCH: return "Which level do you want to play?"
+				case SpracheEnum.FRANZOESISCH: return "Quel niveau voulez-vous jouer? "
 			end select
 		case TextEnum.ABBRECHEN:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Abbrechen"
-			    case SpracheEnum.ENGLISCH: return "cancel"
-			    case SpracheEnum.FRANZOESISCH: return "Qannuler"
+			select case s
+				case SpracheEnum.DEUTSCH: return "Abbrechen"
+				case SpracheEnum.ENGLISCH: return "cancel"
+				case SpracheEnum.FRANZOESISCH: return "Qannuler"
 			end select
 		case TextEnum.WOLLEN_NEUES_SPIEL:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Wollen sie ein neues Spiel anfangen?"
-			    case SpracheEnum.ENGLISCH: return "Do you want to begin a new game?"
-			    case SpracheEnum.FRANZOESISCH: return "Voulez-vous commencer un nouveau jeu?"
+			select case s
+				case SpracheEnum.DEUTSCH: return "Wollen sie ein neues Spiel anfangen?"
+				case SpracheEnum.ENGLISCH: return "Do you want to begin a new game?"
+				case SpracheEnum.FRANZOESISCH: return "Voulez-vous commencer un nouveau jeu?"
 			end select
 		case TextEnum.JA:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Ja"
-			    case SpracheEnum.ENGLISCH: return "Yes"
-			    case SpracheEnum.FRANZOESISCH: return "Oui"
+			select case s
+				case SpracheEnum.DEUTSCH: return "Ja"
+				case SpracheEnum.ENGLISCH: return "Yes"
+				case SpracheEnum.FRANZOESISCH: return "Oui"
 			end select
 		case TextEnum.NEIN:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Nein"
-			    case SpracheEnum.ENGLISCH: return "No"
-			    case SpracheEnum.FRANZOESISCH: return "Non"
+			select case s
+				case SpracheEnum.DEUTSCH: return "Nein"
+				case SpracheEnum.ENGLISCH: return "No"
+				case SpracheEnum.FRANZOESISCH: return "Non"
 			end select
 		case TextEnum.WEITER:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "weiter"
-			    case SpracheEnum.ENGLISCH: return "proceed"
-			    case SpracheEnum.FRANZOESISCH: return "a partir de"
+			select case s
+				case SpracheEnum.DEUTSCH: return "weiter"
+				case SpracheEnum.ENGLISCH: return "proceed"
+				case SpracheEnum.FRANZOESISCH: return "a partir de"
 			end select
 		case TextEnum.LEVELCODE_PROMPT:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Levelcode? "
-			    case SpracheEnum.ENGLISCH: return "Password for this level? "
-			    case SpracheEnum.FRANZOESISCH: return "Mot de passe pour ce niveau? "
+			select case s
+				case SpracheEnum.DEUTSCH: return "Levelcode? "
+				case SpracheEnum.ENGLISCH: return "Password for this level? "
+				case SpracheEnum.FRANZOESISCH: return "Mot de passe pour ce niveau? "
 			end select
 		case TextEnum.WILLKOMMEN_BEI_LEVEL:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Willkommen bei L E V E L   "
-			    case SpracheEnum.ENGLISCH: return "Welcome to  L E V E L  "
-			    case SpracheEnum.FRANZOESISCH: return "Bienvenue au N I V E A U   "
+			select case s
+				case SpracheEnum.DEUTSCH: return "Willkommen bei L E V E L   "
+				case SpracheEnum.ENGLISCH: return "Welcome to  L E V E L  "
+				case SpracheEnum.FRANZOESISCH: return "Bienvenue au N I V E A U   "
 			end select
 		case TextEnum.FALSCHE_EINGABE_ENDE:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Falsche Eingabe. Programm wird geschlossen."
-			    case SpracheEnum.ENGLISCH: return "Wrong Password. The program will be closed."
-			    case SpracheEnum.FRANZOESISCH: return "Mot de passe faux. Le programme sera clos."
+			select case s
+				case SpracheEnum.DEUTSCH: return "Falsche Eingabe. Programm wird geschlossen."
+				case SpracheEnum.ENGLISCH: return "Wrong Password. The program will be closed."
+				case SpracheEnum.FRANZOESISCH: return "Mot de passe faux. Le programme sera clos."
 			end select
 		case TextEnum.PUNKTE_VON_PUNKTE:
-            select case s
-			    case SpracheEnum.DEUTSCH: return " Punkte von 100, die noetig sind, um das Level zu beenden."
-			    case SpracheEnum.ENGLISCH: return " points out of 100, which are necessary to finish the level."
-			    case SpracheEnum.FRANZOESISCH: return " points sur 100, qui sont necessaires pour terminer le niveau."
+			select case s
+				case SpracheEnum.DEUTSCH: return " Punkte von 100, die noetig sind, um das Level zu beenden."
+				case SpracheEnum.ENGLISCH: return " points out of 100, which are necessary to finish the level."
+				case SpracheEnum.FRANZOESISCH: return " points sur 100, qui sont necessaires pour terminer le niveau."
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
-			    case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow point to?"
-			    case SpracheEnum.FRANZOESISCH: return "Task: sur lequel le rectangle la fleche rouge pointe-t-elle?"
+			select case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
+				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow point to?"
+				case SpracheEnum.FRANZOESISCH: return "Task: sur lequel le rectangle la fleche rouge pointe-t-elle?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil?"
-			    case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow flies to?"
-			    case SpracheEnum.FRANZOESISCH: return "Tâche: a quel rectangle la fleche rouge vole-t-elle?"
+			select case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil?"
+				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow flies to?"
+				case SpracheEnum.FRANZOESISCH: return "Tâche: a quel rectangle la fleche rouge vole-t-elle?"
 			end select
 		case TextEnum.AUSWAHL_RECHTECK_KLICK:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Zur Auswahl auf das Rechteck klicken."
-			    case SpracheEnum.ENGLISCH: return "Click on the rectangle to select."
-			    case SpracheEnum.FRANZOESISCH: return "Cliquez sur le rectangle pour selectionner."
+			select case s
+				case SpracheEnum.DEUTSCH: return "Zur Auswahl auf das Rechteck klicken."
+				case SpracheEnum.ENGLISCH: return "Click on the rectangle to select."
+				case SpracheEnum.FRANZOESISCH: return "Cliquez sur le rectangle pour selectionner."
 			end select
 		case TextEnum.FALSCH_NEUER_VERSUCH:
-            select case s
-			    case SpracheEnum.DEUTSCH: return "Falsche Eingabe. Neuer Versuch: "
-			    case SpracheEnum.ENGLISCH: return "Incorrect input. Next try: "
-			    case SpracheEnum.FRANZOESISCH: return "Inconte incorrect. Prochaine tentative: "
+			select case s
+				case SpracheEnum.DEUTSCH: return "Falsche Eingabe. Neuer Versuch: "
+				case SpracheEnum.ENGLISCH: return "Incorrect input. Next try: "
+				case SpracheEnum.FRANZOESISCH: return "Inconte incorrect. Prochaine tentative: "
 			end select
 		case TextEnum.L_E_V_E_L:
 			select Case s
-			    case SpracheEnum.DEUTSCH: return "L E V E L   "
-			    case SpracheEnum.ENGLISCH: return "L E V E L   "
-			    case SpracheEnum.FRANZOESISCH: return "N I V E A U  "
+				case SpracheEnum.DEUTSCH: return "L E V E L   "
+				case SpracheEnum.ENGLISCH: return "L E V E L   "
+				case SpracheEnum.FRANZOESISCH: return "N I V E A U  "
 			end select
 		case TextEnum.RICHTIG_PLUS_10:
 			select Case s
-			    case SpracheEnum.DEUTSCH: return "Richtig. Du bekommst 10 weitere Punkte."
-			    case SpracheEnum.ENGLISCH: return "Right. You get 10 more points."
-			    case SpracheEnum.FRANZOESISCH: return "C'est vrai. Vous obtenez 10 points de plus."
+				case SpracheEnum.DEUTSCH: return "Richtig. Du bekommst 10 weitere Punkte."
+				case SpracheEnum.ENGLISCH: return "Right. You get 10 more points."
+				case SpracheEnum.FRANZOESISCH: return "C'est vrai. Vous obtenez 10 points de plus."
 			end select
 		case TextEnum.FALSCH_MINUS_10:
 			select Case s
-			    case SpracheEnum.DEUTSCH: return "Falsch. Es werden 10 Punkte abgezogen."
-			    case SpracheEnum.ENGLISCH: return "Incorrect. You loose 10 points."
-			    case SpracheEnum.FRANZOESISCH: return "Faux. Il y aura 10 points."
+				case SpracheEnum.DEUTSCH: return "Falsch. Es werden 10 Punkte abgezogen."
+				case SpracheEnum.ENGLISCH: return "Incorrect. You loose 10 points."
+				case SpracheEnum.FRANZOESISCH: return "Faux. Il y aura 10 points."
 			end select
 		case TextEnum.FALSCH:
 			select Case s
-			    case SpracheEnum.DEUTSCH: return "Falsch."
-			    case SpracheEnum.ENGLISCH: return "Incorrect."
-			    case SpracheEnum.FRANZOESISCH: return "Faux."
+				case SpracheEnum.DEUTSCH: return "Falsch."
+				case SpracheEnum.ENGLISCH: return "Incorrect."
+				case SpracheEnum.FRANZOESISCH: return "Faux."
 			end select
-    end select 'TextId
+	end select 'TextId
 End Function
 
-Dim Shared Sprache as SpracheEnum 
+'print Uebersetzungen.uebersetzteText(Uebersetzungen.SpracheEnum.DEUTSCH,2)
 
 '========================================Sub's==========================================
 Declare Sub Programm()
@@ -242,34 +263,34 @@ Sub Ueberblenden()
        sleep 10
     Next
 End sub
-
-Declare sub ZeigeRechteck(Rechteck As Rechteck,Farbe As Integer)
-sub ZeigeRechteck(Rechteck As Rechteck,Farbe As Integer)
-	Line (Rechteck.x1,Rechteck.y1)-(Rechteck.x2,Rechteck.y2),Farbe,BF
-	Line (Rechteck.x1,Rechteck.y1)-(Rechteck.x2,Rechteck.y2),RGB(100,100,100),B
+	
+Declare sub ZeigeRechteck(RechteckVar As Rechteck,Farbe As Integer)
+sub ZeigeRechteck(RechteckVar As Rechteck,Farbe As Integer)
+	Line (RechteckVar.x1,RechteckVar.y1)-(RechteckVar.x2,RechteckVar.y2),Farbe,BF
+	Line (RechteckVar.x1,RechteckVar.y1)-(RechteckVar.x2,RechteckVar.y2),RGB(100,100,100),B
 End Sub
 
-Declare Function PunktAufRechteck(Rechteck As Rechteck,x As integer,y As Integer) As Integer
-Function PunktAufRechteck(Rechteck As Rechteck,x As integer,y As Integer) As Integer
-	If x >= Rechteck.x1 And x <= Rechteck.x2 Then
-		If y >= Rechteck.y1 And y <= Rechteck.y2  Then
+Declare Function PunktAufRechteck(RechteckVar As Rechteck,x As integer,y As Integer) As Integer
+Function PunktAufRechteck(RechteckVar As Rechteck,x As integer,y As Integer) As Integer
+	If x >= RechteckVar.x1 And x <= RechteckVar.x2 Then
+		If y >= RechteckVar.y1 And y <= RechteckVar.y2  Then
 			Return 1
 		EndIf
 	EndIf
 End Function
-Declare Function MausAufRechteck(Rechteck As Rechteck) As Integer
-Function MausAufRechteck(Rechteck As Rechteck) As Integer
+Declare Function MausAufRechteck(RechteckVar As Rechteck) As Integer
+Function MausAufRechteck(RechteckVar As Rechteck) As Integer
 	Dim As Integer Mx, My
 	GetMouse Mx,My
-	Return PunktAufRechteck(Rechteck,Mx,My)
+	Return PunktAufRechteck(RechteckVar,Mx,My)
 End Function
 
 Declare Function MausklickAufRechteck(Rechteck As Rechteck) As Integer
-Function MausklickAufRechteck(Rechteck As Rechteck) As Integer
+Function MausklickAufRechteck(RechteckVar As Rechteck) As Integer
 	Dim As Integer MM,MDruck
 	GetMouse MM,MM,MM,MDruck
 	If MDruck And 1 Then
-		If MausAufRechteck(Rechteck) = 1 Then
+		If MausAufRechteck(RechteckVar) = 1 Then
 			Return 1
 		EndIf
 	EndIf
@@ -296,7 +317,11 @@ Sub AbbrechenButtonZeigen()
 	Abbrechen.y2 =  breite - breite/15 + 18
 	
 	ZeigeRechteck(Abbrechen,RGB(250,100,100))
-	Draw String ((Abbrechen.x1+Abbrechen.X2)/2-len(uebersetzteText(Sprache, TextEnum.ABBRECHEN))*Text_x/2,(Abbrechen.y1+Abbrechen.y2)/2-(Text_y/2)), uebersetzteText(Sprache, TextEnum.ABBRECHEN)
+	
+	'Dim texttmp as String
+	'texttmp = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
+	GrafikHelfer.zentriertSchreiben((Abbrechen.x1+Abbrechen.X2)/2,(Abbrechen.y1+Abbrechen.y2)/2,Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN))
+	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-len(texttmp)*Text_x/2,(Abbrechen.y1+Abbrechen.y2)/2-(Text_y/2)), texttmp
 End Sub
 
 Declare Function AbbrechenButton() As Integer
@@ -371,7 +396,7 @@ Function Weiterspielen() As Integer
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
- 	  draw string (10,breite/2-Text_y/2), uebersetzteText(Sprache, TextEnum.WOLLEN_NEUES_SPIEL)
+ 	  draw string (10,breite/2-Text_y/2), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
 
  	   j = 2 'Anzahl der Buttons
 	  'Auswahlbuttons laden:
@@ -385,9 +410,11 @@ Function Weiterspielen() As Integer
 	  'Auswahlbuttons anzeigen:
 
 	  ZeigeRechteck(Levelauswahl(1),RGB(0,100,255))
-	  Draw String ((Levelauswahl(1).x1+Levelauswahl(1).x2)/2-len(uebersetzteText(Sprache, TextEnum.JA))*Text_x/2,(Levelauswahl(1).y1+Levelauswahl(1).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.JA)
+	  GrafikHelfer.zentriertSchreiben((Levelauswahl(1).x1+Levelauswahl(1).x2)/2, (Levelauswahl(1).y1+Levelauswahl(1).y2)/2,Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA))
+	  'Draw String ((Levelauswahl(1).x1+Levelauswahl(1).x2)/2-len(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA))*Text_x/2,(Levelauswahl(1).y1+Levelauswahl(1).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.JA)
 	  ZeigeRechteck(Levelauswahl(2),RGB(0,100,255))
-	  Draw String ((Levelauswahl(2).x1+Levelauswahl(2).x2)/2-len(uebersetzteText(Sprache, TextEnum.NEIN))*Text_x/2,(Levelauswahl(2).y1+Levelauswahl(2).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.NEIN)
+	  GrafikHelfer.zentriertSchreiben((Levelauswahl(2).x1+Levelauswahl(2).x2)/2, (Levelauswahl(2).y1+Levelauswahl(2).y2)/2, Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN))
+	  'Draw String ((Levelauswahl(2).x1+Levelauswahl(2).x2)/2-len(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN))*Text_x/2,(Levelauswahl(2).y1+Levelauswahl(2).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.NEIN)
 	  GET (0,0)-(hoehe-1,breite-1) , img1
  	  Put(0,0),img2,pset
  	unlockscreen
@@ -424,7 +451,8 @@ Sub Warten(Abbrechen As Integer = 0)
 	Weiter.y2 =  breite - breite/15 + 18
 	
 	ZeigeRechteck(Weiter,RGB(100,250,100))
-	Draw String ((Weiter.x1+Weiter.X2)/2-len(uebersetzteText(Sprache, TextEnum.WEITER))*Text_x/2,(Weiter.y1+Weiter.y2)/2-Text_y/2), uebersetzteText(Sprache, TextEnum.WEITER)
+	Weiter.beschriftenMit( Uebersetzungen.uebersetzteText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER))
+	'Draw String ((Weiter.x1+Weiter.X2)/2-len(uebersetzteText(Sprache, TextEnum.WEITER))*Text_x/2,(Weiter.y1+Weiter.y2)/2-Text_y/2), uebersetzteText(Sprache, TextEnum.WEITER)
 	Do
 		If Abbrechen <>0 Then
 			If AbbrechenButton() = 1 Then
@@ -504,7 +532,7 @@ Declare function LevelCodeInput( TextField as TextBoxType) as string
 function LevelCodeInput( TextField as TextBoxType) as string
  
             dim as string letter
-			TextField.SetPrompt(uebersetzteText(Sprache, TextEnum.LEVELCODE_PROMPT))
+			TextField.SetPrompt(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
 			'Input "Levelcode? ", SEingabe
 			TextField.CopyBackground()
             DO
@@ -573,7 +601,7 @@ Sub Sprachauswahl()
 	Do
 		For i = 1 To j
 			If MausklickAufRechteck(SprachAuswahlButton(i)) = 1 Then
-				Sprache = i
+				Uebersetzungen.Sprache = i
 				Exit Do
 			EndIf
 		Next
@@ -586,7 +614,7 @@ Sub FrageNachLevel()
       get (0,0)-(hoehe-1,breite-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (Text_x*2, Text_y*1),  uebersetzteText(Sprache, TextEnum.WELCHES_LEVEL)', Level
+	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)', Level
 	  'init Textbox
 	  dim TextField as textboxtype=textboxtype(text_x*2,text_y*2,40) 'Neue Textbox erzeugen
 
@@ -628,17 +656,17 @@ Sub FrageNachLevel()
 	Loop
 	Select Case Level
 		Case 1
-			Draw string (text_x*2, text_y*3), uebersetzteText(Sprache, TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 			Warten()
 			sleep 500
 		Case 2 
              SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LSTART1" Or SEingabe = "lstart1" Then
-			    Draw string (text_x*2, text_y*3), uebersetzteText(Sprache, TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			    Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  uebersetzteText(Sprache, TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -646,11 +674,11 @@ Sub FrageNachLevel()
 		Case 3
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "S3LEVEL" Or SEingabe = "s3level" Then
-				Draw string (text_x*2, text_y*3),  uebersetzteText(Sprache, TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  uebersetzteText(Sprache, TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -658,11 +686,11 @@ Sub FrageNachLevel()
 		Case 4
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEV4WIS3" Or SEingabe = "lev4wis3" Then
-				Draw string (text_x*2, text_y*3), uebersetzteText(Sprache, TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  uebersetzteText(Sprache, TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -670,11 +698,11 @@ Sub FrageNachLevel()
 		Case 5
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEVE54321L" Or SEingabe = "leve54321l" Then
-				Draw string (text_x*2, text_y*3), uebersetzteText(Sprache, TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  uebersetzteText(Sprache, TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -682,11 +710,11 @@ Sub FrageNachLevel()
 		Case 6
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LE654STAR" Or SEingabe = "le654star" Then
-				Draw string (text_x*2, text_y*3),  uebersetzteText(Sprache, TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3), uebersetzteText(Sprache, TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -730,28 +758,28 @@ Sub Spielen()
 	
 
 	'Rechtecke laden
-	Dim Rechteck(100) As Rechteck
+	Dim RechteckVar(100) As Rechteck
 	
 	For i = 1 To AnzahlRechtecke
-		Rechteck(i).x1 = hoehe-Hoehe/4
-		Rechteck(i).x2 = hoehe-breite/70
-		Rechteck(i).y1 = (breite-breite/70)/AnzahlRechtecke * (i-1) +(breite-breite/70)/70
-		Rechteck(i).y2 = (breite-breite/70)/AnzahlRechtecke * (i)
+		RechteckVar(i).x1 = hoehe-Hoehe/4
+		RechteckVar(i).x2 = hoehe-breite/70
+		RechteckVar(i).y1 = (breite-breite/70)/AnzahlRechtecke * (i-1) +(breite-breite/70)/70
+		RechteckVar(i).y2 = (breite-breite/70)/AnzahlRechtecke * (i)
 	Next
 	Do
 	    GET (0,0)-(hoehe-1,breite-1) , img2
 	    lockscreen
 		'Cls
 		Hintergrund(215,133,44,129,47,90)
-		Draw String (0,0), uebersetzteText(Sprache, TextEnum.L_E_V_E_L) & Level  
-		Draw String (0,0+Abstand*1), "" & Punkte & uebersetzteText(Sprache, TextEnum.PUNKTE_VON_PUNKTE)
+		Draw String (0,0), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level  
+		Draw String (0,0+Abstand*1), "" & Punkte & Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE)
 		
 		If Level <= 4 Then
-			Draw String (0,0+Abstand*3), uebersetzteText(Sprache, TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
+			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
 		Else
-			Draw String (0,0+Abstand*3), uebersetzteText(Sprache, TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK)
+			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK)
 		EndIf
-		Draw String (0,0+Abstand*4), uebersetzteText(Sprache, TextEnum.AUSWAHL_RECHTECK_KLICK)
+		Draw String (0,0+Abstand*4), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK)
 		'per Zufall Pfeil erzeugen
 		If level <= 4 Then
 			Pfeil.x1 = 10 
@@ -765,7 +793,7 @@ Sub Spielen()
 				Pfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
 				Pfeil.Richtung = Rnd()*180-180/2
 				For i = 0 To anzahlrechtecke
-					If PunktAufRechteck(rechteck(i),rechteck(i).x1,Wurfparabel(Pfeil.Richtung*-1,Pfeil.laenge,Pfeil.x1+ COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,Pfeil.y1+ SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,rechteck(i).x1)) = 1 Then
+					If PunktAufRechteck(RechteckVar(i),RechteckVar(i).x1,Wurfparabel(Pfeil.Richtung*-1,Pfeil.laenge,Pfeil.x1+ COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,Pfeil.y1+ SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,RechteckVar(i).x1)) = 1 Then
 						Exit Do
 					EndIf
 				Next
@@ -777,7 +805,7 @@ Sub Spielen()
 		ZeigePfeil Pfeil,RGB(255,10,10)
 		'Rechtecke zeigen
 		For i = 1 To AnzahlRechtecke
-			ZeigeRechteck(Rechteck(i),RGB(0,100,255))
+			ZeigeRechteck(RechteckVar(i),RGB(0,100,255))
 			'Draw String (Rechteck(i).x1+2,Rechteck(i).y1+2),"" & i,RGB(0,0,0) Nummerierung bei Maus nicht nötig
 		Next
 		For i = 0 To 8
@@ -799,7 +827,7 @@ Sub Spielen()
 		Do
 			'If AbbrechenButton() = 1 Then end
 			For i = 1 To AnzahlRechtecke
-				If MausklickAufRechteck(Rechteck(i)) = 1 Then
+				If MausklickAufRechteck(RechteckVar(i)) = 1 Then
 					Eingabe = i
 					exit do
 				EndIf
@@ -835,12 +863,12 @@ Sub Spielen()
 			'unlockScreen
 			'Testen, ob Pixel auf einem Rechteck ist
 			For i = 1 To AnzahlRechtecke
-				If PunktAufRechteck(Rechteck(i),x,y) = 1 Then
+				If PunktAufRechteck(RechteckVar(i),x,y) = 1 Then
 					If i = Eingabe Then 
 						'Print 
 						'Print
 						Color RGB(0,255,0),RGB(255,255,255)
-						Draw String (0,0+Abstand*Text_x),uebersetzteText(Sprache, TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
+						Draw String (0,0+Abstand*Text_x),Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
 						Color RGB(0,0,0),RGB(255,255,255)
 						Punkte = Punkte + 10
 						
@@ -848,7 +876,7 @@ Sub Spielen()
 						
 						'Richtiges Rechteck grün:
 						For j = 0 To 255
-							ZeigeRechteck(Rechteck(i),RGB(0,j,255-j))
+							ZeigeRechteck(RechteckVar(i),RGB(0,j,255-j))
 							Sleep 2
 						Next
 
@@ -860,12 +888,12 @@ Sub Spielen()
 						'Print
 						If Punkte > 0 Then 
 							Color RGB(255,0,0),RGB(255,255,255)
-							Draw String (0,0+Abstand*8), uebersetzteText(Sprache, TextEnum.FALSCH_MINUS_10),RGB(255,0,0)
+							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),RGB(255,0,0)
 							Color RGB(0,0,0),RGB(255,255,255)
 							Punkte = Punkte - 10
 						Else
 							Color RGB(255,0,0),RGB(255,255,255)
-							Draw String (0,0+Abstand*8), uebersetzteText(Sprache, TextEnum.FALSCH),RGB(255,0,0)
+							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),RGB(255,0,0)
 							Color RGB(0,0,0),RGB(255,255,255)
 						EndIf
 						
@@ -875,14 +903,14 @@ Sub Spielen()
 						
 						'Falsches Rechteck rot:
 						For j = 0 To 255
-							ZeigeRechteck(Rechteck(eingabe),RGB(j,0,255-j))
+							ZeigeRechteck(RechteckVar(eingabe),RGB(j,0,255-j))
 							Sleep 2
 						Next
 						'For...Next-Schleife: Richtiges Rechteck blinkt grün
 						For j = 0 To 3
-							ZeigeRechteck(Rechteck(i),RGB(0,255,0))
+							ZeigeRechteck(RechteckVar(i),RGB(0,255,0))
 							Sleep 400
-							ZeigeRechteck(Rechteck(i),RGB(0,100,255))
+							ZeigeRechteck(RechteckVar(i),RGB(0,100,255))
 							Sleep 400
 						Next
 					EndIf
@@ -900,7 +928,7 @@ Sub Spielen()
 	'Print 
 	'Color RGB(0,100,0),RGB(255,200,15)
 	Sleep 800
-	Select Case Sprache
+	Select Case Uebersetzungen.Sprache
 		Case 1:
 			Select Case level
 				Case 1 
