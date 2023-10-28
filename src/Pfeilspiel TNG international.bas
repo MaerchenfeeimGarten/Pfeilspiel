@@ -321,7 +321,6 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 	end select 'TextId
 End Function
 
-'print Uebersetzungen.uebersetzterText(Uebersetzungen.SpracheEnum.DEUTSCH,2)
 
 '========================================Sub's==========================================
 Declare Sub Programm()
@@ -353,7 +352,11 @@ End Function
 Declare Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
 Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
  	For y = 0 To GrafikEinstellungen.hoehe
- 		Line (0,y)-(GrafikEinstellungen.breite,y),RGB(R1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+R2*((y)/GrafikEinstellungen.hoehe)  ,  G1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+G2*((y)/GrafikEinstellungen.hoehe)  ,  B1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+B2*((y)/GrafikEinstellungen.hoehe))
+		Dim As Integer ueberblendetes_r, ueberblendetes_g, ueberblendetes_b
+		ueberblendetes_r = R1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+R2*((y)/GrafikEinstellungen.hoehe)
+		ueberblendetes_g = G1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+G2*((y)/GrafikEinstellungen.hoehe) 
+		ueberblendetes_b = B1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+B2*((y)/GrafikEinstellungen.hoehe)
+ 		Line (0,y)-(GrafikEinstellungen.breite,y),RGB( ueberblendetes_r ,  ueberblendetes_g , ueberblendetes_b )
  	Next
 End Sub
 
@@ -906,15 +909,6 @@ Sub Spielen()
 		For i = 1 To AnzahlRechtecke
 			RechteckVar(i).anzeigen()
 		Next
-		For i = 0 To 8
-			'Print
-		Next
-		
-		'Alte Eingabemetode:
-		/'Input "Eingabe: ", Eingabe
-		Do while  eingabe <0 or eingabe > AnzahlRechtecke
-			Input uebersetzterText(Sprache, TextEnum.FALSCH_NEUER_VERSUCH), Eingabe
-		Loop '/
 		
 		'überblenden
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , img1
@@ -946,14 +940,14 @@ Sub Spielen()
 			If level <= 4 Then 'Gerade Linie, durch (Co)Sinus berechnet
 				x = x + COS((AktuellerPfeil.Richtung*Pi)/180)*1
 				y = y + SIN((AktuellerPfeil.Richtung*Pi)/180)*1
-				PSet (Int(x),Int(y)),RGB(60,60,60)
+				GrafikHelfer.dickeLinie  Int(x),Int(y),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
 			Else
 				x_alt = x
 				y_alt = y
 				x = jj
 				y = Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1,AktuellerPfeil.y1,x)
 				If x >= AktuellerPfeil.x1 Then
-					line (Int(x_alt),Int(y_alt))-(Int(x),Int(y)),RGB(60,60,60)
+					GrafikHelfer.dickeLinie  Int(x_alt),Int(y_alt),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
 				EndIf
 				'Locate 1,1 : Print "x: " & x & " Y: " & Y
 			EndIf
