@@ -10,7 +10,7 @@ Dim Shared As Single x,y
 Dim Shared As Integer xx,yy,Text_x,Text_y
 DIM SHARED AS DOUBLE Pi
 Dim Shared As String SEingabe
-Dim Shared As integer hoehe,breite'Im ganzen Programm vertauscht!!!!!!!
+Dim Shared As integer breite,hoehe
 Pi = 3.14159265358979323846
 Randomize Timer
 Dim Shared As FB.Image Ptr img1, img2
@@ -319,15 +319,15 @@ End Function
 
 Declare Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
 Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
- 	For y = 0 To breite
- 		Line (0,y)-(hoehe,y),RGB(R1*((breite-y)/breite)+R2*((y)/breite)  ,  G1*((breite-y)/breite)+G2*((y)/breite)  ,  B1*((breite-y)/breite)+B2*((y)/breite))
+ 	For y = 0 To hoehe
+ 		Line (0,y)-(breite,y),RGB(R1*((hoehe-y)/hoehe)+R2*((y)/hoehe)  ,  G1*((hoehe-y)/hoehe)+G2*((y)/hoehe)  ,  B1*((hoehe-y)/hoehe)+B2*((y)/hoehe))
  	Next
 End Sub
 
 Declare Sub FensterSchliessen()
 Sub FensterSchliessen()
 	'Effekt zum Beenden:
-    var img = Imagecreate(hoehe, breite, RGBA(0, 0, 0, 255),32)
+    var img = Imagecreate(breite, hoehe, RGBA(0, 0, 0, 255),32)
  
     for i = 255 to 0 Step -1
        put (0,0),img,ALPHA,1
@@ -364,10 +364,10 @@ Declare Sub AbbrechenButtonZeigen()
 Sub AbbrechenButtonZeigen()
 	'Abbrechen-Button laden
 	Dim Abbrechen As Rechteck
-	Abbrechen.x1 = 0+Hoehe/20+(hoehe/7+Hoehe/20)
-	Abbrechen.y1 = breite - breite/10
-	Abbrechen.x2 = (hoehe/7+Hoehe/20)*2
-	Abbrechen.y2 =  breite - breite/15 + 18
+	Abbrechen.x1 = 0+breite/20+(breite/7+breite/20)
+	Abbrechen.y1 = hoehe - hoehe/10
+	Abbrechen.x2 = (breite/7+breite/20)*2
+	Abbrechen.y2 =  hoehe - hoehe/15 + 18
 	Abbrechen.farbe = RGB(250,100,100)
 	
 	Abbrechen.anzeigen()
@@ -382,10 +382,10 @@ Declare Function AbbrechenButton() As Integer
 Function AbbrechenButton() As Integer
 	'Abbrechen-Button laden
 	Dim Abbrechen As Rechteck
-	Abbrechen.x1 = 0+Hoehe/20+(hoehe/7+Hoehe/20)
-	Abbrechen.y1 = breite - breite/10
-	Abbrechen.x2 = (hoehe/7+Hoehe/20)*2
-	Abbrechen.y2 =  breite - breite/15 + 18
+	Abbrechen.x1 = 0+breite/20+(breite/7+breite/20)
+	Abbrechen.y1 = hoehe - hoehe/10
+	Abbrechen.x2 = (breite/7+breite/20)*2
+	Abbrechen.y2 =  hoehe - hoehe/15 + 18
 	
 	'ZeigeRechteck(Abbrechen,RGB(250,100,100))
 	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-8*4.5,(Abbrechen.y1+Abbrechen.y2)/2-(4)), "Abbrechen"
@@ -399,68 +399,68 @@ End Function
 
 Declare Sub ZeigeLogo(Farbe As Integer = 0)
 Sub ZeigeLogo(Farbe As Integer = 0)
-	Line (hoehe*0.05,breite*0.3  -breite*0.25)-(hoehe*0.05,breite*0.6   -breite*0.25),Farbe    'Vertilaler Strich von P
-	Line (hoehe*0.05,breite*0.3  -breite*0.25)-(hoehe*0.15,breite*0.375 -breite*0.25),Farbe    'Oberer Strich von P
-	Line (hoehe*0.05,breite*0.45 -breite*0.25)-(hoehe*0.15,breite*0.375 -breite*0.25),Farbe    'Unterer Strich von P
+	Line (breite*0.05,hoehe*0.3  -hoehe*0.25)-(breite*0.05,hoehe*0.6   -hoehe*0.25),Farbe    'Vertilaler Strich von P
+	Line (breite*0.05,hoehe*0.3  -hoehe*0.25)-(breite*0.15,hoehe*0.375 -hoehe*0.25),Farbe    'Oberer Strich von P
+	Line (breite*0.05,hoehe*0.45 -hoehe*0.25)-(breite*0.15,hoehe*0.375 -hoehe*0.25),Farbe    'Unterer Strich von P
 	
-	Line (hoehe*0.05 +hoehe*0.13,breite*0.3  -breite*0.25)-(hoehe*0.05 +hoehe*0.13,breite*0.6   -breite*0.25),Farbe    'Vertilaler Strich von F
-	Line (hoehe*0.05 +hoehe*0.13,breite*0.3  -breite*0.25)-(hoehe*0.15 +hoehe*0.13,breite*0.3   -breite*0.25),Farbe    'Oberer Strich von F
-	Line (hoehe*0.05 +hoehe*0.13,breite*0.45 -breite*0.25)-(hoehe*0.15 +hoehe*0.13,breite*0.45  -breite*0.25),Farbe    'Unterer Strich von F
+	Line (breite*0.05 +breite*0.13,hoehe*0.3  -hoehe*0.25)-(breite*0.05 +breite*0.13,hoehe*0.6   -hoehe*0.25),Farbe    'Vertilaler Strich von F
+	Line (breite*0.05 +breite*0.13,hoehe*0.3  -hoehe*0.25)-(breite*0.15 +breite*0.13,hoehe*0.3   -hoehe*0.25),Farbe    'Oberer Strich von F
+	Line (breite*0.05 +breite*0.13,hoehe*0.45 -hoehe*0.25)-(breite*0.15 +breite*0.13,hoehe*0.45  -hoehe*0.25),Farbe    'Unterer Strich von F
 	
-	Line (hoehe*0.05 +hoehe*0.13*2,breite*0.3   -breite*0.25)-(hoehe*0.05 +hoehe*0.13*2,breite*0.6   -breite*0.25),Farbe    'Vertilaler Strich von E
-	Line (hoehe*0.05 +hoehe*0.13*2 ,breite*0.3  -breite*0.25)-(hoehe*0.15 +hoehe*0.13*2,breite*0.3   -breite*0.25),Farbe    'Oberer Strich von E
-	Line (hoehe*0.05 +hoehe*0.13*2,breite*0.45  -breite*0.25)-(hoehe*0.15 +hoehe*0.13*2,breite*0.45  -breite*0.25),Farbe    'Mittlerer Strich von E
-	Line (hoehe*0.05 +hoehe*0.13*2,breite*0.6   -breite*0.25)-(hoehe*0.15 +hoehe*0.13*2,breite*0.6  -breite*0.25),Farbe    'Unterer Strich von E
+	Line (breite*0.05 +breite*0.13*2,hoehe*0.3   -hoehe*0.25)-(breite*0.05 +breite*0.13*2,hoehe*0.6   -hoehe*0.25),Farbe    'Vertilaler Strich von E
+	Line (breite*0.05 +breite*0.13*2 ,hoehe*0.3  -hoehe*0.25)-(breite*0.15 +breite*0.13*2,hoehe*0.3   -hoehe*0.25),Farbe    'Oberer Strich von E
+	Line (breite*0.05 +breite*0.13*2,hoehe*0.45  -hoehe*0.25)-(breite*0.15 +breite*0.13*2,hoehe*0.45  -hoehe*0.25),Farbe    'Mittlerer Strich von E
+	Line (breite*0.05 +breite*0.13*2,hoehe*0.6   -hoehe*0.25)-(breite*0.15 +breite*0.13*2,hoehe*0.6  -hoehe*0.25),Farbe    'Unterer Strich von E
 	
-	Line (hoehe*0.05 +hoehe*0.13*3,breite*0.3   -breite*0.25)-(hoehe*0.05 +hoehe*0.13*3,breite*0.6   -breite*0.25),Farbe    'I
+	Line (breite*0.05 +breite*0.13*3,hoehe*0.3   -hoehe*0.25)-(breite*0.05 +breite*0.13*3,hoehe*0.6   -hoehe*0.25),Farbe    'I
 	
-	Line (hoehe*0.05 +hoehe*0.13*3.2,breite*0.3   -breite*0.25)-(hoehe*0.05 +hoehe*0.13*3.2,breite*0.6   -breite*0.25),Farbe    'Vertilaler Strich von L
-	Line (hoehe*0.05 +hoehe*0.13*3.2,breite*0.6   -breite*0.25)-(hoehe*0.15 +hoehe*0.13*3.2,breite*0.6  -breite*0.25),Farbe    'Unterer Strich von L
+	Line (breite*0.05 +breite*0.13*3.2,hoehe*0.3   -hoehe*0.25)-(breite*0.05 +breite*0.13*3.2,hoehe*0.6   -hoehe*0.25),Farbe    'Vertilaler Strich von L
+	Line (breite*0.05 +breite*0.13*3.2,hoehe*0.6   -hoehe*0.25)-(breite*0.15 +breite*0.13*3.2,hoehe*0.6  -hoehe*0.25),Farbe    'Unterer Strich von L
 	
-	Line (hoehe*0.05 +hoehe*0.13*4.2,breite*0.45  -breite*0.25)-(hoehe*0.15 +hoehe*0.13*4.2,breite*0.45  -breite*0.25),Farbe    '-
+	Line (breite*0.05 +breite*0.13*4.2,hoehe*0.45  -hoehe*0.25)-(breite*0.15 +breite*0.13*4.2,hoehe*0.45  -hoehe*0.25),Farbe    '-
 	
 	
 	
-	Line (hoehe*0.05 +hoehe*0.13*0,breite*0.3   +breite*0.25)-(hoehe*0.05 +hoehe*0.13*0,breite*0.45  +breite*0.25),Farbe    'Linker Vertilaler Strich von S
-	Line (hoehe*0.05 +hoehe*0.13*0 ,breite*0.3  +breite*0.25)-(hoehe*0.15 +hoehe*0.13*0,breite*0.3   +breite*0.25),Farbe    'Oberer Strich von S
-	Line (hoehe*0.05 +hoehe*0.13*0,breite*0.45  +breite*0.25)-(hoehe*0.15 +hoehe*0.13*0,breite*0.45  +breite*0.25),Farbe    'Mittlerer Strich von S
-	Line (hoehe*0.05 +hoehe*0.13*0,breite*0.6   +breite*0.25)-(hoehe*0.15 +hoehe*0.13*0,breite*0.6   +breite*0.25),Farbe    'Unterer Strich von S
-	Line (hoehe*0.15 +hoehe*0.13*0,breite*0.45  +breite*0.25)-(hoehe*0.15 +hoehe*0.13*0,breite*0.6   +breite*0.25),Farbe		'Rechter Vertikaler Strich vom S
+	Line (breite*0.05 +breite*0.13*0,hoehe*0.3   +hoehe*0.25)-(breite*0.05 +breite*0.13*0,hoehe*0.45  +hoehe*0.25),Farbe    'Linker Vertilaler Strich von S
+	Line (breite*0.05 +breite*0.13*0 ,hoehe*0.3  +hoehe*0.25)-(breite*0.15 +breite*0.13*0,hoehe*0.3   +hoehe*0.25),Farbe    'Oberer Strich von S
+	Line (breite*0.05 +breite*0.13*0,hoehe*0.45  +hoehe*0.25)-(breite*0.15 +breite*0.13*0,hoehe*0.45  +hoehe*0.25),Farbe    'Mittlerer Strich von S
+	Line (breite*0.05 +breite*0.13*0,hoehe*0.6   +hoehe*0.25)-(breite*0.15 +breite*0.13*0,hoehe*0.6   +hoehe*0.25),Farbe    'Unterer Strich von S
+	Line (breite*0.15 +breite*0.13*0,hoehe*0.45  +hoehe*0.25)-(breite*0.15 +breite*0.13*0,hoehe*0.6   +hoehe*0.25),Farbe		'Rechter Vertikaler Strich vom S
 	
-	Line (hoehe*0.05 +hoehe*0.13,breite*0.3  +breite*0.25)-(hoehe*0.05 +hoehe*0.13,breite*0.6   +breite*0.25),Farbe    'Vertilaler Strich von P
-	Line (hoehe*0.05 +hoehe*0.13,breite*0.3  +breite*0.25)-(hoehe*0.15 +hoehe*0.13,breite*0.375 +breite*0.25),Farbe    'Oberer Strich von P
-	Line (hoehe*0.05 +hoehe*0.13,breite*0.45 +breite*0.25)-(hoehe*0.15 +hoehe*0.13,breite*0.375 +breite*0.25),Farbe    'Unterer Strich von P
+	Line (breite*0.05 +breite*0.13,hoehe*0.3  +hoehe*0.25)-(breite*0.05 +breite*0.13,hoehe*0.6   +hoehe*0.25),Farbe    'Vertilaler Strich von P
+	Line (breite*0.05 +breite*0.13,hoehe*0.3  +hoehe*0.25)-(breite*0.15 +breite*0.13,hoehe*0.375 +hoehe*0.25),Farbe    'Oberer Strich von P
+	Line (breite*0.05 +breite*0.13,hoehe*0.45 +hoehe*0.25)-(breite*0.15 +breite*0.13,hoehe*0.375 +hoehe*0.25),Farbe    'Unterer Strich von P
 	
-	Line (hoehe*0.05 +hoehe*0.13*2,breite*0.3  +breite*0.25)-(hoehe*0.05 +hoehe*0.13*2,breite*0.6   +breite*0.25),Farbe    'I
+	Line (breite*0.05 +breite*0.13*2,hoehe*0.3  +hoehe*0.25)-(breite*0.05 +breite*0.13*2,hoehe*0.6   +hoehe*0.25),Farbe    'I
 	
-	Line (hoehe*0.05 +hoehe*0.13*2.2,breite*0.3   +breite*0.25)-(hoehe*0.05 +hoehe*0.13*2.2,breite*0.6   +breite*0.25),Farbe    'Vertilaler Strich von E
-	Line (hoehe*0.05 +hoehe*0.13*2.2 ,breite*0.3  +breite*0.25)-(hoehe*0.15 +hoehe*0.13*2.2,breite*0.3   +breite*0.25),Farbe    'Oberer Strich von E
-	Line (hoehe*0.05 +hoehe*0.13*2.2,breite*0.45  +breite*0.25)-(hoehe*0.15 +hoehe*0.13*2.2,breite*0.45  +breite*0.25),Farbe    'Mittlerer Strich von E
-	Line (hoehe*0.05 +hoehe*0.13*2.2,breite*0.6   +breite*0.25)-(hoehe*0.15 +hoehe*0.13*2.2,breite*0.6   +breite*0.25),Farbe    'Unterer Strich von E
+	Line (breite*0.05 +breite*0.13*2.2,hoehe*0.3   +hoehe*0.25)-(breite*0.05 +breite*0.13*2.2,hoehe*0.6   +hoehe*0.25),Farbe    'Vertilaler Strich von E
+	Line (breite*0.05 +breite*0.13*2.2 ,hoehe*0.3  +hoehe*0.25)-(breite*0.15 +breite*0.13*2.2,hoehe*0.3   +hoehe*0.25),Farbe    'Oberer Strich von E
+	Line (breite*0.05 +breite*0.13*2.2,hoehe*0.45  +hoehe*0.25)-(breite*0.15 +breite*0.13*2.2,hoehe*0.45  +hoehe*0.25),Farbe    'Mittlerer Strich von E
+	Line (breite*0.05 +breite*0.13*2.2,hoehe*0.6   +hoehe*0.25)-(breite*0.15 +breite*0.13*2.2,hoehe*0.6   +hoehe*0.25),Farbe    'Unterer Strich von E
 	
-	Line (hoehe*0.05 +hoehe*0.13*3.2,breite*0.3   +breite*0.25)-(hoehe*0.05 +hoehe*0.13*3.2,breite*0.6   +breite*0.25),Farbe    'Vertilaler Strich von L
-	Line (hoehe*0.05 +hoehe*0.13*3.2,breite*0.6   +breite*0.25)-(hoehe*0.15 +hoehe*0.13*3.2,breite*0.6   +breite*0.25),Farbe    'Unterer Strich von L
+	Line (breite*0.05 +breite*0.13*3.2,hoehe*0.3   +hoehe*0.25)-(breite*0.05 +breite*0.13*3.2,hoehe*0.6   +hoehe*0.25),Farbe    'Vertilaler Strich von L
+	Line (breite*0.05 +breite*0.13*3.2,hoehe*0.6   +hoehe*0.25)-(breite*0.15 +breite*0.13*3.2,hoehe*0.6   +hoehe*0.25),Farbe    'Unterer Strich von L
 	
 End Sub
 
 Declare Function Weiterspielen() As Integer
 Function Weiterspielen() As Integer
     lockscreen
-      GET (0,0)-(hoehe-1,breite-1) , img2
+      GET (0,0)-(breite-1,hoehe-1) , img2
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
- 	  draw string (10,breite/2-Text_y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
+ 	  draw string (10,hoehe/2-Text_y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
 
  	   j = 2 'Anzahl der Buttons
  	   
 	  'Auswahlbuttons laden:
 	  Dim ButtonWeiterspielenJaNein(100) As rechteck
 	  For i = 1 To j
-		ButtonWeiterspielenJaNein(i).x1 = hoehe-Hoehe/4
-		ButtonWeiterspielenJaNein(i).x2 = hoehe-breite/70
-		ButtonWeiterspielenJaNein(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
-		ButtonWeiterspielenJaNein(i).y2 = (breite-breite/70)/j * (i)
+		ButtonWeiterspielenJaNein(i).x1 = breite-breite/4
+		ButtonWeiterspielenJaNein(i).x2 = breite-hoehe/70
+		ButtonWeiterspielenJaNein(i).y1 = (hoehe-hoehe/70)/j * (i-1) +(hoehe-hoehe/70)/70
+		ButtonWeiterspielenJaNein(i).y2 = (hoehe-hoehe/70)/j * (i)
 		ButtonWeiterspielenJaNein(i).farbe = RGB(0,100,255)
 	  Next
 	  
@@ -471,7 +471,7 @@ Function Weiterspielen() As Integer
 	  ButtonWeiterspielenJaNein(1).anzeigen()
 	  ButtonWeiterspielenJaNein(2).anzeigen()
 	  
-	  GET (0,0)-(hoehe-1,breite-1) , img1
+	  GET (0,0)-(breite-1,hoehe-1) , img1
  	  Put(0,0),img2,pset
  	unlockscreen
  	ueberblenden
@@ -501,10 +501,10 @@ Declare Sub Warten(Abbrechen As Integer = 0)
 Sub Warten(Abbrechen As Integer = 0)
 	'Weiter-Button laden
 	Dim Weiter As Rechteck
-	Weiter.x1 = 0+Hoehe/20
-	Weiter.y1 = breite - breite/10
-	Weiter.x2 = hoehe/7+Hoehe/20
-	Weiter.y2 =  breite - breite/15 + 18
+	Weiter.x1 = 0+breite/20
+	Weiter.y1 = hoehe - hoehe/10
+	Weiter.x2 = breite/7+breite/20
+	Weiter.y2 =  hoehe - hoehe/15 + 18
 	Weiter.farbe = RGB(100,250,100)
 	Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
 	
@@ -547,32 +547,32 @@ Sub FensterOeffnen()
 			xx = 800
 			yy = 600
 	End Select
-	If xx <= 800 Then hoehe  = 640  Else hoehe  = 800
-	If yy <= 600 Then breite = 480  Else breite = 600 
-	'If xx > 1024 Then hoehe  = 1024 
-	'If yy >  768 Then breite = 768
-	Print "Breite= " & hoehe
-	Print "Hoehe = " & breite'/
-	hoehe = xx
-	breite = yy
-	ScreenRes  hoehe,breite ,32,2, &h04 Or 8 
-	Width hoehe\8, breite\16 ' für eine Schriftgröße von 8x16
+	If xx <= 800 Then breite  = 640  Else breite  = 800
+	If yy <= 600 Then hoehe = 480  Else hoehe = 600 
+	'If xx > 1024 Then breite  = 1024 
+	'If yy >  768 Then hoehe = 768
+	Print "Breite= " & breite
+	Print "Hoehe = " & hoehe'/
+	breite = xx
+	hoehe = yy
+	ScreenRes  breite,hoehe ,32,2, &h04 Or 8 
+	Width breite\8, hoehe\16 ' für eine Schriftgröße von 8x16
 	' Für eine Schriftgröße von 8x14 muss hoch\14 gesetzt
 	' werden, für eine Schriftgröße von 8x8 entsprechend hoch\8
 	Text_x = 8
 	Text_y = 16
 	'img1 und img2 vorbereiten
-	img1 = Imagecreate(hoehe, breite, RGBA(255, 0, 0, 255),32)
-    img2 = Imagecreate(hoehe, breite, RGBA(255, 0, 0, 255),32)
+	img1 = Imagecreate(breite, hoehe, RGBA(255, 0, 0, 255),32)
+    img2 = Imagecreate(breite, hoehe, RGBA(255, 0, 0, 255),32)
 
 	
 	'Starteffekt
 	/'Dim As FB.Image Ptr img
-	img = Imagecreate(hoehe, breite, RGBA(0, 0, 255, 255),32)
+	img = Imagecreate(breite, hoehe, RGBA(0, 0, 255, 255),32)
     screenlock
 	  Hintergrund(215,133,44,129,47,90)
 
-       GET (0,0)-(hoehe-1,breite-1) , img
+       GET (0,0)-(breite-1,hoehe-1) , img
        cls
     screenunlock
     for i = 0 to 255 Step 2
@@ -610,7 +610,7 @@ End function
 Declare Sub Sprachauswahl()
 Sub Sprachauswahl()
       lockscreen
-      get (0,0)-(hoehe-1,breite-1),img2
+      get (0,0)-(breite-1,hoehe-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
@@ -631,10 +631,10 @@ Sub Sprachauswahl()
 	  'Auswahlbuttons laden:
 	  Dim SprachAuswahlButton(100) As rechteck
 	  For i = 1 To j
-	  	SprachAuswahlButton(i).x1 = hoehe-Hoehe/4
-	 	SprachAuswahlButton(i).x2 = hoehe-breite/70
-		SprachAuswahlButton(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
-		SprachAuswahlButton(i).y2 = (breite-breite/70)/j * (i)
+	  	SprachAuswahlButton(i).x1 = breite-breite/4
+	 	SprachAuswahlButton(i).x2 = breite-hoehe/70
+		SprachAuswahlButton(i).y1 = (hoehe-hoehe/70)/j * (i-1) +(hoehe-hoehe/70)/70
+		SprachAuswahlButton(i).y2 = (hoehe-hoehe/70)/j * (i)
 		SprachAuswahlButton(i).farbe = RGB(0,100,255)
 		
 		Select Case i
@@ -651,7 +651,7 @@ Sub Sprachauswahl()
 	  For i = 1 To j
 		SprachAuswahlButton(i).anzeigen()
 	  Next
-	  get (0,0)-(hoehe-1,breite-1),img1
+	  get (0,0)-(breite-1,hoehe-1),img1
 	  Put(0,0),img2,pset
 	unlockscreen
 	ueberblenden
@@ -670,7 +670,7 @@ End Sub 'Sprachauswahl
 Declare Sub FrageNachLevel()
 Sub FrageNachLevel()
     lockscreen
-      get (0,0)-(hoehe-1,breite-1),img2
+      get (0,0)-(breite-1,hoehe-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
@@ -688,17 +688,17 @@ Sub FrageNachLevel()
 	  'Auswahlbuttons laden:
 	  Dim LevelAuswahl(100) As rechteck
 	  For i = 1 To j
-	  	LevelAuswahl(i).x1 = hoehe-Hoehe/4
-	 	LevelAuswahl(i).x2 = hoehe-breite/70
-		LevelAuswahl(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
-		LevelAuswahl(i).y2 = (breite-breite/70)/j * (i)
+	  	LevelAuswahl(i).x1 = breite-breite/4
+	 	LevelAuswahl(i).x2 = breite-hoehe/70
+		LevelAuswahl(i).y1 = (hoehe-hoehe/70)/j * (i-1) +(hoehe-hoehe/70)/70
+		LevelAuswahl(i).y2 = (hoehe-hoehe/70)/j * (i)
 		LevelAuswahl(i).farbe = RGB(0,100,255)
 		LevelAuswahl(i).beschriftung = "" & i
 		
 		Levelauswahl(i).anzeigen()
 	  Next
 
-	  get (0,0)-(hoehe-1,breite-1),img1
+	  get (0,0)-(breite-1,hoehe-1),img1
 	  Put(0,0),img2,pset
 	unlockscreen
 	ueberblenden
@@ -820,14 +820,14 @@ Sub Spielen()
 	Dim RechteckVar(100) As Rechteck
 	
 	For i = 1 To AnzahlRechtecke
-		RechteckVar(i).x1 = hoehe-Hoehe/4
-		RechteckVar(i).x2 = hoehe-breite/70
-		RechteckVar(i).y1 = (breite-breite/70)/AnzahlRechtecke * (i-1) +(breite-breite/70)/70
-		RechteckVar(i).y2 = (breite-breite/70)/AnzahlRechtecke * (i)
+		RechteckVar(i).x1 = breite-breite/4
+		RechteckVar(i).x2 = breite-hoehe/70
+		RechteckVar(i).y1 = (hoehe-hoehe/70)/AnzahlRechtecke * (i-1) +(hoehe-hoehe/70)/70
+		RechteckVar(i).y2 = (hoehe-hoehe/70)/AnzahlRechtecke * (i)
 		RechteckVar(i).farbe = RGB(0,100,255)
 	Next
 	Do
-	    GET (0,0)-(hoehe-1,breite-1) , img2
+	    GET (0,0)-(breite-1,hoehe-1) , img2
 	    lockscreen
 		'Cls
 		Hintergrund(215,133,44,129,47,90)
@@ -843,14 +843,14 @@ Sub Spielen()
 		'per Zufall Pfeil erzeugen
 		If level <= 4 Then
 			AktuellerPfeil.x1 = 10 
-			AktuellerPfeil.y1 =breite/2                                                                          
-			AktuellerPfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
-			AktuellerPfeil.Richtung = Rnd()*(68*breite/hoehe)-(68*breite/hoehe)/2                                                           '|
+			AktuellerPfeil.y1 =hoehe/2                                                                          
+			AktuellerPfeil.laenge = (breite+hoehe)/2 /6                                                                                                                          
+			AktuellerPfeil.Richtung = Rnd()*(68*hoehe/breite)-(68*hoehe/breite)/2                                                           '|
 		ElseIf level >= 5 then
 			Do
 				AktuellerPfeil.x1 = 10 
-				AktuellerPfeil.y1 =breite/2                                                                          
-				AktuellerPfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
+				AktuellerPfeil.y1 =hoehe/2                                                                          
+				AktuellerPfeil.laenge = (breite+hoehe)/2 /6                                                                                                                          
 				AktuellerPfeil.Richtung = Rnd()*180-180/2
 				For i = 0 To anzahlrechtecke
 					If RechteckVar(i).istPunktDarauf(						Punkt(						RechteckVar(i).x1,Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,							AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,RechteckVar(i).x1))						) Then
@@ -878,7 +878,7 @@ Sub Spielen()
 		Loop '/
 		
 		'überblenden
-		GET (0,0)-(hoehe-1,breite-1) , img1
+		GET (0,0)-(breite-1,hoehe-1) , img1
 		Put(0,0),img2,pset
 		unlockscreen
 		ueberblenden()
@@ -902,7 +902,7 @@ Sub Spielen()
 		EndIf
 		'Die folgende For...Next-Schleife zeichnet eine Linie der AktuellerPfeilrichtung Pixel-für-Pixel ein:
 		ende = 0 'ende = 1 : Schleife wird abgebrochen
-		For jj = 0 To Sqr(hoehe^2+(breite/4)^2)'ca. max. Länge einer schrägen Linie
+		For jj = 0 To Sqr(breite^2+(hoehe/4)^2)'ca. max. Länge einer schrägen Linie
 			'lockScreen
 			If level <= 4 Then 'Gerade Linie, durch (Co)Sinus berechnet
 				x = x + COS((AktuellerPfeil.Richtung*Pi)/180)*1
