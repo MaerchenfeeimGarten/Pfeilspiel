@@ -453,23 +453,24 @@ Function Weiterspielen() As Integer
  	  draw string (10,breite/2-Text_y/2), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
 
  	   j = 2 'Anzahl der Buttons
+ 	   
 	  'Auswahlbuttons laden:
-	  Dim LevelAuswahl(100) As rechteck'Level muss man sich wegdenken... (war einfach zu faul den Namen zu ändern...)
+	  Dim ButtonWeiterspielenJaNein(100) As rechteck
 	  For i = 1 To j
-		LevelAuswahl(i).x1 = hoehe-Hoehe/4
-		LevelAuswahl(i).x2 = hoehe-breite/70
-		LevelAuswahl(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
-		LevelAuswahl(i).y2 = (breite-breite/70)/j * (i)
-		LevelAuswahl(i).farbe = RGB(0,100,255)
+		ButtonWeiterspielenJaNein(i).x1 = hoehe-Hoehe/4
+		ButtonWeiterspielenJaNein(i).x2 = hoehe-breite/70
+		ButtonWeiterspielenJaNein(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
+		ButtonWeiterspielenJaNein(i).y2 = (breite-breite/70)/j * (i)
+		ButtonWeiterspielenJaNein(i).farbe = RGB(0,100,255)
 	  Next
+	  
+	  ButtonWeiterspielenJaNein(1).beschriftung = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA)
+	  ButtonWeiterspielenJaNein(2).beschriftung = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN)
+	  
 	  'Auswahlbuttons anzeigen:
-
-	  Levelauswahl(1).anzeigen()
-	  GrafikHelfer.zentriertSchreiben((Levelauswahl(1).x1+Levelauswahl(1).x2)/2, (Levelauswahl(1).y1+Levelauswahl(1).y2)/2,Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA))
-	  'Draw String ((Levelauswahl(1).x1+Levelauswahl(1).x2)/2-len(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA))*Text_x/2,(Levelauswahl(1).y1+Levelauswahl(1).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.JA)
-	  Levelauswahl(2).anzeigen()
-	  GrafikHelfer.zentriertSchreiben((Levelauswahl(2).x1+Levelauswahl(2).x2)/2, (Levelauswahl(2).y1+Levelauswahl(2).y2)/2, Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN))
-	  'Draw String ((Levelauswahl(2).x1+Levelauswahl(2).x2)/2-len(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN))*Text_x/2,(Levelauswahl(2).y1+Levelauswahl(2).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.NEIN)
+	  ButtonWeiterspielenJaNein(1).anzeigen()
+	  ButtonWeiterspielenJaNein(2).anzeigen()
+	  
 	  GET (0,0)-(hoehe-1,breite-1) , img1
  	  Put(0,0),img2,pset
  	unlockscreen
@@ -478,7 +479,7 @@ Function Weiterspielen() As Integer
 
 	Do
 		For i = 1 To j
-			If Levelauswahl(i).wirdGeklickt() Then
+			If ButtonWeiterspielenJaNein(i).wirdGeklickt() Then
 				Eingabe = i
 				Exit Do
 			EndIf
@@ -635,19 +636,20 @@ Sub Sprachauswahl()
 		SprachAuswahlButton(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
 		SprachAuswahlButton(i).y2 = (breite-breite/70)/j * (i)
 		SprachAuswahlButton(i).farbe = RGB(0,100,255)
+		
+		Select Case i
+			Case 1 
+				SprachAuswahlButton(i).beschriftung = "Deutsch"
+			Case 2
+				SprachAuswahlButton(i).beschriftung = "English"
+		    Case 3
+				SprachAuswahlButton(i).beschriftung = "Francais"
+	  	End select
 	  Next
 	  'Auswahlbuttons anzeigen:
 
 	  For i = 1 To j
 		SprachAuswahlButton(i).anzeigen()
-	  	Select Case i
-			Case 1 
-	  	        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("Deutsch")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Deutsch"
-			Case 2
-			    Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("English")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"English"
-		    Case 3
-		        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("Francais")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Francais"
-	  	End select
 	  Next
 	  get (0,0)-(hoehe-1,breite-1),img1
 	  Put(0,0),img2,pset
@@ -671,7 +673,7 @@ Sub FrageNachLevel()
       get (0,0)-(hoehe-1,breite-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)', Level
+	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
 	  'init Textbox
 	  dim TextField as textboxtype=textboxtype(text_x*2,text_y*2,40) 'Neue Textbox erzeugen
 
@@ -716,7 +718,7 @@ Sub FrageNachLevel()
 			Warten()
 			sleep 500
 		Case 2 
-             SEingabe =  LevelCodeInput(TextField)
+			SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LSTART1" Or SEingabe = "lstart1" Then
 			    Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
@@ -864,7 +866,6 @@ Sub Spielen()
 		'Rechtecke zeigen
 		For i = 1 To AnzahlRechtecke
 			RechteckVar(i).anzeigen()
-			'Draw String (Rechteck(i).x1+2,Rechteck(i).y1+2),"" & i,RGB(0,0,0) Nummerierung bei Maus nicht nötig
 		Next
 		For i = 0 To 8
 			'Print
@@ -923,8 +924,7 @@ Sub Spielen()
 			For i = 1 To AnzahlRechtecke
 				If RechteckVar(i).istPunktDarauf(Punkt(x,y)) Then
 					If i = Eingabe Then 
-						'Print 
-						'Print
+
 						Color RGB(0,255,0),RGB(255,255,255)
 						Draw String (0,0+Abstand*Text_x),Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
 						Color RGB(0,0,0),RGB(255,255,255)
@@ -978,7 +978,6 @@ Sub Spielen()
 			sleep 1'CPU schonen
 			If ende = 1 Then Exit For
 		Next
-		'Draw String (0,0+Abstand*10), "weiter mit beliebiger Taste"
 		AbbrechenButtonZeigen()
 		Warten(1)
 		'Sleep'Warten
@@ -1090,8 +1089,6 @@ Sub Spielen()
 
 
 	Warten()
-	'Draw String (0,0+Abstand*18),"Programm mit beliebiger Taste schliessen."
-	'Sleep
 End Sub
 
 Sub Programm()
