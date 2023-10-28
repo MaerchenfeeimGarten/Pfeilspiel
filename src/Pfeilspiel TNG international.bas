@@ -45,7 +45,7 @@ end Constructor
 Type KlickbaresGrafikElement extends GrafikElement
 	Declare abstract function istPunktDarauf(p as Punkt) as boolean
 	Declare abstract function istMausDarauf() as boolean
-	Declare abstract function wurdeGeklickt() as boolean
+	Declare abstract function wirdGeklickt() as boolean
 End Type
 
 Type Pfeil extends GrafikElement
@@ -81,7 +81,7 @@ Type Rechteck extends KlickbaresGrafikElement
 		AS INTEGER farbe_rand
 		Declare virtual function istPunktDarauf(p as Punkt) as boolean
 		Declare virtual function istMausDarauf() as boolean
-		Declare virtual function wurdeGeklickt() as boolean
+		Declare virtual function wirdGeklickt() as boolean
 		Declare virtual sub anzeigen()
 		Declare virtual sub anzeigen(Farbe as Integer)
 		Declare Constructor()
@@ -124,7 +124,7 @@ Function Rechteck.istMausDarauf() As boolean
 	Return This.istPunktDarauf(Punkt(Mx,My))
 End Function
 
-Function Rechteck.wurdeGeklickt() As boolean
+Function Rechteck.wirdGeklickt() As boolean
 	Dim As Integer MM,MDruck
 	GetMouse MM,MM,MM,MDruck
 	If MDruck And 1 Then
@@ -389,7 +389,7 @@ Function AbbrechenButton() As Integer
 	
 	'ZeigeRechteck(Abbrechen,RGB(250,100,100))
 	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-8*4.5,(Abbrechen.y1+Abbrechen.y2)/2-(4)), "Abbrechen"
-	If Abbrechen.wurdeGeklickt() Then
+	If Abbrechen.wirdGeklickt() Then
 		Return 1
 	Else
 		Return 0
@@ -478,7 +478,7 @@ Function Weiterspielen() As Integer
 
 	Do
 		For i = 1 To j
-			If Levelauswahl(i).wurdeGeklickt() Then
+			If Levelauswahl(i).wirdGeklickt() Then
 				Eingabe = i
 				Exit Do
 			EndIf
@@ -524,7 +524,7 @@ Sub Warten(Abbrechen As Integer = 0)
 				EndIf
 			EndIf
 		EndIf
-	Loop Until Weiter.wurdeGeklickt()
+	Loop Until Weiter.wirdGeklickt()
 End Sub
 Declare Sub FensterOeffnen()
 Sub FensterOeffnen()
@@ -657,7 +657,7 @@ Sub Sprachauswahl()
 
 	Do
 		For i = 1 To j
-			If SprachAuswahlButton(i).wurdeGeklickt() Then
+			If SprachAuswahlButton(i).wirdGeklickt() Then
 				Uebersetzungen.Sprache = i
 				Exit Do
 			EndIf
@@ -704,7 +704,7 @@ Sub FrageNachLevel()
 
 	Do
 		For i = 1 To j
-			If Levelauswahl(i).wurdeGeklickt() Then
+			If Levelauswahl(i).wirdGeklickt() Then
 				Level = i
 				Exit Do
 			EndIf
@@ -885,7 +885,7 @@ Sub Spielen()
 		Do
 			'If AbbrechenButton() = 1 Then end
 			For i = 1 To AnzahlRechtecke
-				If RechteckVar(i).wurdeGeklickt() Then
+				If RechteckVar(i).wirdGeklickt() Then
 					Eingabe = i
 					exit do
 				EndIf
