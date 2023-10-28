@@ -34,6 +34,12 @@ Namespace GrafikHelfer
 	Declare sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
 	Sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
 		size = size / 2 ' Durchmesser-> Radius 
+		
+		if size < 1 then ' auch dünne Linien erlauben mit eine Dicke von 1
+			LINE (x1,y1)-(x2,y2),c
+			exit sub
+		end if
+		
 		If x1 = x2 And y1 = y2 Then
 			Circle (x1, y1), size, c, , , , f
 		Elseif Abs(x2 - x1) >= Abs(y2 - y1) Then
