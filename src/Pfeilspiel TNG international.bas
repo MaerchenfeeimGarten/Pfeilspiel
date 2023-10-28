@@ -24,25 +24,116 @@ Namespace GrafikHelfer
 	end sub
 End Namespace
 
-Type Pfeil
-	AS INTEGER x1
-	AS INTEGER y1
-	As INTEGER laenge
-	AS INTEGER Richtung
+Type GrafikElement extends object
+	Public:
+		Declare abstract Sub anzeigen()
+	'Private:
+		
 End Type
 
-Type Rechteck
-	AS INTEGER x1
-	AS INTEGER y1
-	AS INTEGER x2
-	AS INTEGER y2
-	AS String beschriftung
-	Declare Sub beschriftenMit(text as String)
+Type Punkt
+	as integer x
+	as integer y
+	Declare Constructor(_x as integer, _y as integer)
 End Type
 
+Constructor Punkt(_x as integer, _y as integer)
+	This.x = _x
+	This.y = _y
+end Constructor
+
+Type KlickbaresGrafikElement extends GrafikElement
+	Declare abstract function istPunktDarauf(p as Punkt) as boolean
+	Declare abstract function istMausDarauf() as boolean
+	Declare abstract function wurdeGeklickt() as boolean
+End Type
+
+Type Pfeil extends GrafikElement
+	public:
+		AS INTEGER x1
+		AS INTEGER y1
+		As INTEGER laenge
+		AS INTEGER Richtung
+		AS INTEGER farbe
+		Declare virtual sub anzeigen()
+		Declare sub anzeigen(_Farbe as integer)
+End Type
+
+sub Pfeil.anzeigen(_Farbe As integer)
+	Line (This.x1,This.y1)-(This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge),_Farbe
+	Line (This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge)-(This.x1+COS((This.Richtung*Pi)/180)*This.laenge+   COS(((This.Richtung+130)*Pi)/180)*This.laenge/4,   This.y1+SIN((This.Richtung*Pi)/180)*This.laenge+   SIN(((This.Richtung+130)*Pi)/180)*This.laenge/4),_Farbe
+	Line (This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge)-(This.x1+COS((This.Richtung*Pi)/180)*This.laenge+   COS(((This.Richtung-130)*Pi)/180)*This.laenge/4,   This.y1+SIN((This.Richtung*Pi)/180)*This.laenge+   SIN(((This.Richtung-130)*Pi)/180)*This.laenge/4),_Farbe
+End Sub
+
+
+sub Pfeil.anzeigen()
+	This.anzeigen(This.farbe)
+End Sub
+
+Type Rechteck extends KlickbaresGrafikElement
+	public:
+		AS INTEGER x1
+		AS INTEGER y1
+		AS INTEGER x2
+		AS INTEGER y2
+		AS String beschriftung
+		AS INTEGER farbe
+		AS INTEGER farbe_rand
+		Declare virtual function istPunktDarauf(p as Punkt) as boolean
+		Declare virtual function istMausDarauf() as boolean
+		Declare virtual function wurdeGeklickt() as boolean
+		Declare virtual sub anzeigen()
+		Declare virtual sub anzeigen(Farbe as Integer)
+		Declare Constructor()
+	private:
+		Declare Sub beschriftenMit(text as String)
+End Type
+
+Constructor Rechteck()
+	This.beschriftung = ""
+	This.farbe_rand = RGB(100,100,100)
+end Constructor
+	
 sub Rechteck.beschriftenMit(text as String)
 	GrafikHelfer.zentriertSchreiben( (x1+x2)/2, (y1 + y2)/2, text)
 end sub
+
+virtual function Rechteck.istPunktDarauf(p as Punkt) as boolean
+	If p.x >= x1 And p.x <= x2 Then
+		If p.y >= y1 And p.y <= y2  Then
+			Return true
+		EndIf
+	EndIf
+	return false
+End Function
+
+sub Rechteck.anzeigen(_farbe as Integer)
+	Line (This.x1,This.y1)-(This.x2,This.y2),_farbe,BF
+	Line (This.x1,This.y1)-(This.x2,This.y2),This.farbe_rand,B
+	This.beschriftenMit(This.beschriftung)
+End Sub
+
+sub Rechteck.anzeigen()
+	This.anzeigen(This.farbe)
+End Sub
+
+
+Function Rechteck.istMausDarauf() As boolean
+	Dim As Integer Mx, My
+	GetMouse Mx,My
+	Return This.istPunktDarauf(Punkt(Mx,My))
+End Function
+
+Function Rechteck.wurdeGeklickt() As boolean
+	Dim As Integer MM,MDruck
+	GetMouse MM,MM,MM,MDruck
+	If MDruck And 1 Then
+		If This.istMausDarauf() Then
+			Return True
+		EndIf
+	EndIf
+	return False
+End Function
 
 
 
@@ -264,47 +355,9 @@ Sub Ueberblenden()
     Next
 End sub
 	
-Declare sub ZeigeRechteck(RechteckVar As Rechteck,Farbe As Integer)
-sub ZeigeRechteck(RechteckVar As Rechteck,Farbe As Integer)
-	Line (RechteckVar.x1,RechteckVar.y1)-(RechteckVar.x2,RechteckVar.y2),Farbe,BF
-	Line (RechteckVar.x1,RechteckVar.y1)-(RechteckVar.x2,RechteckVar.y2),RGB(100,100,100),B
-End Sub
 
-Declare Function PunktAufRechteck(RechteckVar As Rechteck,x As integer,y As Integer) As Integer
-Function PunktAufRechteck(RechteckVar As Rechteck,x As integer,y As Integer) As Integer
-	If x >= RechteckVar.x1 And x <= RechteckVar.x2 Then
-		If y >= RechteckVar.y1 And y <= RechteckVar.y2  Then
-			Return 1
-		EndIf
-	EndIf
-End Function
-Declare Function MausAufRechteck(RechteckVar As Rechteck) As Integer
-Function MausAufRechteck(RechteckVar As Rechteck) As Integer
-	Dim As Integer Mx, My
-	GetMouse Mx,My
-	Return PunktAufRechteck(RechteckVar,Mx,My)
-End Function
 
-Declare Function MausklickAufRechteck(Rechteck As Rechteck) As Integer
-Function MausklickAufRechteck(RechteckVar As Rechteck) As Integer
-	Dim As Integer MM,MDruck
-	GetMouse MM,MM,MM,MDruck
-	If MDruck And 1 Then
-		If MausAufRechteck(RechteckVar) = 1 Then
-			Return 1
-		EndIf
-	EndIf
-End Function
 
-Declare sub ZeigePfeil(Pfeil As Pfeil,Farbe As integer)
-Sub ZeigePfeil(Pfeil As Pfeil,Farbe As integer)
-	Line (Pfeil.x1,Pfeil.y1)-(Pfeil.x1+COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,Pfeil.y1+SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge),Farbe
-	Line (Pfeil.x1+COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,Pfeil.y1+SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge)-(Pfeil.x1+COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge+   COS(((Pfeil.Richtung+130)*Pi)/180)*Pfeil.laenge/4,   Pfeil.y1+SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge+   SIN(((Pfeil.Richtung+130)*Pi)/180)*Pfeil.laenge/4),Farbe
-	Line (Pfeil.x1+COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,Pfeil.y1+SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge)-(Pfeil.x1+COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge+   COS(((Pfeil.Richtung-130)*Pi)/180)*Pfeil.laenge/4,   Pfeil.y1+SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge+   SIN(((Pfeil.Richtung-130)*Pi)/180)*Pfeil.laenge/4),Farbe
-	
-	
-	
-End Sub
 
 
 Declare Sub AbbrechenButtonZeigen()
@@ -315,8 +368,9 @@ Sub AbbrechenButtonZeigen()
 	Abbrechen.y1 = breite - breite/10
 	Abbrechen.x2 = (hoehe/7+Hoehe/20)*2
 	Abbrechen.y2 =  breite - breite/15 + 18
+	Abbrechen.farbe = RGB(250,100,100)
 	
-	ZeigeRechteck(Abbrechen,RGB(250,100,100))
+	Abbrechen.anzeigen()
 	
 	'Dim texttmp as String
 	'texttmp = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
@@ -335,7 +389,7 @@ Function AbbrechenButton() As Integer
 	
 	'ZeigeRechteck(Abbrechen,RGB(250,100,100))
 	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-8*4.5,(Abbrechen.y1+Abbrechen.y2)/2-(4)), "Abbrechen"
-	If MausklickAufRechteck(Abbrechen) = 1 Then
+	If Abbrechen.wurdeGeklickt() Then
 		Return 1
 	Else
 		Return 0
@@ -406,13 +460,14 @@ Function Weiterspielen() As Integer
 		LevelAuswahl(i).x2 = hoehe-breite/70
 		LevelAuswahl(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
 		LevelAuswahl(i).y2 = (breite-breite/70)/j * (i)
+		LevelAuswahl(i).farbe = RGB(0,100,255)
 	  Next
 	  'Auswahlbuttons anzeigen:
 
-	  ZeigeRechteck(Levelauswahl(1),RGB(0,100,255))
+	  Levelauswahl(1).anzeigen()
 	  GrafikHelfer.zentriertSchreiben((Levelauswahl(1).x1+Levelauswahl(1).x2)/2, (Levelauswahl(1).y1+Levelauswahl(1).y2)/2,Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA))
 	  'Draw String ((Levelauswahl(1).x1+Levelauswahl(1).x2)/2-len(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA))*Text_x/2,(Levelauswahl(1).y1+Levelauswahl(1).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.JA)
-	  ZeigeRechteck(Levelauswahl(2),RGB(0,100,255))
+	  Levelauswahl(2).anzeigen()
 	  GrafikHelfer.zentriertSchreiben((Levelauswahl(2).x1+Levelauswahl(2).x2)/2, (Levelauswahl(2).y1+Levelauswahl(2).y2)/2, Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN))
 	  'Draw String ((Levelauswahl(2).x1+Levelauswahl(2).x2)/2-len(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN))*Text_x/2,(Levelauswahl(2).y1+Levelauswahl(2).y2)/2-Text_y/2),uebersetzteText(Sprache, TextEnum.NEIN)
 	  GET (0,0)-(hoehe-1,breite-1) , img1
@@ -423,7 +478,7 @@ Function Weiterspielen() As Integer
 
 	Do
 		For i = 1 To j
-			If MausklickAufRechteck(Levelauswahl(i)) = 1 Then
+			If Levelauswahl(i).wurdeGeklickt() Then
 				Eingabe = i
 				Exit Do
 			EndIf
@@ -449,10 +504,11 @@ Sub Warten(Abbrechen As Integer = 0)
 	Weiter.y1 = breite - breite/10
 	Weiter.x2 = hoehe/7+Hoehe/20
 	Weiter.y2 =  breite - breite/15 + 18
+	Weiter.farbe = RGB(100,250,100)
+	Weiter.beschriftung = Uebersetzungen.uebersetzteText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
 	
-	ZeigeRechteck(Weiter,RGB(100,250,100))
-	Weiter.beschriftenMit( Uebersetzungen.uebersetzteText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER))
-	'Draw String ((Weiter.x1+Weiter.X2)/2-len(uebersetzteText(Sprache, TextEnum.WEITER))*Text_x/2,(Weiter.y1+Weiter.y2)/2-Text_y/2), uebersetzteText(Sprache, TextEnum.WEITER)
+	Weiter.anzeigen()
+	
 	Do
 		If Abbrechen <>0 Then
 			If AbbrechenButton() = 1 Then
@@ -468,7 +524,7 @@ Sub Warten(Abbrechen As Integer = 0)
 				EndIf
 			EndIf
 		EndIf
-	Loop Until MausklickAufRechteck(Weiter) = 1
+	Loop Until Weiter.wurdeGeklickt()
 End Sub
 Declare Sub FensterOeffnen()
 Sub FensterOeffnen()
@@ -578,11 +634,12 @@ Sub Sprachauswahl()
 	 	SprachAuswahlButton(i).x2 = hoehe-breite/70
 		SprachAuswahlButton(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
 		SprachAuswahlButton(i).y2 = (breite-breite/70)/j * (i)
+		SprachAuswahlButton(i).farbe = RGB(0,100,255)
 	  Next
 	  'Auswahlbuttons anzeigen:
 
 	  For i = 1 To j
-		ZeigeRechteck(SprachAuswahlButton(i),RGB(0,100,255))
+		SprachAuswahlButton(i).anzeigen()
 	  	Select Case i
 			Case 1 
 	  	        Draw String ((SprachAuswahlButton(i).x1+SprachAuswahlButton(i).x2)/2-len("Deutsch")*Text_x/2,(SprachAuswahlButton(i).y1+SprachAuswahlButton(i).y2)/2-Text_y/2),"Deutsch"
@@ -600,7 +657,7 @@ Sub Sprachauswahl()
 
 	Do
 		For i = 1 To j
-			If MausklickAufRechteck(SprachAuswahlButton(i)) = 1 Then
+			If SprachAuswahlButton(i).wurdeGeklickt() Then
 				Uebersetzungen.Sprache = i
 				Exit Do
 			EndIf
@@ -633,13 +690,12 @@ Sub FrageNachLevel()
 	 	LevelAuswahl(i).x2 = hoehe-breite/70
 		LevelAuswahl(i).y1 = (breite-breite/70)/j * (i-1) +(breite-breite/70)/70
 		LevelAuswahl(i).y2 = (breite-breite/70)/j * (i)
+		LevelAuswahl(i).farbe = RGB(0,100,255)
+		LevelAuswahl(i).beschriftung = "" & i
+		
+		Levelauswahl(i).anzeigen()
 	  Next
-	  'Auswahlbuttons anzeigen:
 
-	  For i = 1 To j
-	  	ZeigeRechteck(Levelauswahl(i),RGB(0,100,255))
-	  	Draw String ((Levelauswahl(i).x1+Levelauswahl(i).x2)/2-10,(Levelauswahl(i).y1+Levelauswahl(i).y2)/2-Text_y/2),"" & i
-	  Next
 	  get (0,0)-(hoehe-1,breite-1),img1
 	  Put(0,0),img2,pset
 	unlockscreen
@@ -648,7 +704,7 @@ Sub FrageNachLevel()
 
 	Do
 		For i = 1 To j
-			If MausklickAufRechteck(Levelauswahl(i)) = 1 Then
+			If Levelauswahl(i).wurdeGeklickt() Then
 				Level = i
 				Exit Do
 			EndIf
@@ -752,7 +808,8 @@ Sub Spielen()
 	
 	
 	
-	Dim Pfeil As Pfeil
+	Dim AktuellerPfeil As Pfeil
+	AktuellerPfeil.farbe = RGB(255,10,10)
 	Color RGB(0,0,0),RGB(255,255,255)
 	Punkte = 0
 	
@@ -765,6 +822,7 @@ Sub Spielen()
 		RechteckVar(i).x2 = hoehe-breite/70
 		RechteckVar(i).y1 = (breite-breite/70)/AnzahlRechtecke * (i-1) +(breite-breite/70)/70
 		RechteckVar(i).y2 = (breite-breite/70)/AnzahlRechtecke * (i)
+		RechteckVar(i).farbe = RGB(0,100,255)
 	Next
 	Do
 	    GET (0,0)-(hoehe-1,breite-1) , img2
@@ -782,19 +840,19 @@ Sub Spielen()
 		Draw String (0,0+Abstand*4), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK)
 		'per Zufall Pfeil erzeugen
 		If level <= 4 Then
-			Pfeil.x1 = 10 
-			Pfeil.y1 =breite/2                                                                          
-			Pfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
-			Pfeil.Richtung = Rnd()*(68*breite/hoehe)-(68*breite/hoehe)/2                                                           '|
+			AktuellerPfeil.x1 = 10 
+			AktuellerPfeil.y1 =breite/2                                                                          
+			AktuellerPfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
+			AktuellerPfeil.Richtung = Rnd()*(68*breite/hoehe)-(68*breite/hoehe)/2                                                           '|
 		ElseIf level >= 5 then
 			Do
-				Pfeil.x1 = 10 
-				Pfeil.y1 =breite/2                                                                          
-				Pfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
-				Pfeil.Richtung = Rnd()*180-180/2
+				AktuellerPfeil.x1 = 10 
+				AktuellerPfeil.y1 =breite/2                                                                          
+				AktuellerPfeil.laenge = (hoehe+breite)/2 /6                                                                                                                          
+				AktuellerPfeil.Richtung = Rnd()*180-180/2
 				For i = 0 To anzahlrechtecke
-					If PunktAufRechteck(RechteckVar(i),RechteckVar(i).x1,Wurfparabel(Pfeil.Richtung*-1,Pfeil.laenge,Pfeil.x1+ COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,Pfeil.y1+ SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge,RechteckVar(i).x1)) = 1 Then
-						Exit Do
+					If RechteckVar(i).istPunktDarauf(						Punkt(						RechteckVar(i).x1,Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,							AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,RechteckVar(i).x1))						) Then
+							Exit Do
 					EndIf
 				Next
 			Loop		
@@ -802,10 +860,10 @@ Sub Spielen()
 		
 		
 		'Pfeile anzeigen
-		ZeigePfeil Pfeil,RGB(255,10,10)
+		AktuellerPfeil.anzeigen()
 		'Rechtecke zeigen
 		For i = 1 To AnzahlRechtecke
-			ZeigeRechteck(RechteckVar(i),RGB(0,100,255))
+			RechteckVar(i).anzeigen()
 			'Draw String (Rechteck(i).x1+2,Rechteck(i).y1+2),"" & i,RGB(0,0,0) Nummerierung bei Maus nicht nötig
 		Next
 		For i = 0 To 8
@@ -827,34 +885,34 @@ Sub Spielen()
 		Do
 			'If AbbrechenButton() = 1 Then end
 			For i = 1 To AnzahlRechtecke
-				If MausklickAufRechteck(RechteckVar(i)) = 1 Then
+				If RechteckVar(i).wurdeGeklickt() Then
 					Eingabe = i
 					exit do
 				EndIf
 			Next
 		Loop
 		If Eingabe = 0 Then End
-		'Richtung des Pfeils einzeichnen
-		x = Pfeil.x1+ COS((Pfeil.Richtung*Pi)/180)*Pfeil.laenge '_ Hier wird der Start für das einzeichnen auf die Pfeilspitze gesetzt.
-		y = Pfeil.y1+ SIN((Pfeil.Richtung*Pi)/180)*Pfeil.laenge '/
+		'Richtung des AktuellerPfeils einzeichnen
+		x = AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '_ Hier wird der Start für das einzeichnen auf die AktuellerPfeilspitze gesetzt.
+		y = AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '/
 		If level >= 5 Then 
-				Pfeil.x1 = x 'X und Y müssen neu gespeichert werden, da diese Variablen noch gebraucht werden, die Werte aber nicht geändert
-				Pfeil.y1 = y 'werden dürfen. Die "Orginale" Pfeil.x1 und Pfeil.y1 werden nicht mehr gebraucht.
+				AktuellerPfeil.x1 = x 'X und Y müssen neu gespeichert werden, da diese Variablen noch gebraucht werden, die Werte aber nicht geändert
+				AktuellerPfeil.y1 = y 'werden dürfen. Die "Orginale" AktuellerPfeil.x1 und AktuellerPfeil.y1 werden nicht mehr gebraucht.
 		EndIf
-		'Die folgende For...Next-Schleife zeichnet eine Linie der Pfeilrichtung Pixel-für-Pixel ein:
+		'Die folgende For...Next-Schleife zeichnet eine Linie der AktuellerPfeilrichtung Pixel-für-Pixel ein:
 		ende = 0 'ende = 1 : Schleife wird abgebrochen
 		For jj = 0 To Sqr(hoehe^2+(breite/4)^2)'ca. max. Länge einer schrägen Linie
 			'lockScreen
 			If level <= 4 Then 'Gerade Linie, durch (Co)Sinus berechnet
-				x = x + COS((Pfeil.Richtung*Pi)/180)*1
-				y = y + SIN((Pfeil.Richtung*Pi)/180)*1
+				x = x + COS((AktuellerPfeil.Richtung*Pi)/180)*1
+				y = y + SIN((AktuellerPfeil.Richtung*Pi)/180)*1
 				PSet (Int(x),Int(y)),RGB(60,60,60)
 			Else
 				x_alt = x
 				y_alt = y
 				x = jj
-				y = Wurfparabel(Pfeil.Richtung*-1,Pfeil.laenge,Pfeil.x1,Pfeil.y1,x)
-				If x >= Pfeil.x1 Then
+				y = Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1,AktuellerPfeil.y1,x)
+				If x >= AktuellerPfeil.x1 Then
 					line (Int(x_alt),Int(y_alt))-(Int(x),Int(y)),RGB(60,60,60)
 				EndIf
 				'Locate 1,1 : Print "x: " & x & " Y: " & Y
@@ -863,7 +921,7 @@ Sub Spielen()
 			'unlockScreen
 			'Testen, ob Pixel auf einem Rechteck ist
 			For i = 1 To AnzahlRechtecke
-				If PunktAufRechteck(RechteckVar(i),x,y) = 1 Then
+				If RechteckVar(i).istPunktDarauf(Punkt(x,y)) Then
 					If i = Eingabe Then 
 						'Print 
 						'Print
@@ -876,7 +934,7 @@ Sub Spielen()
 						
 						'Richtiges Rechteck grün:
 						For j = 0 To 255
-							ZeigeRechteck(RechteckVar(i),RGB(0,j,255-j))
+							RechteckVar(i).anzeigen(RGB(0,j,255-j))
 							Sleep 2
 						Next
 
@@ -903,14 +961,14 @@ Sub Spielen()
 						
 						'Falsches Rechteck rot:
 						For j = 0 To 255
-							ZeigeRechteck(RechteckVar(eingabe),RGB(j,0,255-j))
+							RechteckVar(eingabe).anzeigen(RGB(j,0,255-j))
 							Sleep 2
 						Next
 						'For...Next-Schleife: Richtiges Rechteck blinkt grün
 						For j = 0 To 3
-							ZeigeRechteck(RechteckVar(i),RGB(0,255,0))
+							RechteckVar(i).anzeigen(RGB(0,255,0))
 							Sleep 400
-							ZeigeRechteck(RechteckVar(i),RGB(0,100,255))
+							RechteckVar(i).anzeigen(RGB(0,100,255))
 							Sleep 400
 						Next
 					EndIf
