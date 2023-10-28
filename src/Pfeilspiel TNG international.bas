@@ -31,6 +31,7 @@ Namespace GrafikHelfer
 	end sub
 	
 	'Quelle: https://www.freebasic.net/forum/viewtopic.php?t=22261
+	Declare sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
 	Sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
 		size = size / 2 ' Durchmesser-> Radius 
 		If x1 = x2 And y1 = y2 Then
@@ -85,9 +86,9 @@ Type Pfeil extends GrafikElement
 End Type
 
 sub Pfeil.anzeigen(_Farbe As integer)
-	Line (This.x1,This.y1)-(This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge),_Farbe
-	Line (This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge)-(This.x1+COS((This.Richtung*Pi)/180)*This.laenge+   COS(((This.Richtung+130)*Pi)/180)*This.laenge/4,   This.y1+SIN((This.Richtung*Pi)/180)*This.laenge+   SIN(((This.Richtung+130)*Pi)/180)*This.laenge/4),_Farbe
-	Line (This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge)-(This.x1+COS((This.Richtung*Pi)/180)*This.laenge+   COS(((This.Richtung-130)*Pi)/180)*This.laenge/4,   This.y1+SIN((This.Richtung*Pi)/180)*This.laenge+   SIN(((This.Richtung-130)*Pi)/180)*This.laenge/4),_Farbe
+	GrafikHelfer.dickeLinie This.x1,This.y1, This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge,GrafikEinstellungen.skalierungsfaktor, _Farbe
+	GrafikHelfer.dickeLinie This.x1+COS((This.Richtung*Pi)/180)*This.laenge, This.y1+SIN((This.Richtung*Pi)/180)*This.laenge, This.x1+COS((This.Richtung*Pi)/180)*This.laenge+   COS(((This.Richtung+130)*Pi)/180)*This.laenge/4,   This.y1+SIN((This.Richtung*Pi)/180)*This.laenge+   SIN(((This.Richtung+130)*Pi)/180)*This.laenge/4,GrafikEinstellungen.skalierungsfaktor, _Farbe
+	GrafikHelfer.dickeLinie This.x1+COS((This.Richtung*Pi)/180)*This.laenge,This.y1+SIN((This.Richtung*Pi)/180)*This.laenge, This.x1+COS((This.Richtung*Pi)/180)*This.laenge+   COS(((This.Richtung-130)*Pi)/180)*This.laenge/4,   This.y1+SIN((This.Richtung*Pi)/180)*This.laenge+   SIN(((This.Richtung-130)*Pi)/180)*This.laenge/4,GrafikEinstellungen.skalierungsfaktor, _Farbe
 End Sub
 
 
