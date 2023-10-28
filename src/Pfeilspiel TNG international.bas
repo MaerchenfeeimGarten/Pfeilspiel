@@ -171,11 +171,11 @@ Namespace Uebersetzungen
 		
 	Dim Shared Sprache as SpracheEnum
 	
-	Declare Function uebersetzteText(s as SpracheEnum, t as TextEnum) As String
+	Declare Function uebersetzterText(s as SpracheEnum, t as TextEnum) As String
 
 End Namespace
 
-Function Uebersetzungen.uebersetzteText(s as Uebersetzungen.SpracheEnum, t as Uebersetzungen.TextEnum) As String
+Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as Uebersetzungen.TextEnum) As String
 	select case T
 		case TextEnum.WELCHES_LEVEL:
 			select case s
@@ -288,7 +288,7 @@ Function Uebersetzungen.uebersetzteText(s as Uebersetzungen.SpracheEnum, t as Ue
 	end select 'TextId
 End Function
 
-'print Uebersetzungen.uebersetzteText(Uebersetzungen.SpracheEnum.DEUTSCH,2)
+'print Uebersetzungen.uebersetzterText(Uebersetzungen.SpracheEnum.DEUTSCH,2)
 
 '========================================Sub's==========================================
 Declare Sub Programm()
@@ -373,8 +373,8 @@ Sub AbbrechenButtonZeigen()
 	Abbrechen.anzeigen()
 	
 	'Dim texttmp as String
-	'texttmp = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
-	GrafikHelfer.zentriertSchreiben((Abbrechen.x1+Abbrechen.X2)/2,(Abbrechen.y1+Abbrechen.y2)/2,Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN))
+	'texttmp = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
+	GrafikHelfer.zentriertSchreiben((Abbrechen.x1+Abbrechen.X2)/2,(Abbrechen.y1+Abbrechen.y2)/2,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN))
 	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-len(texttmp)*Text_x/2,(Abbrechen.y1+Abbrechen.y2)/2-(Text_y/2)), texttmp
 End Sub
 
@@ -450,7 +450,7 @@ Function Weiterspielen() As Integer
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
- 	  draw string (10,breite/2-Text_y/2), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
+ 	  draw string (10,breite/2-Text_y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
 
  	   j = 2 'Anzahl der Buttons
  	   
@@ -464,8 +464,8 @@ Function Weiterspielen() As Integer
 		ButtonWeiterspielenJaNein(i).farbe = RGB(0,100,255)
 	  Next
 	  
-	  ButtonWeiterspielenJaNein(1).beschriftung = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA)
-	  ButtonWeiterspielenJaNein(2).beschriftung = Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN)
+	  ButtonWeiterspielenJaNein(1).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA)
+	  ButtonWeiterspielenJaNein(2).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN)
 	  
 	  'Auswahlbuttons anzeigen:
 	  ButtonWeiterspielenJaNein(1).anzeigen()
@@ -506,7 +506,7 @@ Sub Warten(Abbrechen As Integer = 0)
 	Weiter.x2 = hoehe/7+Hoehe/20
 	Weiter.y2 =  breite - breite/15 + 18
 	Weiter.farbe = RGB(100,250,100)
-	Weiter.beschriftung = Uebersetzungen.uebersetzteText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
+	Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
 	
 	Weiter.anzeigen()
 	
@@ -589,7 +589,7 @@ Declare function LevelCodeInput( TextField as TextBoxType) as string
 function LevelCodeInput( TextField as TextBoxType) as string
  
             dim as string letter
-			TextField.SetPrompt(Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
+			TextField.SetPrompt(Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
 			'Input "Levelcode? ", SEingabe
 			TextField.CopyBackground()
             DO
@@ -673,7 +673,7 @@ Sub FrageNachLevel()
       get (0,0)-(hoehe-1,breite-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
+	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
 	  'init Textbox
 	  dim TextField as textboxtype=textboxtype(text_x*2,text_y*2,40) 'Neue Textbox erzeugen
 
@@ -714,17 +714,17 @@ Sub FrageNachLevel()
 	Loop
 	Select Case Level
 		Case 1
-			Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 			Warten()
 			sleep 500
 		Case 2 
 			SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LSTART1" Or SEingabe = "lstart1" Then
-			    Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			    Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -732,11 +732,11 @@ Sub FrageNachLevel()
 		Case 3
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "S3LEVEL" Or SEingabe = "s3level" Then
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -744,11 +744,11 @@ Sub FrageNachLevel()
 		Case 4
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEV4WIS3" Or SEingabe = "lev4wis3" Then
-				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -756,11 +756,11 @@ Sub FrageNachLevel()
 		Case 5
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEVE54321L" Or SEingabe = "leve54321l" Then
-				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -768,11 +768,11 @@ Sub FrageNachLevel()
 		Case 6
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LE654STAR" Or SEingabe = "le654star" Then
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -831,15 +831,15 @@ Sub Spielen()
 	    lockscreen
 		'Cls
 		Hintergrund(215,133,44,129,47,90)
-		Draw String (0,0), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level  
-		Draw String (0,0+Abstand*1), "" & Punkte & Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE)
+		Draw String (0,0), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level  
+		Draw String (0,0+Abstand*1), "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE)
 		
 		If Level <= 4 Then
-			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
+			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
 		Else
-			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK)
+			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK)
 		EndIf
-		Draw String (0,0+Abstand*4), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK)
+		Draw String (0,0+Abstand*4), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK)
 		'per Zufall Pfeil erzeugen
 		If level <= 4 Then
 			AktuellerPfeil.x1 = 10 
@@ -874,7 +874,7 @@ Sub Spielen()
 		'Alte Eingabemetode:
 		/'Input "Eingabe: ", Eingabe
 		Do while  eingabe <0 or eingabe > AnzahlRechtecke
-			Input uebersetzteText(Sprache, TextEnum.FALSCH_NEUER_VERSUCH), Eingabe
+			Input uebersetzterText(Sprache, TextEnum.FALSCH_NEUER_VERSUCH), Eingabe
 		Loop '/
 		
 		'überblenden
@@ -926,7 +926,7 @@ Sub Spielen()
 					If i = Eingabe Then 
 
 						Color RGB(0,255,0),RGB(255,255,255)
-						Draw String (0,0+Abstand*Text_x),Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
+						Draw String (0,0+Abstand*Text_x),Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
 						Color RGB(0,0,0),RGB(255,255,255)
 						Punkte = Punkte + 10
 						
@@ -946,12 +946,12 @@ Sub Spielen()
 						'Print
 						If Punkte > 0 Then 
 							Color RGB(255,0,0),RGB(255,255,255)
-							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),RGB(255,0,0)
+							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),RGB(255,0,0)
 							Color RGB(0,0,0),RGB(255,255,255)
 							Punkte = Punkte - 10
 						Else
 							Color RGB(255,0,0),RGB(255,255,255)
-							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzteText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),RGB(255,0,0)
+							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),RGB(255,0,0)
 							Color RGB(0,0,0),RGB(255,255,255)
 						EndIf
 						
