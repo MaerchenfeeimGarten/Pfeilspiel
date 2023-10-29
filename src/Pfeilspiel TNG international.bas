@@ -8,10 +8,12 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 Dim Shared As Integer i,j,Eingabe,Level
 Dim Shared As Single x,y
 Dim Shared As Integer xx,yy,Text_x,Text_y
-DIM SHARED AS DOUBLE Pi
+DIM SHARED AS DOUBLE Pi, Epsilon
 Dim Shared As String SEingabe
 
+
 Pi = 3.14159265358979323846
+Epsilon = 0.000001
 Randomize Timer
 Dim Shared As FB.Image Ptr img1, img2
 
@@ -23,6 +25,14 @@ Type Punkt
 	as integer y
 	Declare Constructor(_x as integer, _y as integer)
 End Type
+
+Namespace MatheHelfer
+	Declare Function LogBaseX (ByVal Number As Double, ByVal BaseX As Double) As Double
+	Function LogBaseX (ByVal Number As Double, ByVal BaseX As Double) As Double
+		LogBaseX = Log( Number ) / Log( BaseX )
+		'For reference:   1/log(10)=0.43429448
+	End Function
+End Namespace
 
 Namespace GrafikEinstellungen
 		Dim Shared As integer breite, hoehe, skalierungsfaktor, skalierungsexponent_text
@@ -107,25 +117,52 @@ Namespace GrafikHelfer
 		Function = image2
 	End Function
 	
-	Declare sub TextSkaliertZeichnen(p as Punkt,text as String, exponent as Integer, _farbe as Integer = RGB(0,0,0))
-	sub TextSkaliertZeichnen(p as Punkt,text as String, exponent as Integer, _farbe as Integer = RGB(0,0,0))
+	
+	declare Function Image_downscale(image As Any Ptr, gewuenschteGroesse as Punkt) As Any Ptr
+	Function Image_downscale(image As Any Ptr, gewuenschteGroesse as Punkt) As Any Ptr
+		Dim image2 As Any Ptr
+		Dim As Long b, h
+		ImageInfo image, b, h
+		image2= ImageCreate(gewuenschteGroesse.x, gewuenschteGroesse.y)
+		Dim As Long zaehler_b, zaehler_h, quell_b, quell_h
+		for zaehler_b = 0 to gewuenschteGroesse.x-1
+			for zaehler_h = 0 to gewuenschteGroesse.y-1
+				quell_b = int (1.0*zaehler_b * (1.0*b/gewuenschteGroesse.x))
+				quell_h = int (1.0*zaehler_h * (1.0*h/gewuenschteGroesse.y))
+				Put image2, (zaehler_b,zaehler_h), image, (quell_b, quell_h)  - (quell_b,quell_h), PSET 'XOR macht auch einen interessanten Effekt mit durchsichtiger Schrift, Schwarz hinterlegt.
+			next
+		next
+		If image Then ImageDestroy image
+		Function = image2
+	End Function
+	
+	Declare sub TextSkaliertZeichnen(p as Punkt,text as String, skalierungsfaktor as single, _farbe as Integer = RGB(0,0,0))
+	sub TextSkaliertZeichnen(p as Punkt,text as String, skalierungsfaktor as single, _farbe as Integer = RGB(0,0,0))
 		Dim As Any Ptr a = ImageCreate( Len(text)*8, 16)
 		Draw String a,(0,0), text, _farbe 'mit Font 16x8 in ein Image schreiben
 		
 		Dim As Integer schritt
-		for schritt=1 to exponent
+		Dim As Single exponent
+		exponent = MatheHelfer.LogBaseX(skalierungsfaktor, 2)
+		for schritt=1 to int(exponent)
 			a= Image_x2(a)
 		next
+		
+		if (exponent - int(exponent))>epsilon Then
+			a = Image_x2(a)
+			a = Image_downscale(a, Punkt(Len(text)*Text_x*skalierungsfaktor, Text_y*skalierungsfaktor))
+		end if
+		
 		Put (p.x,p.y),a, TRANS
 		if a then ImageDestroy a
 	end sub
 	
-	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, zoomexponent as Integer = 1)
-	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, zoomexponent as Integer = 1)
-		if zoomexponent = 1 then
+	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1)
+	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1)
+		if skalierungsfaktor = 1 then
 			Draw String ((xxx-len(text)*Text_x/2),(yyy-Text_y/2)), text
 		else
-			TextSkaliertZeichnen(Punkt((xxx-len(text)*Text_x/2*2^zoomexponent),(yyy-Text_y/2*2^zoomexponent)),text,zoomexponent)
+			TextSkaliertZeichnen(Punkt((xxx-len(text)*Text_x/2*skalierungsfaktor),(yyy-Text_y/2*skalierungsfaktor)),text,skalierungsfaktor)
 		end if 
 	end sub
 End Namespace
@@ -194,9 +231,10 @@ Constructor Rechteck()
 	This.beschriftung = ""
 	This.farbe_rand = RGB(100,100,100)
 end Constructor
-	
+
+
 sub Rechteck.beschriftenMit(text as String)
-	GrafikHelfer.zentriertSchreiben( (x1+x2)/2, (y1 + y2)/2, text, 2)
+	GrafikHelfer.zentriertSchreiben((x1+x2)/2, (y1 + y2)/2, text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 virtual function Rechteck.istPunktDarauf(p as Punkt) as boolean
