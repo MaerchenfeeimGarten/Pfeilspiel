@@ -6,7 +6,6 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 #endif
 '========================================Dim's==========================================
 Dim Shared As Integer Eingabe,Level
-Dim Shared As Single x,y
 Dim Shared As Integer xx,yy,Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
 Dim Shared As String SEingabe
@@ -458,6 +457,7 @@ Function Wurfparabel(WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x 
 End Function
 
 Function Wurfparabel(WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81, zoomfactor as single) As single
+	dim as single y
 	Geschwindigkeit = Geschwindigkeit / zoomfactor
 	Start_x = Start_x / zoomfactor
 	Start_y = Start_y / zoomfactor
@@ -469,6 +469,7 @@ End Function
 
 Declare Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
 Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
+ 	dim as integer y
  	For y = 0 To GrafikEinstellungen.hoehe
 		Dim As Integer ueberblendetes_r, ueberblendetes_g, ueberblendetes_b
 		ueberblendetes_r = R1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+R2*((y)/GrafikEinstellungen.hoehe)
@@ -1044,7 +1045,9 @@ Sub Spielen()
 			Next
 		Loop
 		If Eingabe = 0 Then End
+		
 		'Richtung des AktuellerPfeils einzeichnen
+		dim as single x, y
 		x = AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '_ Hier wird der Start für das einzeichnen auf die AktuellerPfeilspitze gesetzt.
 		y = AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '/
 		If level >= 5 Then 
