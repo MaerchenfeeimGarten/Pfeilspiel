@@ -5,7 +5,7 @@
 ScreenRes  640,480 ,32,2, &h04 Or 8 
 #endif
 '========================================Dim's==========================================
-Dim Shared As Integer i,j,Eingabe,Level
+Dim Shared As Integer Eingabe,Level
 Dim Shared As Single x,y
 Dim Shared As Integer xx,yy,Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
@@ -482,7 +482,8 @@ Declare Sub FensterSchliessen()
 Sub FensterSchliessen()
 	'Effekt zum Beenden:
     var img = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
- 
+    
+	Dim as Integer i
     for i = 255 to 0 Step -1
        put (0,0),img,ALPHA,1
        sleep 10
@@ -499,6 +500,7 @@ Sub FensterSchliessen()
 	End
 End Sub
 Sub Ueberblenden()
+	Dim as Integer i
     for i = 0 to 255 Step 2
        lockScreen()
        cls
@@ -601,11 +603,12 @@ Function Weiterspielen() As Integer
 
 	  Color RGB(0,0,0),RGB(140,0,250)
  	  draw string (10,GrafikEinstellungen.hoehe/2-Text_y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
-
- 	   j = 2 'Anzahl der Buttons
- 	   
+		dim as Integer j
+		j = 2 'Anzahl der Buttons
+		
 	  'Auswahlbuttons laden:
 	  Dim ButtonWeiterspielenJaNein(100) As rechteck
+	  Dim as Integer i
 	  For i = 1 To j
 		ButtonWeiterspielenJaNein(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
 		ButtonWeiterspielenJaNein(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
@@ -783,6 +786,7 @@ Sub Sprachauswahl()
 	
 	
 	  ZeigeLogo(RGB(0,70,100))
+	  dim as Integer j,i
 	  j = 3 'Anzahl der Sprachen
 	  'Auswahlbuttons laden:
 	  Dim SprachAuswahlButton(100) As rechteck
@@ -840,6 +844,7 @@ Sub FrageNachLevel()
 	
 	
 	  ZeigeLogo(RGB(0,70,100))
+	  Dim as Integer j, i
 	  j = 6 'Anzahl der Level
 	  'Auswahlbuttons laden:
 	  Dim LevelAuswahl(100) As rechteck
@@ -974,7 +979,7 @@ Sub Spielen()
 
 	'Rechtecke laden
 	Dim RechteckVar(100) As Rechteck
-	
+	Dim as Integer i
 	For i = 1 To AnzahlRechtecke
 		RechteckVar(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
 		RechteckVar(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
@@ -1079,6 +1084,7 @@ Sub Spielen()
 
 						
 						'Richtiges Rechteck grün:
+						Dim as Integer j
 						For j = 0 To 255
 							RechteckVar(i).anzeigen(RGB(0,j,255-j))
 							Sleep 2
@@ -1106,6 +1112,7 @@ Sub Spielen()
 
 						
 						'Falsches Rechteck rot:
+						Dim as Integer j
 						For j = 0 To 255
 							RechteckVar(eingabe).anzeigen(RGB(j,0,255-j))
 							Sleep 2
