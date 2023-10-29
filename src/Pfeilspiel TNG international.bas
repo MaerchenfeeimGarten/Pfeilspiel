@@ -5,7 +5,7 @@
 ScreenRes  640,480 ,32,2, &h04 Or 8 
 #endif
 '========================================Dim's==========================================
-Dim Shared As Integer Level
+
 Dim Shared As Integer Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
 Dim Shared As String SEingabe
@@ -829,8 +829,8 @@ Sub Sprachauswahl()
 	Loop
 End Sub 'Sprachauswahl
 
-Declare Sub FrageNachLevel()
-Sub FrageNachLevel()
+Declare Function FrageNachLevel() as Short
+Function FrageNachLevel() as Short
     lockscreen
       get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img2
 	  Hintergrund(215,133,44,129,47,90)
@@ -865,8 +865,9 @@ Sub FrageNachLevel()
 	  Put(0,0),img2,pset
 	unlockscreen
 	ueberblenden
-	'Auswahlbuttons abfragen:
 
+	'Auswahlbuttons abfragen:
+	Dim as Short Level
 	Do
 		For i = 1 To j
 			If Levelauswahl(i).wirdGeklickt() Then
@@ -941,13 +942,16 @@ Sub FrageNachLevel()
 				FensterSchliessen
 			EndIf
 	End Select
-End Sub
+	
+	return level
+End Function
 
-Declare Sub Spielen()
-Sub Spielen()
+Declare Sub Spielen(level as short)
+Sub Spielen(level as short)
 	Dim As Integer Punkte, AnzahlRechtecke
 	Dim As Integer ende,jj,x_alt,y_alt
 	Dim Abstand As Integer
+	
 	Abstand = Text_y + 1
 	If Level = 1 Then
 		AnzahlRechtecke = 5
@@ -1252,8 +1256,9 @@ End Sub
 Sub Programm()
     Sprachauswahl()
 	Do
-		FrageNachLevel()
-		Spielen()
+		Dim as Short level
+		level = FrageNachLevel()
+		Spielen(level)
 	Loop Until Weiterspielen() = 0
 End Sub
 
