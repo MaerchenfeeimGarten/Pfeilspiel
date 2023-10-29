@@ -6,7 +6,7 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 #endif
 '========================================Dim's==========================================
 Dim Shared As Integer Level
-Dim Shared As Integer xx,yy,Text_x,Text_y
+Dim Shared As Integer Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
 Dim Shared As String SEingabe
 
@@ -684,7 +684,7 @@ Sub Warten(Abbrechen As Integer = 0)
 End Sub
 Declare Sub FensterOeffnen()
 Sub FensterOeffnen()
-	
+	Dim as Integer xx,yy
 	ScreenInfo xx, yy
 	
 	/'
