@@ -18,6 +18,12 @@ Dim Shared As FB.Image Ptr img1, img2
 '====================================Grafik=============================================
 
 
+Type Punkt
+	as integer x
+	as integer y
+	Declare Constructor(_x as integer, _y as integer)
+End Type
+
 Namespace GrafikEinstellungen
 		Dim Shared As integer breite, hoehe, skalierungsfaktor, skalierungsexponent_text
 End Namespace
@@ -25,11 +31,7 @@ GrafikEinstellungen.skalierungsfaktor = 1
 
 
 Namespace GrafikHelfer
-    Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String)
-	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String)
-		Draw String ((xxx-len(text)*Text_x/2),(yyy-Text_y/2)), text
-	end sub
-	
+
 	'Quelle: https://www.freebasic.net/forum/viewtopic.php?t=22261
 	Declare sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
 	Sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
@@ -54,6 +56,78 @@ Namespace GrafikHelfer
 			Next J
 		End If
 	End Sub
+	
+	Declare Sub ImageScale2x(ByVal Image As ulong Ptr, ByVal Dest As ulong Ptr)
+	Sub ImageScale2x(ByVal Image As ulong Ptr, ByVal Dest As ulong Ptr)
+		Dim As ulong B, D, E, F, H               '|A|B|C|
+		Dim As Long j, k, ic, dc, dp, x, y, pitch'+-+-+-+  / |E0|E1|
+		ImageInfo Dest,dp,,,,Dest                   '|D|E|F| E  +--+--+
+		ImageInfo image,x,y,,pitch,image            '+-+-+-+  \ |E2|E3|
+		pitch \= 4                                  '|G|H|I|
+		For k = 0 To y-1
+			For j = 0 To x-1
+			If k Then B = Image[ic - pitch] Else B = Image[ic]
+			If k = y-1 Then H = Image[ic] Else H = Image[ic + pitch]
+			If j Then
+				D = E
+				E = F
+			Else
+				E = Image[ic]
+				D = E
+			EndIf
+			If j < x-1 Then F = Image[ic + 1]
+			If B <> H And D <> F Then
+				If D = B Then Dest[dc] = D Else Dest[dc] = E
+				If B = F Then Dest[dc + 1] = F Else Dest[dc + 1] = E
+				If D = H Then Dest[dc + dp] = D Else Dest[dc + dp] = E
+				If H = F Then Dest[dc + dp +1] = F Else Dest[dc + dp +1] = E
+			Else
+				Dest[dc] = E
+				Dest[dc + 1] = E
+				Dest[dc + dp] = E
+				Dest[dc + dp +1] = E
+			End If
+			ic +=1
+			dc +=2
+			Next j
+			ic = ic+pitch-x
+			dc = dc+((dp-x)*2)
+		Next k
+	End Sub
+		
+	declare Function Image_x2(image As Any Ptr) As Any Ptr
+	Function Image_x2(image As Any Ptr) As Any Ptr
+		Dim image2 As Any Ptr
+		Dim As Long b, h
+		ImageInfo image, b, h
+		b *=2 : h *=2 'Schrifthoehe -breite *2
+		image2= ImageCreate(b, h)
+		ImageScale2x image, image2
+		If image Then ImageDestroy image
+		Function = image2
+	End Function
+	
+	Declare sub TextSkaliertZeichnen(p as Punkt,text as String, exponent as Integer, _farbe as Integer = RGB(0,0,0))
+	sub TextSkaliertZeichnen(p as Punkt,text as String, exponent as Integer, _farbe as Integer = RGB(0,0,0))
+		Dim As Any Ptr a = ImageCreate( Len(text)*8, 16)
+		Draw String a,(0,0), text, _farbe 'mit Font 16x8 in ein Image schreiben
+		
+		Dim As Integer schritt
+		for schritt=1 to exponent
+			a= Image_x2(a)
+		next
+		Put (p.x,p.y),a, TRANS
+		if a then ImageDestroy a
+	end sub
+	
+	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, zoomexponent as Integer = 1)
+	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, zoomexponent as Integer = 1)
+		if zoomexponent = 1 then
+			Draw String ((xxx-len(text)*Text_x/2),(yyy-Text_y/2)), text
+		else
+			TextSkaliertZeichnen(Punkt((xxx-len(text)*Text_x/2*2^zoomexponent),(yyy-Text_y/2*2^zoomexponent)),text,zoomexponent)
+		end if 
+	end sub
 End Namespace
 
 Type GrafikElement extends object
@@ -63,11 +137,6 @@ Type GrafikElement extends object
 		
 End Type
 
-Type Punkt
-	as integer x
-	as integer y
-	Declare Constructor(_x as integer, _y as integer)
-End Type
 
 Constructor Punkt(_x as integer, _y as integer)
 	This.x = _x
@@ -127,7 +196,7 @@ Constructor Rechteck()
 end Constructor
 	
 sub Rechteck.beschriftenMit(text as String)
-	GrafikHelfer.zentriertSchreiben( (x1+x2)/2, (y1 + y2)/2, text)
+	GrafikHelfer.zentriertSchreiben( (x1+x2)/2, (y1 + y2)/2, text, 2)
 end sub
 
 virtual function Rechteck.istPunktDarauf(p as Punkt) as boolean
@@ -416,13 +485,9 @@ Sub AbbrechenButtonZeigen()
 	Abbrechen.x2 = (GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)*2
 	Abbrechen.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
 	Abbrechen.farbe = RGB(250,100,100)
+	Abbrechen.beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
 	
 	Abbrechen.anzeigen()
-	
-	'Dim texttmp as String
-	'texttmp = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
-	GrafikHelfer.zentriertSchreiben((Abbrechen.x1+Abbrechen.X2)/2,(Abbrechen.y1+Abbrechen.y2)/2,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN))
-	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-len(texttmp)*Text_x/2,(Abbrechen.y1+Abbrechen.y2)/2-(Text_y/2)), texttmp
 End Sub
 
 Declare Function AbbrechenButton() As Integer
@@ -1024,9 +1089,8 @@ Sub Spielen()
 		AbbrechenButtonZeigen()
 		Warten(1)
 		'Sleep'Warten
-	Loop Until InKey ="q" Or Punkte >= 100
-	'Print 
-	'Color RGB(0,100,0),RGB(255,200,15)
+	Loop Until Punkte >= 100
+
 	Sleep 800
 	Select Case Uebersetzungen.Sprache
 		Case 1:
