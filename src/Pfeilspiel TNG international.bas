@@ -5,7 +5,7 @@
 ScreenRes  640,480 ,32,2, &h04 Or 8 
 #endif
 '========================================Dim's==========================================
-Dim Shared As Integer Eingabe,Level
+Dim Shared As Integer Level
 Dim Shared As Integer xx,yy,Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
 Dim Shared As String SEingabe
@@ -631,6 +631,7 @@ Function Weiterspielen() As Integer
  	ueberblenden
 	'Auswahlbuttons abfragen:
 
+	Dim as integer Eingabe
 	Do
 		For i = 1 To j
 			If ButtonWeiterspielenJaNein(i).wirdGeklickt() Then
@@ -1034,7 +1035,9 @@ Sub Spielen()
 		Put(0,0),img2,pset
 		unlockscreen
 		ueberblenden()
+		
 		'Eingabe machen
+		Dim as Integer Eingabe
 		Do
 			'If AbbrechenButton() = 1 Then end
 			For i = 1 To AnzahlRechtecke
