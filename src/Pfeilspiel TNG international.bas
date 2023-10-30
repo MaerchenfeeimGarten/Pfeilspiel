@@ -6,7 +6,6 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 #endif
 '========================================Dim's==========================================
 
-Dim Shared As Integer Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
 
 
@@ -22,6 +21,7 @@ Type Punkt
 	as integer x
 	as integer y
 	Declare Constructor(_x as integer, _y as integer)
+	Declare Constructor()
 End Type
 
 Namespace MatheHelfer
@@ -33,8 +33,10 @@ Namespace MatheHelfer
 End Namespace
 
 Namespace GrafikEinstellungen
-		Dim Shared As integer breite, hoehe, skalierungsfaktor, skalierungsexponent_text
+		Dim Shared As integer breite, hoehe, skalierungsfaktor
+		Dim Shared As Punkt groesseTextzeichen
 End Namespace
+
 GrafikEinstellungen.skalierungsfaktor = 1
 
 
@@ -148,7 +150,7 @@ Namespace GrafikHelfer
 		
 		if (exponent - int(exponent))>epsilon Then
 			a = Image_x2(a)
-			a = Image_downscale(a, Punkt(Len(text)*Text_x*skalierungsfaktor, Text_y*skalierungsfaktor))
+			a = Image_downscale(a, Punkt(Len(text)*GrafikEinstellungen.groesseTextzeichen.x*skalierungsfaktor, GrafikEinstellungen.groesseTextzeichen.y*skalierungsfaktor))
 		end if
 		
 		Put (p.x,p.y),a, TRANS
@@ -158,9 +160,9 @@ Namespace GrafikHelfer
 	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1)
 	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1)
 		if skalierungsfaktor = 1 then
-			Draw String ((xxx-len(text)*Text_x/2),(yyy-Text_y/2)), text
+			Draw String ((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2)), text
 		else
-			TextSkaliertZeichnen(Punkt((xxx-len(text)*Text_x/2*skalierungsfaktor),(yyy-Text_y/2*skalierungsfaktor)),text,skalierungsfaktor)
+			TextSkaliertZeichnen(Punkt((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2*skalierungsfaktor),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2*skalierungsfaktor)),text,skalierungsfaktor)
 		end if 
 	end sub
 End Namespace
@@ -176,6 +178,11 @@ End Type
 Constructor Punkt(_x as integer, _y as integer)
 	This.x = _x
 	This.y = _y
+end Constructor
+
+Constructor Punkt()
+	This.x = 0
+	This.y = 0
 end Constructor
 
 Type KlickbaresGrafikElement extends GrafikElement
@@ -602,7 +609,7 @@ Function Weiterspielen() As Integer
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
- 	  draw string (10,GrafikEinstellungen.hoehe/2-Text_y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
+ 	  draw string (10,GrafikEinstellungen.hoehe/2-GrafikEinstellungen.groesseTextzeichen.y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
 		dim as Integer j
 		j = 2 'Anzahl der Buttons
 		
@@ -719,8 +726,8 @@ Sub FensterOeffnen()
 	Width GrafikEinstellungen.breite\8, GrafikEinstellungen.hoehe\16 ' für eine Schriftgröße von 8x16
 	' Für eine Schriftgröße von 8x14 muss hoch\14 gesetzt
 	' werden, für eine Schriftgröße von 8x8 entsprechend hoch\8
-	Text_x = 8
-	Text_y = 16
+	GrafikEinstellungen.groesseTextzeichen.x = 8
+	GrafikEinstellungen.groesseTextzeichen.y = 16
 	'img1 und img2 vorbereiten
 	img1 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(255, 0, 0, 255),32)
     img2 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(255, 0, 0, 255),32)
@@ -774,11 +781,11 @@ Sub Sprachauswahl()
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (Text_x*2, Text_y*1),  "DE: Bitte eine Sprache waehlen."
-	  Draw String (Text_x*2, Text_y*2),  "EN: Please choose a language."
-	  Draw String (Text_x*2, Text_y*3),  "FR: Veuillez choisir une langue." 'Uebersetzt mit Firefox Translations
+	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*1),  "DE: Bitte eine Sprache waehlen."
+	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*2),  "EN: Please choose a language."
+	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  "FR: Veuillez choisir une langue." 'Uebersetzt mit Firefox Translations
 	  'init Textbox
-	  dim TextField as textboxtype=textboxtype(text_x*2,text_y*2,40) 'Neue Textbox erzeugen
+	  dim TextField as textboxtype=textboxtype(GrafikEinstellungen.groesseTextzeichen.x*2,GrafikEinstellungen.groesseTextzeichen.y*2,40) 'Neue Textbox erzeugen
 
       TextField.SetColour(rgb(0,0,0))
 
@@ -834,9 +841,9 @@ Function FrageNachLevel() as Short
       get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (Text_x*2, Text_y*1),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
+	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*1),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
 	  'init Textbox
-	  dim TextField as textboxtype=textboxtype(text_x*2,text_y*2,40) 'Neue Textbox erzeugen
+	  dim TextField as textboxtype=textboxtype(GrafikEinstellungen.groesseTextzeichen.x*2,GrafikEinstellungen.groesseTextzeichen.y*2,40) 'Neue Textbox erzeugen
 
       TextField.SetColour(rgb(0,0,0))
 
@@ -878,17 +885,17 @@ Function FrageNachLevel() as Short
 	Dim as String SEingabe
 	Select Case Level
 		Case 1
-			Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 			Warten()
 			sleep 500
 		Case 2 
 			SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LSTART1" Or SEingabe = "lstart1" Then
-			    Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			    Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -896,11 +903,11 @@ Function FrageNachLevel() as Short
 		Case 3
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "S3LEVEL" Or SEingabe = "s3level" Then
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -908,11 +915,11 @@ Function FrageNachLevel() as Short
 		Case 4
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEV4WIS3" Or SEingabe = "lev4wis3" Then
-				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -920,11 +927,11 @@ Function FrageNachLevel() as Short
 		Case 5
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEVE54321L" Or SEingabe = "leve54321l" Then
-				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -932,11 +939,11 @@ Function FrageNachLevel() as Short
 		Case 6
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LE654STAR" Or SEingabe = "le654star" Then
-				Draw string (text_x*2, text_y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
 				Warten()
 				sleep 500
 			Else
-				Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -952,7 +959,7 @@ Sub Spielen(level as short)
 	Dim As Integer ende,jj,x_alt,y_alt
 	Dim Abstand As Integer
 	
-	Abstand = Text_y + 1
+	Abstand = GrafikEinstellungen.groesseTextzeichen.y + 1
 	If Level = 1 Then
 		AnzahlRechtecke = 5
 	EndIf
@@ -1087,7 +1094,7 @@ Sub Spielen(level as short)
 					If i = Eingabe Then 
 
 						Color RGB(0,255,0),RGB(255,255,255)
-						Draw String (0,0+Abstand*Text_x),Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
+						Draw String (0,0+Abstand*GrafikEinstellungen.groesseTextzeichen.x),Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
 						Color RGB(0,0,0),RGB(255,255,255)
 						Punkte = Punkte + 10
 						
