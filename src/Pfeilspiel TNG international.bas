@@ -4,13 +4,11 @@
 #ifdef __FB_DOS__ 
 ScreenRes  640,480 ,32,2, &h04 Or 8 
 #endif
+
 '========================================Dim's==========================================
 
-DIM SHARED AS DOUBLE Pi, Epsilon
-
-
-Pi = 3.14159265358979323846
-Epsilon = 0.000001
+Const Pi = 3.14159265358979323846
+Const Epsilon = 0.000001
 Randomize Timer
 Dim Shared As FB.Image Ptr img1, img2
 
@@ -165,6 +163,26 @@ Namespace GrafikHelfer
 			TextSkaliertZeichnen(Punkt((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2*skalierungsfaktor),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2*skalierungsfaktor)),text,skalierungsfaktor)
 		end if 
 	end sub
+	
+	Declare sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1)
+	sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1)
+		Dim as integer hoehe, breite
+		if y < 0 then 'mittig
+			hoehe = GrafikEinstellungen.hoehe/2 - GrafikEinstellungen.groesseTextzeichen.y*skalierungsfaktor/2
+		Else
+			hoehe = y*GrafikEinstellungen.groesseTextzeichen.y*skalierungsfaktor
+		end if
+		if x < 0 then 'mittig
+			breite = GrafikEinstellungen.breite/2 - GrafikEinstellungen.groesseTextzeichen.x*skalierungsfaktor*len(text)/2
+		Else
+			breite = x*GrafikEinstellungen.groesseTextzeichen.x*skalierungsfaktor
+		end if
+		if skalierungsfaktor = 1 then
+			Draw String (breite,hoehe), text
+		else
+			TextSkaliertZeichnen(Punkt(breite, hoehe), text, skalierungsfaktor)
+		end if 
+	End Sub
 End Namespace
 
 Type GrafikElement extends object
@@ -609,7 +627,7 @@ Function Weiterspielen() As Integer
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
- 	  draw string (10,GrafikEinstellungen.hoehe/2-GrafikEinstellungen.groesseTextzeichen.y/2), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL)
+	  GrafikHelfer.schreibeSkaliertInsGitter(1,-1, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
 		dim as Integer j
 		j = 2 'Anzahl der Buttons
 		
@@ -781,9 +799,10 @@ Sub Sprachauswahl()
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*1),  "DE: Bitte eine Sprache waehlen."
-	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*2),  "EN: Please choose a language."
-	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  "FR: Veuillez choisir une langue." 'Uebersetzt mit Firefox Translations
+	  GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
+	  GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
+	  GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
+
 	  'init Textbox
 	  dim TextField as textboxtype=textboxtype(GrafikEinstellungen.groesseTextzeichen.x*2,GrafikEinstellungen.groesseTextzeichen.y*2,40) 'Neue Textbox erzeugen
 
