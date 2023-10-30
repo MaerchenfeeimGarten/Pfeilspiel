@@ -8,7 +8,6 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 
 Dim Shared As Integer Text_x,Text_y
 DIM SHARED AS DOUBLE Pi, Epsilon
-Dim Shared As String SEingabe
 
 
 Pi = 3.14159265358979323846
@@ -876,6 +875,7 @@ Function FrageNachLevel() as Short
 			EndIf
 		Next
 	Loop
+	Dim as String SEingabe
 	Select Case Level
 		Case 1
 			Draw string (text_x*2, text_y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
