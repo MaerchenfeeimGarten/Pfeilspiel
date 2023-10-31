@@ -9,6 +9,8 @@
 #Include once "libs/GrafElem/Rechteck.bi"
 #Include once "libs/i18n/Ueberset.bi"
 #Include once "libs/timer/delay.bi"
+#Include once "libs/SpielEle/AbbruchB.bi"
+#Include once "libs/SpielEle/Logo.bi"
 
 #ifdef __FB_DOS__ 
 ScreenRes  640,480 ,32,2, &h04 Or 8 
@@ -16,78 +18,6 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 
 '========================================Sub's==========================================
 Declare Sub Programm()
-
-Type StandardAbbrechenButton extends GrafikElement
-	Private:
-		Dim AbbrechenRechteck as Rechteck
-	Public:
-		Declare Constructor()
-		Declare virtual sub anzeigen()
-		Declare function wurdeGeklickt() as Boolean
-End Type
-
-Constructor StandardAbbrechenButton()
-	AbbrechenRechteck.x1 = 0+GrafikEinstellungen.breite/20+(GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)
-	AbbrechenRechteck.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
-	AbbrechenRechteck.x2 = (GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)*2
-	AbbrechenRechteck.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
-	AbbrechenRechteck.farbe = RGB(250,100,100)
-	AbbrechenRechteck.beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
-end Constructor
-
-Sub StandardAbbrechenButton.anzeigen()
-	This.AbbrechenRechteck.anzeigen()
-End Sub
-
-Function StandardAbbrechenButton.wurdeGeklickt() As Boolean
-	Return AbbrechenRechteck.wirdGeklickt() 
-End Function
-
-Declare Sub ZeigeLogo(Farbe As Integer = 0)
-Sub ZeigeLogo(Farbe As Integer = 0)
-	GrafikHelfer.dickeLinie( GrafikEinstellungen.breite*0.05,GrafikEinstellungen.hoehe*0.3  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe)    'Vertilaler Strich von P
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05,GrafikEinstellungen.hoehe*0.3  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15,GrafikEinstellungen.hoehe*0.375 -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Oberer Strich von P
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05,GrafikEinstellungen.hoehe*0.45 -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15,GrafikEinstellungen.hoehe*0.375 -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von P
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.3  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Vertilaler Strich von F
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.3  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.3   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Oberer Strich von F
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.45 -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.45  -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von F
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.3   -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Vertilaler Strich von E
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2 ,GrafikEinstellungen.hoehe*0.3  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.3   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Oberer Strich von E
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.45  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.45  -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Mittlerer Strich von E
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.6  -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von E
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3,GrafikEinstellungen.hoehe*0.3   -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'I
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.3   -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Vertilaler Strich von L
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.6   -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.6  -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von L
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*4.2,GrafikEinstellungen.hoehe*0.45  -GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*4.2,GrafikEinstellungen.hoehe*0.45  -GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    '-
-	
-	
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.3   +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.45  +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Linker Vertilaler Strich von S
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*0 ,GrafikEinstellungen.hoehe*0.3  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.3   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Oberer Strich von S
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.45  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.45  +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Mittlerer Strich von S
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von S
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.45  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*0,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe		'Rechter Vertikaler Strich vom S
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.3  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Vertilaler Strich von P
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.3  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.375 +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Oberer Strich von P
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.45 +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13,GrafikEinstellungen.hoehe*0.375 +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von P
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.3  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'I
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.3   +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Vertilaler Strich von E
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2.2 ,GrafikEinstellungen.hoehe*0.3  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.3   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Oberer Strich von E
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.45  +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.45  +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Mittlerer Strich von E
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*2.2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von E
-	
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.3   +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Vertilaler Strich von L
-	GrafikHelfer.dickeLinie GrafikEinstellungen.breite*0.05 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25, GrafikEinstellungen.breite*0.15 +GrafikEinstellungen.breite*0.13*3.2,GrafikEinstellungen.hoehe*0.6   +GrafikEinstellungen.hoehe*0.25,GrafikEinstellungen.skalierungsfaktor, Farbe    'Unterer Strich von L
-	
-End Sub
 
 Declare Function Weiterspielen() As Integer
 Function Weiterspielen() As Integer
@@ -187,10 +117,9 @@ End Sub
 
 Declare function LevelCodeInput( TextField as TextBoxType) as string
 function LevelCodeInput( TextField as TextBoxType) as string
- 
             dim as string letter
 			TextField.SetPrompt(Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
-			'Input "Levelcode? ", SEingabe
+
 			TextField.CopyBackground()
             DO
                BildschirmHelfer.lockscreen
@@ -215,7 +144,7 @@ Sub Sprachauswahl()
 
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  
-	  ZeigeLogo(RGB(0,70,100))
+	  ZeichneLogo(RGB(0,70,100))
 	  
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
@@ -274,7 +203,7 @@ Function FrageNachLevel() as Short
 
       TextField.SetColour(rgb(0,0,0))
 
-	  ZeigeLogo(RGB(0,70,100))
+	  ZeichneLogo(RGB(0,70,100))
 	  Dim as Integer j, i
 	  j = 6 'Anzahl der Level
 	  'Auswahlbuttons laden:
@@ -509,108 +438,11 @@ Sub Spielen(level as short)
 
 	Sleep 800
 	dim as Integer AnzeilZeilen = 3
-	dim Zeile(1 to AnzeilZeilen) as String
-	Select Case Uebersetzungen.Sprache
-		Case Uebersetzungen.SpracheEnum.DEUTSCH:
-			Select Case level
-				Case 1 
-					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
-					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
-					Zeile(3) = "einen Freischaltcode. Dieser lautet:     LSTART1     "
-				Case 2
-					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
-					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
-					Zeile(3) = "das Level 3:    S3LEVEL      Viel Spass!            "
-				Case 3
-					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
-					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
-					Zeile(3) = "   LEV4WIS3                                          "
-				Case 4
-					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
-					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
-					Zeile(3) = "lautet:    LEVE54321L                                "
-				Case 5
-					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
-					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
-					Zeile(3) = "Code:    LE654STAR                                    "
-				Case 6
-					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
-					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
-					Zeile(3) = "lichen Glueckwunsch!     "
-				Case Else
-					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
-					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
-					Zeile(3) = "nicht spielen brauchen..."
-			End Select
-		Case Uebersetzungen.SpracheEnum.ENGLISCH:
-			Select Case level
-				Case 1 
-					Zeile(1) = "You now have 100 points and solved the level! To be   "
-					Zeile(2) = "able to play the next level, you will need an unlock  "
-					Zeile(3) = "code. This is: LSTART1                                "
-				Case 2
-					Zeile(1) = "Great! Now you have played through level 2 with 100   "
-					Zeile(2) = "points. Here is the next unlock code for the level 3: "
-					Zeile(3) = "          S3LEVEL      Have fun!                      "
-				Case 3:                   
-					Zeile(1) = "You have now played half of all levels! Continue like"
-					Zeile(2) = "this! The next level code for level 4 is:            "
-					Zeile(3) = "   LEV4WIS3                                          "
-				Case 4
-					Zeile(1) = "You have already played through 4 of 6 levels. Great!"
-					Zeile(2) = "Now 2 more to go. The level code for level 5 is: "
-					Zeile(3) = "   LEVE54321L                                "
-				Case 5
-					Zeile(1) = "You have almost completed the game. Now only level 6 "
-					Zeile(2) = "is missing. For which there is again a code for this "
-					Zeile(3) = "level too::   LE654STAR                              "
-				Case 6
-					Zeile(1) = "You now have 100 points and solved the level! With this"
-					Zeile(2) = "you have played through the whole game! That's great!  "
-					Zeile(3) = "Congratulations!"
-				Case Else
-					Zeile(1) = "You now have 100 points! Since that is with only ONE"
-					Zeile(2) = "rectangle but nothing special, you wouldn't have to "
-					Zeile(3) = "play the game at all.."
-			End Select
-		Case Uebersetzungen.SpracheEnum.FRANZOESISCH:
-		    'TODO: Muss noch übersetzt werden (auf Französisch)
-			Select Case level
-				Case 1 
-					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
-					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
-					Zeile(3) = "einen Freischaltcode. Dieser lautet:     LSTART1     "
-				Case 2
-					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
-					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
-					Zeile(3) = "das Level 3:    S3LEVEL      Viel Spass!            "
-				Case 3
-					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
-					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
-					Zeile(3) = "   LEV4WIS3                                          "
-				Case 4
-					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
-					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
-					Zeile(3) = "lautet:    LEVE54321L                                "
-				Case 5
-					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
-					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
-					Zeile(3) = "Code:    LE654STAR                                    "
-				Case 6
-					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
-					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
-					Zeile(3) = "lichen Glueckwunsch!     "
-				Case Else
-					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
-					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
-					Zeile(3) = "nicht spielen brauchen..."
-			End Select
-	End Select 'Sprache
 	
 	for i = 1 to AnzeilZeilen 
-		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,Zeile(i),GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
+		dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i)
+		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
 	next
-	
 	
 	Warten()
 End Sub
