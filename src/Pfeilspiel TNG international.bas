@@ -218,12 +218,10 @@ Sub Sprachauswahl()
 	  
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
-	  GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
+	  'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
-
-	  
 	  dim as Integer j,i
-	  j = 3 'Anzahl der Sprachen
+	  j = 2 'Anzahl der Sprachen. 
 	  'Auswahlbuttons laden:
 	  Dim SprachAuswahlButton(100) As rechteck
 	  For i = 1 To j
