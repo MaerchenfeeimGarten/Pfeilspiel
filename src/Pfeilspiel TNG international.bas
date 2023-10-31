@@ -1182,7 +1182,7 @@ Sub Spielen(level as short)
 	dim as Integer AnzeilZeilen = 3
 	dim Zeile(1 to AnzeilZeilen) as String
 	Select Case Uebersetzungen.Sprache
-		Case 1:
+		Case Uebersetzungen.SpracheEnum.DEUTSCH:
 			Select Case level
 				Case 1 
 					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
@@ -1215,7 +1215,7 @@ Sub Spielen(level as short)
 					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
 					Zeile(3) = "nicht spielen brauchen..."
 			End Select
-		Case 2:
+		Case Uebersetzungen.SpracheEnum.ENGLISCH:
 			Select Case level
 				Case 1 
 					Zeile(1) = "You now have 100 points and solved the level! To be   "
@@ -1246,7 +1246,7 @@ Sub Spielen(level as short)
 					Zeile(2) = "rectangle but nothing special, you wouldn't have to "
 					Zeile(3) = "play the game at all.."
 			End Select
-		Case 3:
+		Case Uebersetzungen.SpracheEnum.FRANZOESISCH:
 		    'TODO: Muss noch übersetzt werden (auf Französisch)
 			Select Case level
 				Case 1 
