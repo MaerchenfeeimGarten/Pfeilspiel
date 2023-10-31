@@ -1179,108 +1179,112 @@ Sub Spielen(level as short)
 	Loop Until Punkte >= 100
 
 	Sleep 800
+	dim as Integer AnzeilZeilen = 3
+	dim Zeile(1 to AnzeilZeilen) as String
 	Select Case Uebersetzungen.Sprache
 		Case 1:
 			Select Case level
 				Case 1 
-					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte und damit das Level geloest!  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"Um das naechste Level spielen zu koennen, brauchst du",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"einen Freischaltcode. Dieser lautet:     LSTART1     ",RGB(255,200,15)
+					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
+					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
+					Zeile(3) = "einen Freischaltcode. Dieser lautet:     LSTART1     "
 				Case 2
-					Draw String (0,0+Abstand*14),"Super! Nun hast du mit 100 Punkten auch Level 2 durch-",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"gespielt. Hier ist der naechste Freischaltcode fuer ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"das Level 3:    S3LEVEL      Viel Spass!            ",RGB(255,200,15)
+					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
+					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
+					Zeile(3) = "das Level 3:    S3LEVEL      Viel Spass!            "
 				Case 3
-					Draw String (0,0+Abstand*14),"Du hast nun die Haelfte aller Level gespielt! Weiter",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"so! Der naechste Levelcode fuer das Level 4 heisst:  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"   LEV4WIS3                                          ",RGB(255,200,15)
+					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
+					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
+					Zeile(3) = "   LEV4WIS3                                          "
 				Case 4
 					
-					Draw String (0,0+Abstand*14),"Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"fehlen demnach noch 2. Der Levelcode fuer das Level 5  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"lautet:    LEVE54321L                                ",RGB(255,200,15)
+					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
+					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
+					Zeile(3) = "lautet:    LEVE54321L                                "
 				Case 5
-					Draw String (0,0+Abstand*14),"Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"noch das Level 6. Auch dafuer gibt es wieder einen  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"Code:    LE654STAR                                    ",RGB(255,200,15)
+					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
+					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
+					Zeile(3) = "Code:    LE654STAR                                    "
 				Case 6
-					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte und das Level geloest! Damit  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"hast du auch das komplette Spiel durchgespielt! Herz-",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"lichen Glueckwunsch!     ",RGB(255,200,15)
+					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
+					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
+					Zeile(3) = "lichen Glueckwunsch!     "
 				Case Else
 					
-					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"aber nichts besonderes ist, haettest du das Spiel gar ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"nicht spielen brauchen...",RGB(255,200,15)
+					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
+					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
+					Zeile(3) = "nicht spielen brauchen..."
 			End Select
 		Case 2:
 			Select Case level
 				Case 1 
-					Draw String (0,0+Abstand*14),"You now have 100 points and solved the level! To be   ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"able to play the next level, you will need an unlock  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"code. This is: LSTART1                                ",RGB(255,200,15)
+					Zeile(1) = "You now have 100 points and solved the level! To be   "
+					Zeile(2) = "able to play the next level, you will need an unlock  "
+					Zeile(3) = "code. This is: LSTART1                                "
 				Case 2
-					Draw String (0,0+Abstand*14),"Great! Now you have played through level 2 with 100   ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"points. Here is the next unlock code for the level 3: ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"          S3LEVEL      Have fun!                      ",RGB(255,200,15)
+					Zeile(1) = "Great! Now you have played through level 2 with 100   "
+					Zeile(2) = "points. Here is the next unlock code for the level 3: "
+					Zeile(3) = "          S3LEVEL      Have fun!                      "
 				Case 3:                   
-					Draw String (0,0+Abstand*14),"You have now played half of all levels! Continue like",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"this! The next level code for level 4 is:            ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"   LEV4WIS3                                          ",RGB(255,200,15)
+					Zeile(1) = "You have now played half of all levels! Continue like"
+					Zeile(2) = "this! The next level code for level 4 is:            "
+					Zeile(3) = "   LEV4WIS3                                          "
 				Case 4
-					Draw String (0,0+Abstand*14),"You have already played through 4 of 6 levels. Great!",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"Now 2 more to go. The level code for level 5 is: ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"   LEVE54321L                                ",RGB(255,200,15)
+					Zeile(1) = "You have already played through 4 of 6 levels. Great!"
+					Zeile(2) = "Now 2 more to go. The level code for level 5 is: "
+					Zeile(3) = "   LEVE54321L                                "
 				Case 5
-					Draw String (0,0+Abstand*14),"You have almost completed the game. Now only level 6 ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"is missing. For which there is again a code for this ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"level too::   LE654STAR                              ",RGB(255,200,15)
+					Zeile(1) = "You have almost completed the game. Now only level 6 "
+					Zeile(2) = "is missing. For which there is again a code for this "
+					Zeile(3) = "level too::   LE654STAR                              "
 				Case 6
-					Draw String (0,0+Abstand*14),"You now have 100 points and solved the level! With this",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"you have played through the whole game! That's great!  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"Congratulations!",RGB(255,200,15)
+					Zeile(1) = "You now have 100 points and solved the level! With this"
+					Zeile(2) = "you have played through the whole game! That's great!  "
+					Zeile(3) = "Congratulations!"
 				Case Else
-					Draw String (0,0+Abstand*14),"You now have 100 points! Since that is with only ONE",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"rectangle but nothing special, you wouldn't have to ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"play the game at all..",RGB(255,200,15)
+					Zeile(1) = "You now have 100 points! Since that is with only ONE"
+					Zeile(2) = "rectangle but nothing special, you wouldn't have to "
+					Zeile(3) = "play the game at all.."
 			End Select
 		Case 3:
 		    'TODO: Muss noch übersetzt werden (auf Französisch)
 			Select Case level
 				Case 1 
-					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte und damit das Level geloest!  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"Um das naechste Level spielen zu koennen, brauchst du",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"einen Freischaltcode. Dieser lautet:     LSTART1     ",RGB(255,200,15)
+					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
+					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
+					Zeile(3) = "einen Freischaltcode. Dieser lautet:     LSTART1     "
 				Case 2
-					Draw String (0,0+Abstand*14),"Super! Nun hast du mit 100 Punkten auch Level 2 durch-",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"gespielt. Hier ist der naechste Freischaltcode fuer ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"das Level 3:    S3LEVEL      Viel Spass!            ",RGB(255,200,15)
+					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
+					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
+					Zeile(3) = "das Level 3:    S3LEVEL      Viel Spass!            "
 				Case 3
-					Draw String (0,0+Abstand*14),"Du hast nun die Haelfte aller Level gespielt! Weiter",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"so! Der naechste Levelcode fuer das Level 4 heisst:  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"   LEV4WIS3                                          ",RGB(255,200,15)
+					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
+					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
+					Zeile(3) = "   LEV4WIS3                                          "
 				Case 4
 					
-					Draw String (0,0+Abstand*14),"Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"fehlen demnach noch 2. Der Levelcode fuer das Level 5  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"lautet:    LEVE54321L                                ",RGB(255,200,15)
+					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
+					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
+					Zeile(3) = "lautet:    LEVE54321L                                "
 				Case 5
-					Draw String (0,0+Abstand*14),"Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"noch das Level 6. Auch dafuer gibt es wieder einen  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"Code:    LE654STAR                                    ",RGB(255,200,15)
+					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
+					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
+					Zeile(3) = "Code:    LE654STAR                                    "
 				Case 6
-					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte und das Level geloest! Damit  ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"hast du auch das komplette Spiel durchgespielt! Herz-",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"lichen Glueckwunsch!     ",RGB(255,200,15)
+					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
+					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
+					Zeile(3) = "lichen Glueckwunsch!     "
 				Case Else
-					
-					Draw String (0,0+Abstand*14),"Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck ",RGB(255,200,15)
-					Draw String (0,0+Abstand*15),"aber nichts besonderes ist, haettest du das Spiel gar ",RGB(255,200,15)
-					Draw String (0,0+Abstand*16),"nicht spielen brauchen...",RGB(255,200,15)
+					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
+					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
+					Zeile(3) = "nicht spielen brauchen..."
 			End Select
 	End Select 'Sprache
 	
-
+	for i = 1 to AnzeilZeilen 
+		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,Zeile(i),GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
+	next
+	
 
 	Warten()
 End Sub
