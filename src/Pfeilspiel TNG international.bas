@@ -28,6 +28,32 @@ Namespace MatheHelfer
 		LogBaseX = Log( Number ) / Log( BaseX )
 		'For reference:   1/log(10)=0.43429448
 	End Function
+	
+	Declare Function Wurfparabel overload (WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81) As single
+	Declare Function Wurfparabel overload (WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81, zoomfactor as single) As single
+	
+	Function Wurfparabel(WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81) As single
+		Dim As single xx,y,g,v
+		Dim As Single B
+		B = WinkelInGrad / 180 * Pi 'Winkel
+		g = Gravitation'Gravitation
+		V = Geschwindigkeit'Geschwindigkeit
+		xx = x
+		xx = xx - Start_x' Start_x ist eine Koordinate auf dem Bildschirm, genauso wie x
+		y = Tan(B)*  XX  -(  g  )/(2*  V^2*Cos( B )^2  )*  XX^2  
+		Return (y*-1+Start_y)
+	End Function
+
+	Function Wurfparabel(WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81, zoomfactor as single) As single
+		dim as single y
+		Geschwindigkeit = Geschwindigkeit / zoomfactor
+		Start_x = Start_x / zoomfactor
+		Start_y = Start_y / zoomfactor
+		x = x / zoomfactor
+		y =  Wurfparabel(WinkelInGrad, Geschwindigkeit, Start_x, Start_y, x, Gravitation)
+		y = y * zoomfactor
+		return y
+	End Function
 End Namespace
 
 Namespace GrafikEinstellungen
@@ -455,8 +481,6 @@ End Function
 
 '========================================Sub's==========================================
 Declare Sub Programm()
-Declare Function Wurfparabel overload (WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81) As single
-Declare Function Wurfparabel overload (WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81, zoomfactor as single) As single
 
 Sub lockScreen()
   ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
@@ -469,28 +493,7 @@ Sub unlockScreen()
   ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
 End Sub
 
-Function Wurfparabel(WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81) As single
-	Dim As single xx,y,g,v
-	Dim As Single B
-	B = WinkelInGrad / 180 * Pi 'Winkel
-	g = Gravitation'Gravitation
-	V = Geschwindigkeit'Geschwindigkeit
-	xx = x
-	xx = xx - Start_x' Start_x ist eine Koordinate auf dem Bildschirm, genauso wie x
-	y = Tan(B)*  XX  -(  g  )/(2*  V^2*Cos( B )^2  )*  XX^2  
-	Return (y*-1+Start_y)
-End Function
 
-Function Wurfparabel(WinkelInGrad As Integer,Geschwindigkeit As Single, Start_x As Integer, Start_y As Integer,x As Integer,Gravitation As Single = 9.81, zoomfactor as single) As single
-	dim as single y
-	Geschwindigkeit = Geschwindigkeit / zoomfactor
-	Start_x = Start_x / zoomfactor
-	Start_y = Start_y / zoomfactor
-	x = x / zoomfactor
-	y =  Wurfparabel(WinkelInGrad, Geschwindigkeit, Start_x, Start_y, x, Gravitation)
-	y = y * zoomfactor
-	return y
-End Function
 
 Declare Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
 Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
@@ -1052,7 +1055,7 @@ Sub Spielen(level as short)
 				AktuellerPfeil.laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
 				AktuellerPfeil.Richtung = Rnd()*180-180/2
 				For i = 0 To anzahlrechtecke
-					If RechteckVar(i).istPunktDarauf(	Punkt(	RechteckVar(i).x1,int(Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,							AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,RechteckVar(i).x1, 9.81, GrafikEinstellungen.skalierungsfaktor)))						) Then
+					If RechteckVar(i).istPunktDarauf(	Punkt(	RechteckVar(i).x1,int(MatheHelfer.Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,							AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,RechteckVar(i).x1, 9.81, GrafikEinstellungen.skalierungsfaktor)))						) Then
 							Exit Do
 					EndIf
 				Next
@@ -1105,7 +1108,7 @@ Sub Spielen(level as short)
 				x_alt = x
 				y_alt = y
 				x = jj
-				y = int(Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1,AktuellerPfeil.y1,x,  9.81, GrafikEinstellungen.skalierungsfaktor))
+				y = int(Mathehelfer.Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1,AktuellerPfeil.y1,x,  9.81, GrafikEinstellungen.skalierungsfaktor))
 				If x >= AktuellerPfeil.x1 Then
 					GrafikHelfer.dickeLinie  Int(x_alt),Int(y_alt),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
 				EndIf
