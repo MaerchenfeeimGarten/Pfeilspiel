@@ -33,6 +33,7 @@ End Namespace
 Namespace GrafikEinstellungen
 		Dim Shared As integer breite, hoehe, skalierungsfaktor
 		Dim Shared As Punkt groesseTextzeichen
+		Const DunkleresRot = RGB(185,0,45)
 End Namespace
 
 GrafikEinstellungen.skalierungsfaktor = 1
@@ -155,17 +156,17 @@ Namespace GrafikHelfer
 		if a then ImageDestroy a
 	end sub
 	
-	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1)
-	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1)
+	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
+	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
 		if skalierungsfaktor = 1 then
-			Draw String ((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2)), text
+			Draw String ((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2)), text, farbe
 		else
-			TextSkaliertZeichnen(Punkt((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2*skalierungsfaktor),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2*skalierungsfaktor)),text,skalierungsfaktor)
+			TextSkaliertZeichnen(Punkt((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2*skalierungsfaktor),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2*skalierungsfaktor)),text,skalierungsfaktor, farbe)
 		end if 
 	end sub
 	
-	Declare sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1)
-	sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1)
+	Declare sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
+	sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
 		Dim as integer hoehe, breite
 		if y < 0 then 'mittig
 			hoehe = GrafikEinstellungen.hoehe/2 - GrafikEinstellungen.groesseTextzeichen.y*skalierungsfaktor/2
@@ -178,9 +179,9 @@ Namespace GrafikHelfer
 			breite = x*GrafikEinstellungen.groesseTextzeichen.x*skalierungsfaktor
 		end if
 		if skalierungsfaktor = 1 then
-			Draw String (breite,hoehe), text
+			Draw String (breite,hoehe), text, farbe
 		else
-			TextSkaliertZeichnen(Punkt(breite, hoehe), text, skalierungsfaktor)
+			TextSkaliertZeichnen(Punkt(breite, hoehe), text, skalierungsfaktor, farbe)
 		end if 
 	End Sub
 End Namespace
@@ -799,6 +800,9 @@ Sub Sprachauswahl()
 	  Hintergrund(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
+	  
+	  ZeigeLogo(RGB(0,70,100))
+	  
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
@@ -812,7 +816,7 @@ Sub Sprachauswahl()
 	
 	
 	
-	  ZeigeLogo(RGB(0,70,100))
+	  
 	  dim as Integer j,i
 	  j = 3 'Anzahl der Sprachen
 	  'Auswahlbuttons laden:
@@ -860,7 +864,7 @@ Function FrageNachLevel() as Short
       get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img2
 	  Hintergrund(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
-	  Draw String (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*1),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL)
+	  GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
 	  'init Textbox
 	  dim TextField as textboxtype=textboxtype(GrafikEinstellungen.groesseTextzeichen.x*2,GrafikEinstellungen.groesseTextzeichen.y*2,40) 'Neue Textbox erzeugen
 
@@ -904,17 +908,17 @@ Function FrageNachLevel() as Short
 	Dim as String SEingabe
 	Select Case Level
 		Case 1
-			Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 			Warten()
 			sleep 500
 		Case 2 
 			SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LSTART1" Or SEingabe = "lstart1" Then
-			    Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+			    GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 			Else
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -922,11 +926,11 @@ Function FrageNachLevel() as Short
 		Case 3
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "S3LEVEL" Or SEingabe = "s3level" Then
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 			Else
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+			    GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -934,11 +938,11 @@ Function FrageNachLevel() as Short
 		Case 4
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEV4WIS3" Or SEingabe = "lev4wis3" Then
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 			Else
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -946,11 +950,11 @@ Function FrageNachLevel() as Short
 		Case 5
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LEVE54321L" Or SEingabe = "leve54321l" Then
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 			Else
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -958,11 +962,11 @@ Function FrageNachLevel() as Short
 		Case 6
 			 SEingabe =  LevelCodeInput(TextField)
 			If SEingabe = "LE654STAR" Or SEingabe = "le654star" Then
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3),  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !"
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 			Else
-				Draw string (GrafikEinstellungen.groesseTextzeichen.x*2, GrafikEinstellungen.groesseTextzeichen.y*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE)
+				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
 				FensterSchliessen
@@ -976,9 +980,11 @@ Declare Sub Spielen(level as short)
 Sub Spielen(level as short)
 	Dim As Integer Punkte, AnzahlRechtecke
 	Dim As Integer ende,jj,x_alt,y_alt
-	Dim Abstand As Integer
 	
+	Dim Abstand As Integer
 	Abstand = GrafikEinstellungen.groesseTextzeichen.y + 1
+
+
 	If Level = 1 Then
 		AnzahlRechtecke = 5
 	EndIf
@@ -1004,7 +1010,7 @@ Sub Spielen(level as short)
 	
 	
 	Dim AktuellerPfeil As Pfeil
-	AktuellerPfeil.farbe = RGB(185,0,45)
+	AktuellerPfeil.farbe = GrafikEinstellungen.DunkleresRot
 	Color RGB(0,0,0),RGB(255,255,255)
 	Punkte = 0
 	
@@ -1024,15 +1030,15 @@ Sub Spielen(level as short)
 	    lockscreen
 		'Cls
 		Hintergrund(215,133,44,129,47,90)
-		Draw String (0,0), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level  
-		Draw String (0,0+Abstand*1), "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE)
+		GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level, GrafikEinstellungen.skalierungsfaktor)  
+		GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
 		
 		If Level <= 4 Then
-			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
+			GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
 		Else
-			Draw String (0,0+Abstand*3), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK)
+			GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
 		EndIf
-		Draw String (0,0+Abstand*4), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK)
+		GrafikHelfer.schreibeSkaliertInsGitter(0,4, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK), GrafikEinstellungen.skalierungsfaktor)
 		'per Zufall Pfeil erzeugen
 		If level <= 4 Then
 			AktuellerPfeil.x1 = 10 
@@ -1113,8 +1119,8 @@ Sub Spielen(level as short)
 					If i = Eingabe Then 
 
 						Color RGB(0,255,0),RGB(255,255,255)
-						Draw String (0,0+Abstand*GrafikEinstellungen.groesseTextzeichen.x),Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10),RGB(0,255,0)
-						Color RGB(0,0,0),RGB(255,255,255)
+						GrafikHelfer.schreibeSkaliertInsGitter(0,8,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10), GrafikEinstellungen.skalierungsfaktor, RGB(0,255,0))
+						Color RGB(0,0,0), RGB(255,255,255)
 						Punkte = Punkte + 10
 						
 
@@ -1134,13 +1140,13 @@ Sub Spielen(level as short)
 						'Print
 						If Punkte > 0 Then 
 							Color RGB(255,0,0),RGB(255,255,255)
-							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),RGB(255,0,0)
+							GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),GrafikEinstellungen.skalierungsfaktor, GrafikEinstellungen.DunkleresRot )
 							Color RGB(0,0,0),RGB(255,255,255)
 							Punkte = Punkte - 10
 						Else
 							Color RGB(255,0,0),RGB(255,255,255)
-							Draw String (0,0+Abstand*8), Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),RGB(255,0,0)
-							Color RGB(0,0,0),RGB(255,255,255)
+							GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),GrafikEinstellungen.skalierungsfaktoR, GrafikEinstellungen.DunkleresRot)
+							Color RGB(0,0,0),RGB(255,255,255) 
 						EndIf
 						
 						'ZeigeRechteck(Rechteck(Eingabe),RGB(255,0,0))
