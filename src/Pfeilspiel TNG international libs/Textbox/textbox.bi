@@ -5,6 +5,10 @@
 'Quelle: http://www.freebasic.net/forum/viewtopic.php?t=15355
 'Eingedeutscht von Sebastian
 '  http://www.freebasic-portal.de/benutzer/sebastian-1.html
+'
+'2023: Ergänzt um die Möglichkeit der Nutzung skalierten Textes.
+#include once "../GrafikHelfer.bi"
+#include once "../GrafikEinstellungen.bi"
 
 #include once "fbgfx.bi"
 
@@ -51,7 +55,7 @@ end sub
 Constructor TextBoxType(newx as integer, newy as integer, newmax as integer)
     'Ueberprueft, ob ein Grafikmodus aktiv ist
     if ScreenPtr<>0 then 'Wenn ja, ...
-        textback=imagecreate(newmax*8+20,24) '...Speicher fuer Hintergrund reservieren
+        textback=imagecreate(newmax*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor+20,GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor+20) '...Speicher fuer Hintergrund reservieren
         x=newx
         y=newy
         max=newmax
@@ -63,9 +67,11 @@ Constructor TextBoxType(newx as integer, newy as integer, newmax as integer)
 end constructor
 
 sub TextBoxType.Redraw()
-    put (x-3,y-3),textback,pset 'Gesicherten Hintergrund wiederherstellen
+
+    put (x*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor-3,y*GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor-3),textback,pset 'Gesicherten Hintergrund wiederherstellen
     'Aktuellen Text ausgeben:
-    draw string (x,y),str(prompt + mid(message,startpoint)),colour
+    GrafikHelfer.TextSkaliertZeichnen(Punkt(x*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor,y*GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor),str(prompt + mid(message,startpoint)), GrafikEinstellungen.skalierungsfaktor)
+    'draw string (x,y),str(prompt + mid(message,startpoint)),colour
 end sub
 
 sub TextBoxType.SetColour(newcolour as uinteger) 'Textfarbe setzen
@@ -98,7 +104,7 @@ destructor TextBoxType() 'Destructor fuer die Textbox
 end destructor
 
 sub TextBoxType.CopyBackground() 'Eingabehintergrund in Puffer sichern
-    get (x-3,y-3)-(x+(max*8+15),y+18),textback
+    get (x*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor-3,y*GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor-3)-(x*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor+(max*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor+15),(y+1)*GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor),textback
 end sub
 
 sub TextBoxType.SetPrompt(newprompt as string) 'Eingabeaufforderung festlegen

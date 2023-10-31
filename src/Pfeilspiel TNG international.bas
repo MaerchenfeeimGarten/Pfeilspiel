@@ -196,7 +196,7 @@ function LevelCodeInput( TextField as TextBoxType) as string
                BildschirmHelfer.unlockscreen
                letter=inkey 'Eingabe abfragen
                if letter<>"" then 'Es wurde etwas eingeben.
-                   TextField.NewLetter(letter) 'Zeichen an Textbox weiterreichen.
+                   TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
                end if
                if (asc(letter) = 27) then textfield.setstring("")
                sleep 1 'CPU-Auslastung reduzieren
@@ -219,15 +219,7 @@ Sub Sprachauswahl()
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
-	  'init Textbox
-	  dim TextField as textboxtype=textboxtype(GrafikEinstellungen.groesseTextzeichen.x*2,GrafikEinstellungen.groesseTextzeichen.y*2,40) 'Neue Textbox erzeugen
 
-      TextField.SetColour(rgb(0,0,0))
-
-    
-	
-	
-	
 	  
 	  dim as Integer j,i
 	  j = 3 'Anzahl der Sprachen
@@ -278,7 +270,7 @@ Function FrageNachLevel() as Short
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
 	  'init Textbox
-	  dim TextField as textboxtype=textboxtype(GrafikEinstellungen.groesseTextzeichen.x*2,GrafikEinstellungen.groesseTextzeichen.y*2,40) 'Neue Textbox erzeugen
+	  dim TextField as textboxtype=textboxtype(2,3,40) 'Neue Textbox erzeugen
 
       TextField.SetColour(rgb(0,0,0))
 
@@ -609,7 +601,6 @@ Sub Spielen(level as short)
 					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
 					Zeile(3) = "   LEV4WIS3                                          "
 				Case 4
-					
 					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
 					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
 					Zeile(3) = "lautet:    LEVE54321L                                "
@@ -622,7 +613,6 @@ Sub Spielen(level as short)
 					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
 					Zeile(3) = "lichen Glueckwunsch!     "
 				Case Else
-					
 					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
 					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
 					Zeile(3) = "nicht spielen brauchen..."
@@ -674,7 +664,6 @@ Sub Spielen(level as short)
 					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
 					Zeile(3) = "   LEV4WIS3                                          "
 				Case 4
-					
 					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
 					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
 					Zeile(3) = "lautet:    LEVE54321L                                "
