@@ -56,7 +56,8 @@ Namespace MatheHelfer
 End Namespace
 
 Namespace GrafikEinstellungen
-		Dim Shared As integer breite, hoehe, skalierungsfaktor
+		Dim Shared As integer breite, hoehe
+		Dim Shared as Single skalierungsfaktor
 		Dim Shared As Punkt groesseTextzeichen
 		Const DunkleresRot = RGB(185,0,45)
 End Namespace
@@ -153,8 +154,8 @@ Namespace BildschirmHelfer
 		Print "Hoehe = " & GrafikEinstellungen.hoehe
 		
 
-		GrafikEinstellungen.skalierungsfaktor = int(GrafikEinstellungen.breite/640)
-		if GrafikEinstellungen.skalierungsfaktor = 0 then
+		GrafikEinstellungen.skalierungsfaktor = 1.0*GrafikEinstellungen.breite/640
+		if GrafikEinstellungen.skalierungsfaktor < 1 then
 			GrafikEinstellungen.skalierungsfaktor = 1
 		end if
 		Print "Skalierungsfaktor= " & GrafikEinstellungen.skalierungsfaktor
@@ -289,17 +290,17 @@ Namespace GrafikHelfer
 		if a then ImageDestroy a
 	end sub
 	
-	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
-	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
-		if skalierungsfaktor = 1 then
+	Declare sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0))
+	sub zentriertSchreiben(xxx as Integer, yyy as Integer, text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0))
+		if skalierungsfaktor <= 1 + Epsilon then
 			Draw String ((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2)), text, farbe
 		else
 			TextSkaliertZeichnen(Punkt((xxx-len(text)*GrafikEinstellungen.groesseTextzeichen.x/2*skalierungsfaktor),(yyy-GrafikEinstellungen.groesseTextzeichen.y/2*skalierungsfaktor)),text,skalierungsfaktor, farbe)
 		end if 
 	end sub
 	
-	Declare sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
-	sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Integer = 1, farbe as Integer = RGB(0,0,0))
+	Declare sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0))
+	sub schreibeSkaliertInsGitter(x as Integer,y as Integer,text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0))
 		Dim as integer hoehe, breite
 		if y < 0 then 'mittig
 			hoehe = GrafikEinstellungen.hoehe/2 - GrafikEinstellungen.groesseTextzeichen.y*skalierungsfaktor/2
@@ -311,7 +312,7 @@ Namespace GrafikHelfer
 		Else
 			breite = x*GrafikEinstellungen.groesseTextzeichen.x*skalierungsfaktor
 		end if
-		if skalierungsfaktor = 1 then
+		if skalierungsfaktor < 1 + Epsilon then
 			Draw String (breite,hoehe), text, farbe
 		else
 			TextSkaliertZeichnen(Punkt(breite, hoehe), text, skalierungsfaktor, farbe)
