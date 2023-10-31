@@ -273,10 +273,6 @@ Function FrageNachLevel() as Short
 
       TextField.SetColour(rgb(0,0,0))
 
-    
-	
-	
-	
 	  ZeigeLogo(RGB(0,70,100))
 	  Dim as Integer j, i
 	  j = 6 'Anzahl der Level
@@ -336,27 +332,11 @@ Sub Spielen(level as short)
 	Dim Abstand As Integer
 	Abstand = GrafikEinstellungen.groesseTextzeichen.y + 1
 
-
-	If Level = 1 Then
-		AnzahlRechtecke = 5
-	EndIf
-	If Level = 2 Then
-		AnzahlRechtecke = 9
-	EndIf
-	If Level = 3  Then
-		AnzahlRechtecke = 17
-	EndIf
-	If Level = 4 Then
-		AnzahlRechtecke = 27
-	EndIf
-	If Level = 5 Then
-		AnzahlRechtecke = 9
-	EndIf
-	If Level = 6 Then
-		AnzahlRechtecke = 17
-	EndIf
+	Dim AnzahlRechteckeInLevel(1 to 6) as Short = {5,9,17,27,9,17} 
 	If level < 1 Or level > 6 Then
 		AnzahlRechtecke = 1
+	else 
+		AnzahlRechtecke = AnzahlRechteckeInLevel(level)
 	EndIf
 	
 	
@@ -380,7 +360,7 @@ Sub Spielen(level as short)
 	Do
 	    GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
 	    BildschirmHelfer.lockscreen
-		'Cls
+		
 		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 		GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level, GrafikEinstellungen.skalierungsfaktor)  
 		GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
@@ -461,7 +441,6 @@ Sub Spielen(level as short)
 				If x >= AktuellerPfeil.x1 Then
 					GrafikHelfer.dickeLinie  Int(x_alt),Int(y_alt),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
 				EndIf
-				'Locate 1,1 : Print "x: " & x & " Y: " & Y
 			EndIf
 				
 			'unlockScreen
@@ -475,17 +454,12 @@ Sub Spielen(level as short)
 						Color RGB(0,0,0), RGB(255,255,255)
 						Punkte = Punkte + 10
 						
-
-						
 						'Richtiges Rechteck grün:
 						Dim as Integer j
 						For j = 0 To 255
 							RechteckVar(i).anzeigen(RGB(0,j,255-j))
 							Sleep 2
 						Next
-
-
-
 						
 					Else
 						'Print 
@@ -500,11 +474,7 @@ Sub Spielen(level as short)
 							GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),GrafikEinstellungen.skalierungsfaktoR, GrafikEinstellungen.DunkleresRot)
 							Color RGB(0,0,0),RGB(255,255,255) 
 						EndIf
-						
-						'ZeigeRechteck(Rechteck(Eingabe),RGB(255,0,0))
-
-
-						
+												
 						'Falsches Rechteck rot:
 						Dim as Integer j
 						For j = 0 To 255
