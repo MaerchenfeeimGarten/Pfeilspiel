@@ -10,7 +10,6 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 Const Pi = 3.14159265358979323846
 Const Epsilon = 0.000001
 Randomize Timer
-Dim Shared As FB.Image Ptr img1, img2
 
 '====================================Grafik=============================================
 
@@ -64,6 +63,114 @@ End Namespace
 
 GrafikEinstellungen.skalierungsfaktor = 1
 
+Namespace BildschirmHelfer
+	Dim Shared As FB.Image Ptr img1, img2
+
+	Sub lockScreen()
+	ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+	ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
+	End Sub
+
+	Sub unlockScreen()
+	ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
+	ScreenSync               ' auf die Bildschirmaktualisierung warten
+	ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+	End Sub
+
+
+	Declare Sub HintergrundZeichnen(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
+	Sub HintergrundZeichnen(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
+		dim as integer y
+		For y = 0 To GrafikEinstellungen.hoehe
+			Dim As Integer ueberblendetes_r, ueberblendetes_g, ueberblendetes_b
+			ueberblendetes_r = R1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+R2*((y)/GrafikEinstellungen.hoehe)
+			ueberblendetes_g = G1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+G2*((y)/GrafikEinstellungen.hoehe) 
+			ueberblendetes_b = B1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+B2*((y)/GrafikEinstellungen.hoehe)
+			Line (0,y)-(GrafikEinstellungen.breite,y),RGB( ueberblendetes_r ,  ueberblendetes_g , ueberblendetes_b )
+		Next
+	End Sub
+
+	Declare Sub FensterSchliessen()
+	Sub FensterSchliessen()
+		'Effekt zum Beenden:
+		var img = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
+		
+		Dim as Integer i
+		for i = 255 to 0 Step -1
+		put (0,0),img,ALPHA,1
+		sleep 10
+		Next
+		'sleep
+		'For i = 300 To 0 Step -1
+		'	Hintergrund(140*(i/300),0*(i/300),250*(i/300),3*(i/300),250*(i/300),150*(i/300))
+		'	Sleep 10
+		'Next 
+		'Sleep 2000
+		imagedestroy img1
+		imagedestroy img2
+		
+		End
+	End Sub
+	Sub Ueberblenden()
+		Dim as Integer i
+		for i = 0 to 255 Step 2
+		BildschirmHelfer.lockscreen()
+		cls
+		put (0,0),img2,ALPHA,255
+		put (0,0),img1,ALPHA,i
+		BildschirmHelfer.unlockscreen()
+		sleep 10
+		Next
+	End sub
+		
+	Declare Sub FensterOeffnen()
+	Sub FensterOeffnen()
+		Dim as Integer xx,yy
+		ScreenInfo xx, yy
+		
+		Select Case Command(1)
+			Case "1"
+				xx = 640
+				yy = 480
+			Case "2"
+				xx = 800
+				yy = 600
+			Case "3"
+				xx = 1024
+				yy = 768
+			Case "4"
+				xx = 1280
+				yy = 768
+			Case "5"
+				xx = 1200
+				yy = 800
+		End Select
+		
+		GrafikEinstellungen.breite = xx
+		GrafikEinstellungen.hoehe = yy
+		
+		Print "Breite= " & GrafikEinstellungen.breite
+		Print "Hoehe = " & GrafikEinstellungen.hoehe
+		
+
+		GrafikEinstellungen.skalierungsfaktor = int(GrafikEinstellungen.breite/640)
+		if GrafikEinstellungen.skalierungsfaktor = 0 then
+			GrafikEinstellungen.skalierungsfaktor = 1
+		end if
+		Print "Skalierungsfaktor= " & GrafikEinstellungen.skalierungsfaktor
+		
+		ScreenRes  GrafikEinstellungen.breite,GrafikEinstellungen.hoehe ,32,2, &h04 Or 8 
+		Width GrafikEinstellungen.breite\8, GrafikEinstellungen.hoehe\16 ' für eine Schriftgröße von 8x16
+		' Für eine Schriftgröße von 8x14 muss hoch\14 gesetzt
+		' werden, für eine Schriftgröße von 8x8 entsprechend hoch\8
+		GrafikEinstellungen.groesseTextzeichen.x = 8
+		GrafikEinstellungen.groesseTextzeichen.y = 16
+		'BildschirmHelfer.img1 und BildschirmHelfer.img2 vorbereiten
+		BildschirmHelfer.img1 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(255, 0, 0, 255),32)
+		BildschirmHelfer.img2 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(255, 0, 0, 255),32)
+	End Sub
+
+End Namespace
 
 Namespace GrafikHelfer
 
@@ -482,69 +589,6 @@ End Function
 '========================================Sub's==========================================
 Declare Sub Programm()
 
-Sub lockScreen()
-  ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
-  ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
-End Sub
-
-Sub unlockScreen()
-  ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
-  ScreenSync               ' auf die Bildschirmaktualisierung warten
-  ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
-End Sub
-
-
-
-Declare Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
-Sub Hintergrund(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
- 	dim as integer y
- 	For y = 0 To GrafikEinstellungen.hoehe
-		Dim As Integer ueberblendetes_r, ueberblendetes_g, ueberblendetes_b
-		ueberblendetes_r = R1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+R2*((y)/GrafikEinstellungen.hoehe)
-		ueberblendetes_g = G1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+G2*((y)/GrafikEinstellungen.hoehe) 
-		ueberblendetes_b = B1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+B2*((y)/GrafikEinstellungen.hoehe)
- 		Line (0,y)-(GrafikEinstellungen.breite,y),RGB( ueberblendetes_r ,  ueberblendetes_g , ueberblendetes_b )
- 	Next
-End Sub
-
-Declare Sub FensterSchliessen()
-Sub FensterSchliessen()
-	'Effekt zum Beenden:
-    var img = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
-    
-	Dim as Integer i
-    for i = 255 to 0 Step -1
-       put (0,0),img,ALPHA,1
-       sleep 10
-    Next
-	'sleep
-	'For i = 300 To 0 Step -1
-	'	Hintergrund(140*(i/300),0*(i/300),250*(i/300),3*(i/300),250*(i/300),150*(i/300))
-	'	Sleep 10
-	'Next 
-	'Sleep 2000
-	imagedestroy img1
-	imagedestroy img2
-	
-	End
-End Sub
-Sub Ueberblenden()
-	Dim as Integer i
-    for i = 0 to 255 Step 2
-       lockScreen()
-       cls
-       put (0,0),img2,ALPHA,255
-       put (0,0),img1,ALPHA,i
-       unlockScreen()
-       sleep 10
-    Next
-End sub
-	
-
-
-
-
-
 Declare Sub AbbrechenButtonZeigen()
 Sub AbbrechenButtonZeigen()
 	'Abbrechen-Button laden
@@ -626,9 +670,9 @@ End Sub
 
 Declare Function Weiterspielen() As Integer
 Function Weiterspielen() As Integer
-    lockscreen
-      GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , img2
-	  Hintergrund(215,133,44,129,47,90)
+      BildschirmHelfer.lockscreen
+      GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
+	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  GrafikHelfer.schreibeSkaliertInsGitter(1,-1, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
@@ -653,10 +697,10 @@ Function Weiterspielen() As Integer
 	  ButtonWeiterspielenJaNein(1).anzeigen()
 	  ButtonWeiterspielenJaNein(2).anzeigen()
 	  
-	  GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , img1
- 	  Put(0,0),img2,pset
- 	unlockscreen
- 	ueberblenden
+	  GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
+ 	  Put(0,0),BildschirmHelfer.img2,pset
+ 	  BildschirmHelfer.unlockscreen
+ 	  BildschirmHelfer.ueberblenden
 	'Auswahlbuttons abfragen:
 
 	Dim as integer Eingabe
@@ -699,80 +743,18 @@ Sub Warten(Abbrechen As Integer = 0)
 			    var weiter = Weiterspielen()
 				If weiter = 1 Then
 					Programm()
-					FensterSchliessen()
+					BildschirmHelfer.FensterSchliessen()
 					End
 				EndIf
 				If weiter = 0 Then
-					FensterSchliessen()
+					BildschirmHelfer.FensterSchliessen()
 					end
 				EndIf
 			EndIf
 		EndIf
 	Loop Until Weiter.wirdGeklickt()
 End Sub
-Declare Sub FensterOeffnen()
-Sub FensterOeffnen()
-	Dim as Integer xx,yy
-	ScreenInfo xx, yy
-	
-	/'
-	Print "1           =  640x480"
-	Print "2           =  800x600"
-	Print "Andere Zahl = Automatisch"
-	Print
-	Input "Auswahl: ",Eingabe
-	'Eingabe = 3
-	Select Case eingabe
-		Case 1
-			xx = 640
-			yy = 480
-		Case 2
-			xx = 800
-			yy = 600
-	End Select
-	If xx <= 800 Then GrafikEinstellungen.breite  = 640  Else GrafikEinstellungen.breite  = 800
-	If yy <= 600 Then GrafikEinstellungen.hoehe = 480  Else GrafikEinstellungen.hoehe = 600 
-	'If xx > 1024 Then GrafikEinstellungen.breite  = 1024 
-	'If yy >  768 Then GrafikEinstellungen.hoehe = 768
-	Print "Breite= " & GrafikEinstellungen.breite
-	Print "Hoehe = " & GrafikEinstellungen.hoehe'/
-	GrafikEinstellungen.breite = xx
-	GrafikEinstellungen.hoehe = yy
-	
-	GrafikEinstellungen.skalierungsfaktor = GrafikEinstellungen.breite/640
-	if GrafikEinstellungen.skalierungsfaktor = 0 then
-		GrafikEinstellungen.skalierungsfaktor = 1
-	end if
-	
-	ScreenRes  GrafikEinstellungen.breite,GrafikEinstellungen.hoehe ,32,2, &h04 Or 8 
-	Width GrafikEinstellungen.breite\8, GrafikEinstellungen.hoehe\16 ' für eine Schriftgröße von 8x16
-	' Für eine Schriftgröße von 8x14 muss hoch\14 gesetzt
-	' werden, für eine Schriftgröße von 8x8 entsprechend hoch\8
-	GrafikEinstellungen.groesseTextzeichen.x = 8
-	GrafikEinstellungen.groesseTextzeichen.y = 16
-	'img1 und img2 vorbereiten
-	img1 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(255, 0, 0, 255),32)
-    img2 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(255, 0, 0, 255),32)
 
-	
-	'Starteffekt
-	/'Dim As FB.Image Ptr img
-	img = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 255, 255),32)
-    screenlock
-	  Hintergrund(215,133,44,129,47,90)
-
-       GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , img
-       cls
-    screenunlock
-    for i = 0 to 255 Step 2
-       lockscreen
-          cls
-          put (0,0),img,ALPHA,i
-       unlockscreen
-       sleep 5
-    Next
-    IMAGEDESTROY img'/
-End Sub
 
 Declare function LevelCodeInput( TextField as TextBoxType) as string
 function LevelCodeInput( TextField as TextBoxType) as string
@@ -782,9 +764,9 @@ function LevelCodeInput( TextField as TextBoxType) as string
 			'Input "Levelcode? ", SEingabe
 			TextField.CopyBackground()
             DO
-               lockscreen
+               BildschirmHelfer.lockscreen
                  TextField.Redraw()
-               unlockscreen
+               BildschirmHelfer.unlockscreen
                letter=inkey 'Eingabe abfragen
                if letter<>"" then 'Es wurde etwas eingeben.
                    TextField.NewLetter(letter) 'Zeichen an Textbox weiterreichen.
@@ -798,9 +780,9 @@ End function
 
 Declare Sub Sprachauswahl()
 Sub Sprachauswahl()
-      lockscreen
-      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img2
-	  Hintergrund(215,133,44,129,47,90)
+      BildschirmHelfer.lockscreen
+      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  
@@ -845,10 +827,10 @@ Sub Sprachauswahl()
 	  For i = 1 To j
 		SprachAuswahlButton(i).anzeigen()
 	  Next
-	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img1
-	  Put(0,0),img2,pset
-	unlockscreen
-	ueberblenden
+	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+	  Put(0,0),BildschirmHelfer.img2,pset
+	BildschirmHelfer.unlockscreen
+	BildschirmHelfer.ueberblenden
 	'Auswahlbuttons abfragen:
 
 	Do
@@ -863,9 +845,9 @@ End Sub 'Sprachauswahl
 
 Declare Function FrageNachLevel() as Short
 Function FrageNachLevel() as Short
-    lockscreen
-      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img2
-	  Hintergrund(215,133,44,129,47,90)
+    BildschirmHelfer.lockscreen
+      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
 	  'init Textbox
@@ -893,10 +875,10 @@ Function FrageNachLevel() as Short
 		Levelauswahl(i).anzeigen()
 	  Next
 
-	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),img1
-	  Put(0,0),img2,pset
-	unlockscreen
-	ueberblenden
+	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+	  Put(0,0),BildschirmHelfer.img2,pset
+	BildschirmHelfer.unlockscreen
+	BildschirmHelfer.ueberblenden
 
 	'Auswahlbuttons abfragen:
 	Dim as Short Level
@@ -924,7 +906,7 @@ Function FrageNachLevel() as Short
 				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
-				FensterSchliessen
+				BildschirmHelfer.FensterSchliessen
 			EndIf
 		Case 3
 			 SEingabe =  LevelCodeInput(TextField)
@@ -936,7 +918,7 @@ Function FrageNachLevel() as Short
 			    GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
-				FensterSchliessen
+				BildschirmHelfer.FensterSchliessen
 			EndIf
 		Case 4
 			 SEingabe =  LevelCodeInput(TextField)
@@ -948,7 +930,7 @@ Function FrageNachLevel() as Short
 				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
-				FensterSchliessen
+				BildschirmHelfer.FensterSchliessen
 			EndIf
 		Case 5
 			 SEingabe =  LevelCodeInput(TextField)
@@ -960,7 +942,7 @@ Function FrageNachLevel() as Short
 				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
-				FensterSchliessen
+				BildschirmHelfer.FensterSchliessen
 			EndIf
 		Case 6
 			 SEingabe =  LevelCodeInput(TextField)
@@ -972,7 +954,7 @@ Function FrageNachLevel() as Short
 				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 				Warten()
 				sleep 500
-				FensterSchliessen
+				BildschirmHelfer.FensterSchliessen
 			EndIf
 	End Select
 	
@@ -1029,10 +1011,10 @@ Sub Spielen(level as short)
 		RechteckVar(i).farbe = RGB(0,100,255)
 	Next
 	Do
-	    GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , img2
-	    lockscreen
+	    GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
+	    BildschirmHelfer.lockscreen
 		'Cls
-		Hintergrund(215,133,44,129,47,90)
+		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 		GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level, GrafikEinstellungen.skalierungsfaktor)  
 		GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
 		
@@ -1070,10 +1052,10 @@ Sub Spielen(level as short)
 		Next
 		
 		'überblenden
-		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , img1
-		Put(0,0),img2,pset
-		unlockscreen
-		ueberblenden()
+		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
+		Put(0,0),BildschirmHelfer.img2,pset
+		BildschirmHelfer.unlockscreen
+		BildschirmHelfer.ueberblenden()
 		
 		'Eingabe machen
 		Dim as Integer Eingabe
@@ -1303,7 +1285,7 @@ End Sub
 
 
 '=======================================Programm===================================
-FensterOeffnen()
+BildschirmHelfer.FensterOeffnen()
 Programm()
-FensterSchliessen()
+BildschirmHelfer.FensterSchliessen()
 End
