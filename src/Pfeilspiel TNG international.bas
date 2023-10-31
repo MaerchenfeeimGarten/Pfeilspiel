@@ -17,37 +17,30 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 '========================================Sub's==========================================
 Declare Sub Programm()
 
-Declare Sub AbbrechenButtonZeigen()
-Sub AbbrechenButtonZeigen()
-	'Abbrechen-Button laden
-	Dim Abbrechen As Rechteck
-	Abbrechen.x1 = 0+GrafikEinstellungen.breite/20+(GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)
-	Abbrechen.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
-	Abbrechen.x2 = (GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)*2
-	Abbrechen.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
-	Abbrechen.farbe = RGB(250,100,100)
-	Abbrechen.beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
-	
-	Abbrechen.anzeigen()
+Type StandardAbbrechenButton extends GrafikElement
+	Private:
+		Dim AbbrechenRechteck as Rechteck
+	Public:
+		Declare Constructor()
+		Declare virtual sub anzeigen()
+		Declare function wurdeGeklickt() as Boolean
+End Type
+
+Constructor StandardAbbrechenButton()
+	AbbrechenRechteck.x1 = 0+GrafikEinstellungen.breite/20+(GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)
+	AbbrechenRechteck.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
+	AbbrechenRechteck.x2 = (GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)*2
+	AbbrechenRechteck.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
+	AbbrechenRechteck.farbe = RGB(250,100,100)
+	AbbrechenRechteck.beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.ABBRECHEN)
+end Constructor
+
+Sub StandardAbbrechenButton.anzeigen()
+	This.AbbrechenRechteck.anzeigen()
 End Sub
 
-Declare Function AbbrechenButton() As Integer
-Function AbbrechenButton() As Integer
-	'Abbrechen-Button laden
-	Dim Abbrechen As Rechteck
-	Abbrechen.x1 = 0+GrafikEinstellungen.breite/20+(GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)
-	Abbrechen.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
-	Abbrechen.x2 = (GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20)*2
-	Abbrechen.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
-	
-	'ZeigeRechteck(Abbrechen,RGB(250,100,100))
-	'Draw String ((Abbrechen.x1+Abbrechen.X2)/2-8*4.5,(Abbrechen.y1+Abbrechen.y2)/2-(4)), "Abbrechen"
-	If Abbrechen.wirdGeklickt() Then
-		Return 1
-	Else
-		Return 0
-		
-	EndIf
+Function StandardAbbrechenButton.wurdeGeklickt() As Boolean
+	Return AbbrechenRechteck.wirdGeklickt() 
 End Function
 
 Declare Sub ZeigeLogo(Farbe As Integer = 0)
@@ -152,8 +145,8 @@ Function Weiterspielen() As Integer
 End Function
 
 
-Declare Sub Warten(Abbrechen As Integer = 0)
-Sub Warten(Abbrechen As Integer = 0)
+Declare Sub Warten(AbbrechenAnbieten As Boolean = false)
+Sub Warten(AbbrechenAnbieten As Boolean = false)
 	'Weiter-Button laden
 	Dim Weiter As Rechteck
 	Weiter.x1 = 0+GrafikEinstellungen.breite/20
@@ -163,11 +156,19 @@ Sub Warten(Abbrechen As Integer = 0)
 	Weiter.farbe = RGB(100,250,100)
 	Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
 	
-	Weiter.anzeigen()
+	'Anzeige
+	BildschirmHelfer.lockScreen()
+		Weiter.anzeigen()
+		Dim abbruchbutton as StandardAbbrechenButton
+		if AbbrechenAnbieten then
+			abbruchbutton.anzeigen()
+		end if
+	BildschirmHelfer.unlockScreen()
 	
+	'Logik
 	Do
-		If Abbrechen <>0 Then
-			If AbbrechenButton() = 1 Then
+		If AbbrechenAnbieten Then
+			If abbruchbutton.wurdeGeklickt() Then
 			    var weiter = Weiterspielen()
 				If weiter = 1 Then
 					Programm()
@@ -502,9 +503,8 @@ Sub Spielen(level as short)
 			end if
 			If ende = 1 Then Exit For
 		Next
-		AbbrechenButtonZeigen()
-		Warten(1)
-		'Sleep'Warten
+		Dim abbruchButton as StandardAbbrechenButton
+		Warten(true)
 	Loop Until Punkte >= 100
 
 	Sleep 800
