@@ -308,73 +308,22 @@ Function FrageNachLevel() as Short
 			EndIf
 		Next
 	Loop
+	
 	Dim as String SEingabe
-	Select Case Level
-		Case 1
-			GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-			Warten()
-			sleep 500
-		Case 2 
-			SEingabe =  LevelCodeInput(TextField)
-			If SEingabe = "LSTART1" Or SEingabe = "lstart1" Then
-			    GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-			Else
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-				BildschirmHelfer.FensterSchliessen
-			EndIf
-		Case 3
-			 SEingabe =  LevelCodeInput(TextField)
-			If SEingabe = "S3LEVEL" Or SEingabe = "s3level" Then
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-			Else
-			    GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-				BildschirmHelfer.FensterSchliessen
-			EndIf
-		Case 4
-			 SEingabe =  LevelCodeInput(TextField)
-			If SEingabe = "LEV4WIS3" Or SEingabe = "lev4wis3" Then
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-			Else
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-				BildschirmHelfer.FensterSchliessen
-			EndIf
-		Case 5
-			 SEingabe =  LevelCodeInput(TextField)
-			If SEingabe = "LEVE54321L" Or SEingabe = "leve54321l" Then
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-			Else
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-				BildschirmHelfer.FensterSchliessen
-			EndIf
-		Case 6
-			 SEingabe =  LevelCodeInput(TextField)
-			If SEingabe = "LE654STAR" Or SEingabe = "le654star" Then
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-			Else
-				GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-				Warten()
-				sleep 500
-				BildschirmHelfer.FensterSchliessen
-			EndIf
-	End Select
+	Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"} 
+	If len(levelcode(Level)) > 0 then
+		SEingabe =  LevelCodeInput(TextField)
+	end if
+	if Level = 1 or SEingabe = levelcode(Level) then
+		GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
+		Warten()
+		sleep 500
+	else 
+		GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
+		Warten()
+		sleep 500
+		BildschirmHelfer.FensterSchliessen
+	end if
 	
 	return level
 End Function
