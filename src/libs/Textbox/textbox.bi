@@ -9,6 +9,7 @@
 '2023: Ergänzt um die Möglichkeit der Nutzung skalierten Textes.
 #include once "../GrafikHe.bi"
 #include once "../GrafikEi.bi"
+#include once "../Bildschi.bi"
 
 #include once "fbgfx.bi"
 
@@ -67,11 +68,13 @@ Constructor TextBoxType(newx as integer, newy as integer, newmax as integer)
 end constructor
 
 sub TextBoxType.Redraw()
-
+    BildschirmHelfer.lockscreen()
+    
     put (x*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor-3,y*GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor-3),textback,pset 'Gesicherten Hintergrund wiederherstellen
     'Aktuellen Text ausgeben:
     GrafikHelfer.TextSkaliertZeichnen(Punkt(x*GrafikEinstellungen.groesseTextzeichen.x*GrafikEinstellungen.skalierungsfaktor,y*GrafikEinstellungen.groesseTextzeichen.y*GrafikEinstellungen.skalierungsfaktor),str(prompt + mid(message,startpoint)), GrafikEinstellungen.skalierungsfaktor)
-    'draw string (x,y),str(prompt + mid(message,startpoint)),colour
+    
+    BildschirmHelfer.unlockscreen()
 end sub
 
 sub TextBoxType.SetColour(newcolour as uinteger) 'Textfarbe setzen
