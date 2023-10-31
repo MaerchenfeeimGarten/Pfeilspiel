@@ -8,6 +8,7 @@
 #Include once "libs/GrafElem/Pfeil.bi"
 #Include once "libs/GrafElem/Rechteck.bi"
 #Include once "libs/i18n/Ueberset.bi"
+#Include once "libs/timer/delay.bi"
 
 #ifdef __FB_DOS__ 
 ScreenRes  640,480 ,32,2, &h04 Or 8 
@@ -270,7 +271,7 @@ Function FrageNachLevel() as Short
 	  Color RGB(0,0,0),RGB(140,0,250)
 	  GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
 	  'init Textbox
-	  dim TextField as textboxtype=textboxtype(2,3,40) 'Neue Textbox erzeugen
+	  dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
 
       TextField.SetColour(rgb(0,0,0))
 
@@ -574,7 +575,14 @@ Sub Spielen(level as short)
 					ende = 1
 				EndIf
 			Next
-			sleep 1'CPU schonen
+			dim as short accuracy = 1
+			
+#ifdef __FB_DOS__ 
+			accuracy = 15
+#endif
+			if jj mod accuracy = 0 then
+				regulate(450/accuracy,125)
+			end if
 			If ende = 1 Then Exit For
 		Next
 		AbbrechenButtonZeigen()
@@ -686,7 +694,7 @@ Sub Spielen(level as short)
 		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,Zeile(i),GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
 	next
 	
-
+	
 	Warten()
 End Sub
 
