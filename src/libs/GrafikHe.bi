@@ -1,5 +1,5 @@
-#include once "MatheHelfer.bi"
-#include once "GrafikEinstellungen.bi"
+#include once "MathHelf.bi"
+#include once "GrafikEi.bi"
 
 Namespace GrafikHelfer
 

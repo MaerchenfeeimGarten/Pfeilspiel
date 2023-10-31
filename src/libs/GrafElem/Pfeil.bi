@@ -1,4 +1,4 @@
-#include once "GrafikElement.bi"
+#include once "GElement.bi"
 #Include once "fbgfx.bi"
 
 Type Pfeil extends GrafikElement

@@ -7,8 +7,8 @@
 '  http://www.freebasic-portal.de/benutzer/sebastian-1.html
 '
 '2023: Ergänzt um die Möglichkeit der Nutzung skalierten Textes.
-#include once "../GrafikHelfer.bi"
-#include once "../GrafikEinstellungen.bi"
+#include once "../GrafikHe.bi"
+#include once "../GrafikEi.bi"
 
 #include once "fbgfx.bi"
 

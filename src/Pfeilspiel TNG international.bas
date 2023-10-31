@@ -1,13 +1,13 @@
 #Include Once "fbgfx.bi"
-#Include once "Pfeilspiel TNG international libs/Textbox/textbox.bi"
-#Include once "Pfeilspiel TNG international libs/Punkt.bi"
-#Include once "Pfeilspiel TNG international libs/MatheHelfer.bi"
-#Include once "Pfeilspiel TNG international libs/GrafikEinstellungen.bi"
-#Include once "Pfeilspiel TNG international libs/BildschirmHelfer.bi"
-#Include once "Pfeilspiel TNG international libs/GrafikHelfer.bi"
-#Include once "Pfeilspiel TNG international libs/GrafikElemente/Pfeil.bi"
-#Include once "Pfeilspiel TNG international libs/GrafikElemente/Rechteck.bi"
-#Include once "Pfeilspiel TNG international libs/Internationalisation/Uebersetzungen.bi"
+#Include once "libs/Textbox/textbox.bi"
+#Include once "libs/Punkt.bi"
+#Include once "libs/MathHelf.bi"
+#Include once "libs/GrafikEi.bi"
+#Include once "libs/Bildschi.bi"
+#Include once "libs/GrafikHe.bi"
+#Include once "libs/GrafElem/Pfeil.bi"
+#Include once "libs/GrafElem/Rechteck.bi"
+#Include once "libs/i18n/Ueberset.bi"
 
 #ifdef __FB_DOS__ 
 ScreenRes  640,480 ,32,2, &h04 Or 8 

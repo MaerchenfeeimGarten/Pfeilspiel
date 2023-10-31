@@ -1,5 +1,5 @@
 #include once "fbgfx.bi"
-#include once "GrafikEinstellungen.bi"
+#include once "GrafikEi.bi"
 
 Namespace BildschirmHelfer
 	Dim Shared As FB.Image Ptr img1, img2

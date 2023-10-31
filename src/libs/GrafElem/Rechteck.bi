@@ -1,7 +1,7 @@
-#include once "KlickbaresGrafikelement.bi"
+#include once "Klickbar.bi"
 #include once "../Punkt.bi"
-#include once "../GrafikEinstellungen.bi"
-#include once "../GrafikHelfer.bi"
+#include once "../GrafikEi.bi"
+#include once "../GrafikHe.bi"
 
 Type Rechteck extends KlickbaresGrafikElement
 	public:

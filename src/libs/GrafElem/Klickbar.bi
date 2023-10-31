@@ -1,4 +1,4 @@
-#include once "GrafikElement.bi"
+#include once "GElement.bi"
 
 Type KlickbaresGrafikElement extends GrafikElement
 	Declare abstract function istPunktDarauf(p as Punkt) as boolean
