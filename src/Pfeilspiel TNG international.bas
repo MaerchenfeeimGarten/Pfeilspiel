@@ -19,8 +19,8 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 '========================================Sub's==========================================
 Declare Sub Programm()
 
-Declare Function Weiterspielen() As Integer
-Function Weiterspielen() As Integer
+Declare Function Weiterspielen() As Boolean
+Function Weiterspielen() As Boolean
       BildschirmHelfer.lockscreen
       GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
 	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
@@ -99,13 +99,11 @@ Sub Warten(AbbrechenAnbieten As Boolean = false)
 	Do
 		If AbbrechenAnbieten Then
 			If abbruchbutton.wurdeGeklickt() Then
-			    var weiter = Weiterspielen()
-				If weiter = 1 Then
+				If Weiterspielen() Then
 					Programm()
 					BildschirmHelfer.FensterSchliessen()
 					End
-				EndIf
-				If weiter = 0 Then
+				else
 					BildschirmHelfer.FensterSchliessen()
 					end
 				EndIf
@@ -453,7 +451,7 @@ Sub Programm()
 		Dim as Short level
 		level = FrageNachLevel()
 		Spielen(level)
-	Loop Until Weiterspielen() = 0
+	Loop Until not Weiterspielen()
 End Sub
 
 
