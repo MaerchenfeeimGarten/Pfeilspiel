@@ -31,41 +31,31 @@ Namespace BildschirmHelfer
 		Next
 	End Sub
 
-	Declare Sub FensterSchliessen()
-	Sub FensterSchliessen()
-		'Effekt zum Beenden:
-		var img = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
-		
-		Dim as Integer i
-		for i = 255 to 0 Step -StepsPerFrame/2
-		put (0,0),img,ALPHA,1
-		regulate(FPS,125)
-		Next
-		'sleep
-		'For i = 300 To 0 Step -1
-		'	Hintergrund(140*(i/300),0*(i/300),250*(i/300),3*(i/300),250*(i/300),150*(i/300))
-		'	Sleep 10
-		'Next 
-		'Sleep 2000
-		imagedestroy img1
-		imagedestroy img2
-		
-		End
-	End Sub
 	
-	Sub Ueberblenden()
+	Sub Ueberblenden(dauer as Double = 3)
 		Dim as Double starttime = timer
 		Dim as Double i = 0
 		do while i < 255 
-			i = timelerp(starttime,3,0,255)
+			i = timelerp(starttime,dauer,0,255)
 			BildschirmHelfer.lockscreen()
 			cls
 			put (0,0),img2,ALPHA,255
 			put (0,0),img1,ALPHA,int(i)
 			BildschirmHelfer.unlockscreen()
-			'regulate(FPS,125)
 		loop
 	End sub
+	
+	Declare Sub FensterSchliessen()
+	Sub FensterSchliessen()
+		'Effekt zum Beenden:
+		BildschirmHelfer.img1 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
+		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
+		BildschirmHelfer.Ueberblenden(6)
+		Sleep 2000
+		imagedestroy img1
+		imagedestroy img2
+		End
+	End Sub
 		
 	Declare Sub FensterOeffnen()
 	Sub FensterOeffnen()
