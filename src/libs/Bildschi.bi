@@ -1,7 +1,10 @@
 #include once "fbgfx.bi"
 #include once "GrafikEi.bi"
+#include once "timer/delay.bi"
 
 Namespace BildschirmHelfer
+	Dim As Integer FPS = 43
+	Dim As Integer StepsPerFrame = 3
 	Dim Shared As FB.Image Ptr img1, img2
 
 	Sub lockScreen()
@@ -34,9 +37,9 @@ Namespace BildschirmHelfer
 		var img = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
 		
 		Dim as Integer i
-		for i = 255 to 0 Step -1
+		for i = 255 to 0 Step -StepsPerFrame/2
 		put (0,0),img,ALPHA,1
-		sleep 10
+		regulate(FPS,125)
 		Next
 		'sleep
 		'For i = 300 To 0 Step -1
@@ -49,16 +52,19 @@ Namespace BildschirmHelfer
 		
 		End
 	End Sub
+	
 	Sub Ueberblenden()
-		Dim as Integer i
-		for i = 0 to 255 Step 2
-		BildschirmHelfer.lockscreen()
-		cls
-		put (0,0),img2,ALPHA,255
-		put (0,0),img1,ALPHA,i
-		BildschirmHelfer.unlockscreen()
-		sleep 10
-		Next
+		Dim as Double starttime = timer
+		Dim as Double i = 0
+		do while i < 255 
+			i = timelerp(starttime,3,0,255)
+			BildschirmHelfer.lockscreen()
+			cls
+			put (0,0),img2,ALPHA,255
+			put (0,0),img1,ALPHA,int(i)
+			BildschirmHelfer.unlockscreen()
+			'regulate(FPS,125)
+		loop
 	End sub
 		
 	Declare Sub FensterOeffnen()

@@ -101,3 +101,18 @@ Function framerate() As Ulong
     t1 = t2
     Return tf
 End Function 
+
+Function timelerp(starttime as Double, durationInSecs as Double, startvalue as double, endvalue as double) as double
+    Dim As Double t2 = Timer
+    #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
+    If t2 < starttime Then starttime -= 24 * 60 * 60
+    #endif
+    Dim as Double diff = (t2 - starttime)
+    if diff < 0 then
+        return 0
+    elseif diff < durationInSecs then
+        return (diff/durationInSecs)*(endvalue - startvalue) + startvalue
+    else 
+        return endvalue
+    end if
+end function
