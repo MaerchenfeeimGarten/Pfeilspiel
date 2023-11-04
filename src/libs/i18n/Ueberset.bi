@@ -50,9 +50,9 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.ABBRECHEN:
 			select case s
-				case SpracheEnum.DEUTSCH: return "Abbrechen"
+				case SpracheEnum.DEUTSCH: return "abbrechen"
 				case SpracheEnum.ENGLISCH: return "cancel"
-				case SpracheEnum.FRANZOESISCH: return "Qannuler"
+				case SpracheEnum.FRANZOESISCH: return "qannuler"
 			end select
 		case TextEnum.WOLLEN_NEUES_SPIEL:
 			select case s
@@ -152,7 +152,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.BITTE_WAEHLE_SPIEL:
 			select Case s
-				case SpracheEnum.DEUTSCH: return "Bitte wählen Sie ein Spiel aus."
+				case SpracheEnum.DEUTSCH: return "Bitte waehlen Sie ein Spiel aus."
 				case SpracheEnum.ENGLISCH: return "Please choose a game."
 				case SpracheEnum.FRANZOESISCH: return "S'il vous plait, choisissez un jeu."
 			end select
