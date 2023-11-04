@@ -19,6 +19,11 @@ Namespace Uebersetzungen
 		RICHTIG_PLUS_10 
 		FALSCH_MINUS_10 
 		FALSCH 
+		BITTE_WAEHLE_SPIEL
+		STANDARD_SPIEL
+		VIELFALT_PPT
+		AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK
+		AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK
 	end enum 
 
 	enum SpracheEnum explicit
@@ -144,6 +149,36 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 				case SpracheEnum.DEUTSCH: return "Falsch."
 				case SpracheEnum.ENGLISCH: return "Incorrect."
 				case SpracheEnum.FRANZOESISCH: return "Faux."
+			end select
+		case TextEnum.BITTE_WAEHLE_SPIEL:
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Bitte wählen Sie ein Spiel aus."
+				case SpracheEnum.ENGLISCH: return "Please choose a game."
+				case SpracheEnum.FRANZOESISCH: return "S'il vous plait, choisissez un jeu."
+			end select
+		case TextEnum.STANDARD_SPIEL
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Standard"
+				case SpracheEnum.ENGLISCH: return "Default"
+				case SpracheEnum.FRANZOESISCH: return "Par defaut"
+			end select
+		case TextEnum.VIELFALT_PPT
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Vielfalt.ppt"
+				case SpracheEnum.ENGLISCH: return "diversity.ppt"
+				case SpracheEnum.FRANZOESISCH: return "diversite.ppt"
+			end select
+		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil zuletzt?"
+				case SpracheEnum.ENGLISCH: return "Task: On which rectangle does the red arrow last show?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle la fleche rouge montre-t-elle en dernier lieu? "
+			end select
+		case TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil zuletzt?"
+				case SpracheEnum.ENGLISCH: return "Task: On which rectangle does the red arrow last fly?"
+				case SpracheEnum.FRANZOESISCH: return "Tache : Sur quel rectangle la fleche rouge vole-t-elle en dernier lieu?"
 			end select
 	end select 'TextId
 end function

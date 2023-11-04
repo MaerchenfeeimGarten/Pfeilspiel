@@ -134,6 +134,59 @@ function LevelCodeInput( TextField as TextBoxType) as string
              return TextField.GetString()
 End function 
 
+
+Declare Function Spielauswahl() as Short
+Function Spielauswahl() as Short
+      BildschirmHelfer.lockscreen
+      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+
+	  Color RGB(0,0,0),RGB(140,0,250)
+	  
+	  ZeichneLogo(RGB(0,70,100))
+	  
+	  GrafikHelfer.schreibeSkaliertInsGitter(2,-1,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.BITTE_WAEHLE_SPIEL),GrafikEinstellungen.skalierungsfaktor)
+	  'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
+
+	  dim as Integer j,i
+	  j = 2 'Anzahl der Spiele. 
+	  'Auswahlbuttons laden:
+	  Dim SpielAuswahlButton(100) As rechteck
+	  For i = 1 To j
+	  	SpielAuswahlButton(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+	 	SpielAuswahlButton(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+		SpielAuswahlButton(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+		SpielAuswahlButton(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
+		SpielAuswahlButton(i).farbe = RGB(0,100,255)
+		
+		Select Case i
+			Case 1 
+				SpielAuswahlButton(i).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.STANDARD_SPIEL)
+			Case 2
+				SpielAuswahlButton(i).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.VIELFALT_PPT)
+	  	End select
+	  Next
+	  'Auswahlbuttons anzeigen:
+
+	  For i = 1 To j
+		SpielAuswahlButton(i).anzeigen()
+	  Next
+	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+	  Put(0,0),BildschirmHelfer.img2,pset
+	BildschirmHelfer.unlockscreen
+	BildschirmHelfer.ueberblenden
+	'Auswahlbuttons abfragen:
+
+	Do
+		For i = 1 To j
+			If SpielAuswahlButton(i).wirdGeklickt() Then
+				Return i
+			EndIf
+		Next
+	Loop
+End Function 'Spielauswahl
+
+
 Declare Sub Sprachauswahl()
 Sub Sprachauswahl()
       BildschirmHelfer.lockscreen
@@ -189,8 +242,8 @@ Sub Sprachauswahl()
 	Loop
 End Sub 'Sprachauswahl
 
-Declare Function FrageNachLevel() as Short
-Function FrageNachLevel() as Short
+Declare Function FrageNachLevel(spiel as short) as Short
+Function FrageNachLevel(spiel as short) as Short
     BildschirmHelfer.lockscreen
       get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
 	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
@@ -203,7 +256,11 @@ Function FrageNachLevel() as Short
 
 	  ZeichneLogo(RGB(0,70,100))
 	  Dim as Integer j, i
-	  j = 6 'Anzahl der Level
+	  if spiel = 1 then
+			j = 6 'Anzahl der Level
+	  else
+			j = 3
+	  end if
 	  'Auswahlbuttons laden:
 	  Dim LevelAuswahl(100) As rechteck
 	  For i = 1 To j
@@ -234,7 +291,16 @@ Function FrageNachLevel() as Short
 	Loop
 	
 	Dim as String SEingabe
-	Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"} 
+	Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"}
+	if spiel = 2 then
+		levelcode(1) = ""
+		levelcode(2) = "705001"
+		levelcode(3) = "541227"
+		levelcode(4) = "107528"
+		levelcode(5) = "137526"
+		levelcode(6) = "305191"
+	end if
+	
 	If len(levelcode(Level)) > 0 then
 		SEingabe =  LevelCodeInput(TextField)
 	end if
@@ -252,8 +318,8 @@ Function FrageNachLevel() as Short
 	return level
 End Function
 
-Declare Sub Spielen(level as short)
-Sub Spielen(level as short)
+Declare Sub Spielen(level as short, spiel as short)
+Sub Spielen(level as short, spiel as short)
 	Dim As Integer Punkte, AnzahlRechtecke
 	Dim As Integer ende,jj,x_alt,y_alt
 	
@@ -266,6 +332,11 @@ Sub Spielen(level as short)
 	else 
 		AnzahlRechtecke = AnzahlRechteckeInLevel(level)
 	EndIf
+	if spiel = 2 then
+		AnzahlRechteckeInLevel(1) = 7
+		AnzahlRechteckeInLevel(2) = 10
+		AnzahlRechteckeInLevel(3) = 13
+	end if
 	
 	
 	
@@ -293,19 +364,38 @@ Sub Spielen(level as short)
 		GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level, GrafikEinstellungen.skalierungsfaktor)  
 		GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
 		
-		If Level <= 4 Then
-			GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+		dim as Boolean waehleDasLetzte = false
+		dim as Boolean pfeilFliegt = false
+		
+		if spiel = 2 and level >= 2 and rnd()<0.20 then
+			waehleDasLetzte = true
+		end if
+		if spiel = 1 and level >= 5 then
+			pfeilFliegt = true
+		end if
+		
+		if not waehleDasLetzte then
+			If not pfeilFliegt Then
+				GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+			Else
+				GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+			EndIf
 		Else
-			GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
-		EndIf
+			If not pfeilFliegt Then
+				GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+			Else
+				GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+			EndIf
+		end if
+		
 		GrafikHelfer.schreibeSkaliertInsGitter(0,4, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK), GrafikEinstellungen.skalierungsfaktor)
 		'per Zufall Pfeil erzeugen
-		If level <= 4 Then
+		If not pfeilFliegt Then
 			AktuellerPfeil.x1 = 10 
 			AktuellerPfeil.y1 =GrafikEinstellungen.hoehe/2                                                                          
 			AktuellerPfeil.laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
 			AktuellerPfeil.Richtung = Rnd()*(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)-(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)/2                                                           '|
-		ElseIf level >= 5 then
+		Else
 			Do
 				AktuellerPfeil.x1 = 10 
 				AktuellerPfeil.y1 =GrafikEinstellungen.hoehe/2                                                                          
@@ -349,19 +439,20 @@ Sub Spielen(level as short)
 		dim as single x, y
 		x = AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '_ Hier wird der Start für das einzeichnen auf die AktuellerPfeilspitze gesetzt.
 		y = AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '/
-		If level >= 5 Then 
+		If pfeilFliegt Then 
 				AktuellerPfeil.x1 = x 'X und Y müssen neu gespeichert werden, da diese Variablen noch gebraucht werden, die Werte aber nicht geändert
 				AktuellerPfeil.y1 = y 'werden dürfen. Die "Orginale" AktuellerPfeil.x1 und AktuellerPfeil.y1 werden nicht mehr gebraucht.
 		EndIf
 		'Die folgende For...Next-Schleife zeichnet eine Linie der AktuellerPfeilrichtung Pixel-für-Pixel ein:
 		ende = 0 'ende = 1 : Schleife wird abgebrochen
+		dim as Integer letztesRechteck = 0
 		For jj = 0 To Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)'ca. max. Länge einer schrägen Linie
 			'lockScreen
-			If level <= 4 Then 'Gerade Linie, durch (Co)Sinus berechnet
+			If not pfeilFliegt Then 'Gerade Linie, durch (Co)Sinus berechnet
 				x = x + COS((AktuellerPfeil.Richtung*Pi)/180)*1
 				y = y + SIN((AktuellerPfeil.Richtung*Pi)/180)*1
 				GrafikHelfer.dickeLinie  Int(x),Int(y),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
-			Else
+			Else 'Flugbahn
 				x_alt = x
 				y_alt = y
 				x = jj
@@ -375,6 +466,13 @@ Sub Spielen(level as short)
 			'Testen, ob Pixel auf einem Rechteck ist
 			For i = 1 To AnzahlRechtecke
 				If RechteckVar(i).istPunktDarauf(Punkt(x,y)) Then
+					letztesRechteck = i
+				end if
+			Next
+			
+			
+			if (not waehleDasLetzte and letztesRechteck <> 0) or (waehleDasLetzte and x >= GrafikEinstellungen.breite and letztesRechteck<>0) then
+					i = letztesRechteck
 					If i = Eingabe Then 
 
 						Color RGB(0,255,0),RGB(255,255,255)
@@ -416,10 +514,11 @@ Sub Spielen(level as short)
 							RechteckVar(i).anzeigen(RGB(0,100,255))
 							Sleep 400
 						Next
-					EndIf
+					End If
 					ende = 1
-				EndIf
-			Next
+				end if
+			
+			
 			dim as short accuracy = 1
 			
 #ifdef __FB_DOS__ 
@@ -448,9 +547,10 @@ End Sub
 Sub Programm()
     Sprachauswahl()
 	Do
+		Dim as Short spiel = Spielauswahl()
 		Dim as Short level
-		level = FrageNachLevel()
-		Spielen(level)
+		level = FrageNachLevel(spiel)
+		Spielen(level, spiel)
 	Loop Until not Weiterspielen()
 End Sub
 
