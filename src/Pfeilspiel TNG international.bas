@@ -17,309 +17,359 @@ ScreenRes  640,480 ,32,2, &h04 Or 8
 #endif
 
 '========================================Sub's==========================================
-Declare Sub Programm()
+Declare sub Programm()
 
-Declare Function Weiterspielen() As Boolean
-Function Weiterspielen() As Boolean
-      BildschirmHelfer.lockscreen
-      GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
-	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 
-	  Color RGB(0,0,0),RGB(140,0,250)
-	  GrafikHelfer.schreibeSkaliertInsGitter(1,-1, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
-		dim as Integer j
-		j = 2 'Anzahl der Buttons
-		
-	  'Auswahlbuttons laden:
-	  Dim ButtonWeiterspielenJaNein(100) As rechteck
-	  Dim as Integer i
-	  For i = 1 To j
-		ButtonWeiterspielenJaNein(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
-		ButtonWeiterspielenJaNein(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
-		ButtonWeiterspielenJaNein(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
-		ButtonWeiterspielenJaNein(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
-		ButtonWeiterspielenJaNein(i).farbe = RGB(0,100,255)
-	  Next
-	  
-	  ButtonWeiterspielenJaNein(1).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA)
-	  ButtonWeiterspielenJaNein(2).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN)
-	  
-	  'Auswahlbuttons anzeigen:
-	  ButtonWeiterspielenJaNein(1).anzeigen()
-	  ButtonWeiterspielenJaNein(2).anzeigen()
-	  
-	  GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
- 	  Put(0,0),BildschirmHelfer.img2,pset
- 	  BildschirmHelfer.unlockscreen
- 	  BildschirmHelfer.ueberblenden
-	'Auswahlbuttons abfragen:
+'========================================Menüführung=====================================
 
-	Dim as integer Eingabe
-	Do
+namespace MenueFuehrung
+	Declare Function Weiterspielen() As Boolean
+	Function Weiterspielen() As Boolean
+		BildschirmHelfer.lockscreen
+		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
+		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+
+		Color RGB(0,0,0),RGB(140,0,250)
+		GrafikHelfer.schreibeSkaliertInsGitter(1,-1, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
+			dim as Integer j
+			j = 2 'Anzahl der Buttons
+			
+		'Auswahlbuttons laden:
+		Dim ButtonWeiterspielenJaNein(100) As rechteck
+		Dim as Integer i
 		For i = 1 To j
-			If ButtonWeiterspielenJaNein(i).wirdGeklickt() Then
-				Eingabe = i
-				Exit Do
-			EndIf
+			ButtonWeiterspielenJaNein(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+			ButtonWeiterspielenJaNein(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+			ButtonWeiterspielenJaNein(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+			ButtonWeiterspielenJaNein(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
+			ButtonWeiterspielenJaNein(i).farbe = RGB(0,100,255)
 		Next
-	Loop
- 	
-	If eingabe = 1 Then 
+		
+		ButtonWeiterspielenJaNein(1).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA)
+		ButtonWeiterspielenJaNein(2).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN)
+		
+		'Auswahlbuttons anzeigen:
+		ButtonWeiterspielenJaNein(1).anzeigen()
+		ButtonWeiterspielenJaNein(2).anzeigen()
+		
+		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
+		Put(0,0),BildschirmHelfer.img2,pset
+		BildschirmHelfer.unlockscreen
+		BildschirmHelfer.ueberblenden
+		'Auswahlbuttons abfragen:
+
+		Dim as integer Eingabe
+		Do
+			For i = 1 To j
+				If ButtonWeiterspielenJaNein(i).wirdGeklickt() Then
+					Eingabe = i
+					Exit Do
+				EndIf
+			Next
+		Loop
+		If eingabe = 1 Then 
+			Sleep 800
+			Return 1 
+		Else 
+			Sleep 800
+			Return 0 
+		EndIf
 		Sleep 800
-		Return 1 
-	Else 
-		Sleep 800
-		Return 0 
-	EndIf
- 	Sleep 800
-End Function
+	End Function
 
 
-Declare Sub Warten(AbbrechenAnbieten As Boolean = false)
-Sub Warten(AbbrechenAnbieten As Boolean = false)
-	'Weiter-Button laden
-	Dim Weiter As Rechteck
-	Weiter.x1 = 0+GrafikEinstellungen.breite/20
-	Weiter.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
-	Weiter.x2 = GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20
-	Weiter.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
-	Weiter.farbe = RGB(100,250,100)
-	Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
-	
-	'Anzeige
-	BildschirmHelfer.lockScreen()
-		Weiter.anzeigen()
-		Dim abbruchbutton as StandardAbbrechenButton
-		if AbbrechenAnbieten then
-			abbruchbutton.anzeigen()
-		end if
-	BildschirmHelfer.unlockScreen()
-	
-	'Logik
-	Do
-		If AbbrechenAnbieten Then
-			If abbruchbutton.wurdeGeklickt() Then
-				If Weiterspielen() Then
-					Programm()
-					BildschirmHelfer.FensterSchliessen()
-					End
-				else
-					BildschirmHelfer.FensterSchliessen()
-					end
+	Declare Sub Warten(AbbrechenAnbieten As Boolean = false)
+	Sub Warten(AbbrechenAnbieten As Boolean = false)
+		'Weiter-Button laden
+		Dim Weiter As Rechteck
+		Weiter.x1 = 0+GrafikEinstellungen.breite/20
+		Weiter.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
+		Weiter.x2 = GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20
+		Weiter.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
+		Weiter.farbe = RGB(100,250,100)
+		Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
+		
+		'Anzeige
+		BildschirmHelfer.lockScreen()
+			Weiter.anzeigen()
+			Dim abbruchbutton as StandardAbbrechenButton
+			if AbbrechenAnbieten then
+				abbruchbutton.anzeigen()
+			end if
+		BildschirmHelfer.unlockScreen()
+		
+		'Logik
+		Do
+			If AbbrechenAnbieten Then
+				If abbruchbutton.wurdeGeklickt() Then
+					If Weiterspielen() Then
+						Programm()
+						BildschirmHelfer.FensterSchliessen()
+						End
+					else
+						BildschirmHelfer.FensterSchliessen()
+						end
+					EndIf
 				EndIf
 			EndIf
-		EndIf
-	Loop Until Weiter.wirdGeklickt()
-End Sub
+		Loop Until Weiter.wirdGeklickt()
+	End Sub
 
 
-Declare function LevelCodeInput( TextField as TextBoxType) as string
-function LevelCodeInput( TextField as TextBoxType) as string
-            dim as string letter
-			TextField.SetPrompt(Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
+	Declare function LevelCodeInput( TextField as TextBoxType) as string
+	function LevelCodeInput( TextField as TextBoxType) as string
+				dim as string letter
+				TextField.SetPrompt(Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
 
-			TextField.CopyBackground()
-            DO
-               BildschirmHelfer.lockscreen
-                 TextField.Redraw()
-               BildschirmHelfer.unlockscreen
-               letter=inkey 'Eingabe abfragen
-               if letter<>"" then 'Es wurde etwas eingeben.
-                   TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
-               end if
-               if (asc(letter) = 27) then textfield.setstring("")
-               sleep 1 'CPU-Auslastung reduzieren
-                
-             loop until  asc(letter)=13 'Ende durch ENTER
-             return TextField.GetString()
-End function 
+				TextField.CopyBackground()
+				DO
+				BildschirmHelfer.lockscreen
+					TextField.Redraw()
+				BildschirmHelfer.unlockscreen
+				letter=inkey 'Eingabe abfragen
+				if letter<>"" then 'Es wurde etwas eingeben.
+					TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
+				end if
+				if (asc(letter) = 27) then textfield.setstring("")
+				sleep 1 'CPU-Auslastung reduzieren
+					
+				loop until  asc(letter)=13 'Ende durch ENTER
+				return TextField.GetString()
+	End function 
 
 
-Declare Function Spielauswahl() as Short
-Function Spielauswahl() as Short
-      BildschirmHelfer.lockscreen
-      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
-	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+	Declare Function Spielauswahl() as Short
+	Function Spielauswahl() as Short
+		BildschirmHelfer.lockscreen
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 
-	  Color RGB(0,0,0),RGB(140,0,250)
-	  
-	  ZeichneLogo(RGB(0,70,100))
-	  
-	  GrafikHelfer.schreibeSkaliertInsGitter(2,-1,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.BITTE_WAEHLE_SPIEL),GrafikEinstellungen.skalierungsfaktor)
-	  'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
-
-	  dim as Integer j,i
-	  j = 2 'Anzahl der Spiele. 
-	  'Auswahlbuttons laden:
-	  Dim SpielAuswahlButton(100) As rechteck
-	  For i = 1 To j
-	  	SpielAuswahlButton(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
-	 	SpielAuswahlButton(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
-		SpielAuswahlButton(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
-		SpielAuswahlButton(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
-		SpielAuswahlButton(i).farbe = RGB(0,100,255)
+		Color RGB(0,0,0),RGB(140,0,250)
 		
-		Select Case i
-			Case 1 
-				SpielAuswahlButton(i).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.STANDARD_SPIEL)
-			Case 2
-				SpielAuswahlButton(i).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.VIELFALT_PPT)
-	  	End select
-	  Next
-	  'Auswahlbuttons anzeigen:
-
-	  For i = 1 To j
-		SpielAuswahlButton(i).anzeigen()
-	  Next
-	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
-	  Put(0,0),BildschirmHelfer.img2,pset
-	BildschirmHelfer.unlockscreen
-	BildschirmHelfer.ueberblenden
-	'Auswahlbuttons abfragen:
-
-	Do
-		For i = 1 To j
-			If SpielAuswahlButton(i).wirdGeklickt() Then
-				Return i
-			EndIf
-		Next
-	Loop
-End Function 'Spielauswahl
-
-
-Declare Sub Sprachauswahl()
-Sub Sprachauswahl()
-      BildschirmHelfer.lockscreen
-      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
-	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
-
-	  Color RGB(0,0,0),RGB(140,0,250)
-	  
-	  ZeichneLogo(RGB(0,70,100))
-	  
-	  GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
-	  GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
-	  'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
-
-	  dim as Integer j,i
-	  j = 2 'Anzahl der Sprachen. 
-	  'Auswahlbuttons laden:
-	  Dim SprachAuswahlButton(100) As rechteck
-	  For i = 1 To j
-	  	SprachAuswahlButton(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
-	 	SprachAuswahlButton(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
-		SprachAuswahlButton(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
-		SprachAuswahlButton(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
-		SprachAuswahlButton(i).farbe = RGB(0,100,255)
+		ZeichneLogo(RGB(0,70,100))
 		
-		Select Case i
-			Case 1 
-				SprachAuswahlButton(i).beschriftung = "Deutsch"
-			Case 2
-				SprachAuswahlButton(i).beschriftung = "English"
-		    Case 3
-				SprachAuswahlButton(i).beschriftung = "Francais"
-	  	End select
-	  Next
-	  'Auswahlbuttons anzeigen:
+		GrafikHelfer.schreibeSkaliertInsGitter(2,-1,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.BITTE_WAEHLE_SPIEL),GrafikEinstellungen.skalierungsfaktor)
+		'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
-	  For i = 1 To j
-		SprachAuswahlButton(i).anzeigen()
-	  Next
-	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
-	  Put(0,0),BildschirmHelfer.img2,pset
-	BildschirmHelfer.unlockscreen
-	BildschirmHelfer.ueberblenden
-	'Auswahlbuttons abfragen:
-
-	Do
+		dim as Integer j,i
+		j = 2 'Anzahl der Spiele. 
+		'Auswahlbuttons laden:
+		Dim SpielAuswahlButton(100) As rechteck
 		For i = 1 To j
-			If SprachAuswahlButton(i).wirdGeklickt() Then
-				Uebersetzungen.Sprache = i
-				Exit Do
-			EndIf
+			SpielAuswahlButton(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+			SpielAuswahlButton(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+			SpielAuswahlButton(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+			SpielAuswahlButton(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
+			SpielAuswahlButton(i).farbe = RGB(0,100,255)
+			
+			Select Case i
+				Case 1 
+					SpielAuswahlButton(i).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.STANDARD_SPIEL)
+				Case 2
+					SpielAuswahlButton(i).beschriftung = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.VIELFALT_PPT)
+			End select
 		Next
-	Loop
-End Sub 'Sprachauswahl
+		'Auswahlbuttons anzeigen:
 
-Declare Function FrageNachLevel(spiel as short) as Short
-Function FrageNachLevel(spiel as short) as Short
-    BildschirmHelfer.lockscreen
-      get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
-	  BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
-	  Color RGB(0,0,0),RGB(140,0,250)
-	  GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
-	  'init Textbox
-	  dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
+		For i = 1 To j
+			SpielAuswahlButton(i).anzeigen()
+		Next
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+		Put(0,0),BildschirmHelfer.img2,pset
+		BildschirmHelfer.unlockscreen
+		BildschirmHelfer.ueberblenden
+		'Auswahlbuttons abfragen:
 
-      TextField.SetColour(rgb(0,0,0))
+		Do
+			For i = 1 To j
+				If SpielAuswahlButton(i).wirdGeklickt() Then
+					Return i
+				EndIf
+			Next
+		Loop
+	End Function 'Spielauswahl
 
-	  ZeichneLogo(RGB(0,70,100))
-	  Dim as Integer j, i
-	  if spiel = 1 then
-			j = 6 'Anzahl der Level
-	  else
-			j = 3
-	  end if
-	  'Auswahlbuttons laden:
-	  Dim LevelAuswahl(100) As rechteck
-	  For i = 1 To j
-	  	LevelAuswahl(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
-	 	LevelAuswahl(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
-		LevelAuswahl(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
-		LevelAuswahl(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
-		LevelAuswahl(i).farbe = RGB(0,100,255)
-		LevelAuswahl(i).beschriftung = "" & i
+
+	Declare Sub Sprachauswahl()
+	Sub Sprachauswahl()
+		BildschirmHelfer.lockscreen
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+
+		Color RGB(0,0,0),RGB(140,0,250)
 		
-		Levelauswahl(i).anzeigen()
-	  Next
+		ZeichneLogo(RGB(0,70,100))
+		
+		GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
+		GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
+		'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
-	  get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
-	  Put(0,0),BildschirmHelfer.img2,pset
-	BildschirmHelfer.unlockscreen
-	BildschirmHelfer.ueberblenden
-
-	'Auswahlbuttons abfragen:
-	Dim as Short Level
-	Do
+		dim as Integer j,i
+		j = 2 'Anzahl der Sprachen. 
+		'Auswahlbuttons laden:
+		Dim SprachAuswahlButton(100) As rechteck
 		For i = 1 To j
-			If Levelauswahl(i).wirdGeklickt() Then
-				Level = i
-				Exit Do
-			EndIf
+			SprachAuswahlButton(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+			SprachAuswahlButton(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+			SprachAuswahlButton(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+			SprachAuswahlButton(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
+			SprachAuswahlButton(i).farbe = RGB(0,100,255)
+			
+			Select Case i
+				Case 1 
+					SprachAuswahlButton(i).beschriftung = "Deutsch"
+				Case 2
+					SprachAuswahlButton(i).beschriftung = "English"
+				Case 3
+					SprachAuswahlButton(i).beschriftung = "Francais"
+			End select
 		Next
-	Loop
-	
-	Dim as String SEingabe
-	Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"}
-	if spiel = 2 then
-		levelcode(1) = ""
-		levelcode(2) = "705001"
-		levelcode(3) = "541227"
-		levelcode(4) = "107528"
-		levelcode(5) = "137526"
-		levelcode(6) = "305191"
-	end if
-	
-	If len(levelcode(Level)) > 0 then
-		SEingabe =  LevelCodeInput(TextField)
-	end if
-	if Level = 1 or SEingabe = levelcode(Level) then
-		GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-		Warten()
-		sleep 500
-	else 
-		GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-		Warten()
-		sleep 500
-		BildschirmHelfer.FensterSchliessen
-	end if
-	
-	return level
-End Function
+		'Auswahlbuttons anzeigen:
 
-Declare Sub Spielen(level as short, spiel as short)
-Sub Spielen(level as short, spiel as short)
+		For i = 1 To j
+			SprachAuswahlButton(i).anzeigen()
+		Next
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+		Put(0,0),BildschirmHelfer.img2,pset
+		BildschirmHelfer.unlockscreen
+		BildschirmHelfer.ueberblenden
+		'Auswahlbuttons abfragen:
+
+		Do
+			For i = 1 To j
+				If SprachAuswahlButton(i).wirdGeklickt() Then
+					Uebersetzungen.Sprache = i
+					Exit Do
+				EndIf
+			Next
+		Loop
+	End Sub 'Sprachauswahl
+
+	Declare Function FrageNachLevel(spiel as short) as Short
+	Function FrageNachLevel(spiel as short) as Short
+		BildschirmHelfer.lockscreen
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+		Color RGB(0,0,0),RGB(140,0,250)
+		GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
+		'init Textbox
+		dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
+
+		TextField.SetColour(rgb(0,0,0))
+
+		ZeichneLogo(RGB(0,70,100))
+		Dim as Integer j, i
+		if spiel = 1 then
+				j = 6 'Anzahl der Level
+		else
+				j = 3
+		end if
+		'Auswahlbuttons laden:
+		Dim LevelAuswahl(100) As rechteck
+		For i = 1 To j
+			LevelAuswahl(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+			LevelAuswahl(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+			LevelAuswahl(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+			LevelAuswahl(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/j * (i)
+			LevelAuswahl(i).farbe = RGB(0,100,255)
+			LevelAuswahl(i).beschriftung = "" & i
+			
+			Levelauswahl(i).anzeigen()
+		Next
+
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+		Put(0,0),BildschirmHelfer.img2,pset
+		BildschirmHelfer.unlockscreen
+		BildschirmHelfer.ueberblenden
+
+		'Auswahlbuttons abfragen:
+		Dim as Short Level
+		Do
+			For i = 1 To j
+				If Levelauswahl(i).wirdGeklickt() Then
+					Level = i
+					Exit Do
+				EndIf
+			Next
+		Loop
+		
+		Dim as String SEingabe
+		Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"}
+		if spiel = 2 then
+			levelcode(1) = ""
+			levelcode(2) = "705001"
+			levelcode(3) = "541227"
+			levelcode(4) = "107528"
+			levelcode(5) = "137526"
+			levelcode(6) = "305191"
+		end if
+		
+		If len(levelcode(Level)) > 0 then
+			SEingabe =  LevelCodeInput(TextField)
+		end if
+		if Level = 1 or SEingabe = levelcode(Level) then
+			GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
+			MenueFuehrung.Warten()
+			sleep 500
+		else 
+			GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
+			MenueFuehrung.Warten()
+			sleep 500
+			BildschirmHelfer.FensterSchliessen
+		end if
+		
+		return level
+	End Function
+
+end namespace 'MenueFuehrung
+
+'=========================================SpielAufgabe==================================
+
+type SpielAufgabenInterface extends Object
+
+end type
+
+type SpielAufgabenDekorator extends SpielAufgabenInterface
+	as SpielAufgabenInterface spielAufgabenSpeicher
+end type
+
+type standardSpielAufgabe extends SpielAufgabenInterface
+
+end type
+
+
+'===========================================Spiel========================================
+
+type SpielInterface extends Object
+	public:
+		declare abstract sub spielen(level as short, spiel as short)
+end type
+
+type SpielDekorator extends SpielInterface
+	public:
+		declare abstract sub spielen(level as short, spiel as short)
+	private:
+		as SpielInterface pointer SpielInterfaceSpeicher
+end type
+
+type StandardSpiel extends SpielInterface
+	public:
+		declare virtual sub spielen(level as short, spiel as short)
+		declare constructor()
+		declare function getAnzahlLevel() as Short
+	private:
+		as Short anzahlLevel
+end type
+
+Constructor StandardSpiel()
+	this.anzahlLevel = 6
+end Constructor
+
+function StandardSpiel.getAnzahlLevel() as Short
+	return this.anzahlLevel
+end function
+
+Sub StandardSpiel.spielen(level as short, spiel as short)
 	Dim As Integer Punkte, AnzahlRechtecke
 	Dim As Integer ende,jj,x_alt,y_alt
 	
@@ -530,7 +580,7 @@ Sub Spielen(level as short, spiel as short)
 			If ende = 1 Then Exit For
 		Next
 		Dim abbruchButton as StandardAbbrechenButton
-		Warten(true)
+		MenueFuehrung.Warten(true)
 	Loop Until Punkte >= 100
 
 	Sleep 800
@@ -541,17 +591,20 @@ Sub Spielen(level as short, spiel as short)
 		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
 	next
 	
-	Warten()
+	MenueFuehrung.Warten()
 End Sub
 
+'=========================================Programm=======================================
+
 Sub Programm()
-    Sprachauswahl()
+    MenueFuehrung.Sprachauswahl()
 	Do
-		Dim as Short spiel = Spielauswahl()
+		Dim as Short spielnummer = MenueFuehrung.Spielauswahl()
+		Dim as SpielInterface pointer spielobjekt = new StandardSpiel
 		Dim as Short level
-		level = FrageNachLevel(spiel)
-		Spielen(level, spiel)
-	Loop Until not Weiterspielen()
+		level = MenueFuehrung.FrageNachLevel(spielnummer)
+		spielobjekt->Spielen(level, spielnummer)
+	Loop Until not MenueFuehrung.Weiterspielen()
 End Sub
 
 
