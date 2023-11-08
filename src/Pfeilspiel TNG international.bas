@@ -35,7 +35,7 @@ namespace MenueFuehrung
 			j = 2 'Anzahl der Buttons
 			
 		'Auswahlbuttons laden:
-		Dim ButtonWeiterspielenJaNein(100) As rechteck
+		Dim ButtonWeiterspielenJaNein(2) As rechteck
 		Dim as Integer i
 		For i = 1 To j
 			ButtonWeiterspielenJaNein(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
@@ -78,8 +78,8 @@ namespace MenueFuehrung
 	End Function
 
 
-	Declare Sub Warten(AbbrechenAnbieten As Boolean = false)
-	Sub Warten(AbbrechenAnbieten As Boolean = false)
+	Declare sub Warten(AbbrechenAnbieten As Boolean = false) 
+	sub Warten(AbbrechenAnbieten As Boolean = false)
 		'Weiter-Button laden
 		Dim Weiter As Rechteck
 		Weiter.x1 = 0+GrafikEinstellungen.breite/20
@@ -328,9 +328,12 @@ type SpielAufgabenInterface extends Object
 	declare abstract function getAnzahlDerRechtecke() as Short
 	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
 	declare abstract sub RedimRechteckArray(groesse as Short)
+	declare abstract sub zeichneAufgabenstellung()
 	Protected:
 		as Rechteck variablesRechteckArray(any) 
 end type
+
+
 
 type SpielAufgabenDekorator extends SpielAufgabenInterface
 	as SpielAufgabenInterface pointer spielAufgabenSpeicher
@@ -338,16 +341,16 @@ type SpielAufgabenDekorator extends SpielAufgabenInterface
 	declare abstract function getAnzahlDerRechtecke() as Short
 	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
 	declare abstract sub RedimRechteckArray(groesse as Short)
+	declare abstract sub zeichneAufgabenstellung()
 end type
 
 type standardSpielAufgabe extends SpielAufgabenInterface
-
-	
 	declare virtual function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 	declare virtual sub rechteckeGenerieren()
 	declare virtual function getAnzahlDerRechtecke() as Short
 	declare virtual sub setAnzahlDerRechtecke(anzahl as Short)
 	declare virtual sub RedimRechteckArray(groesse as Short)
+	declare virtual sub zeichneAufgabenstellung()
 	declare constructor()
 	Protected:
 		anzahlDerRechtecke as Short
@@ -365,6 +368,14 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 	for i = 1 to UBound(this.variablesRechteckArray)
 		this.variablesRechteckArray(i).anzeigen()
 	next
+	
+	this.zeichneAufgabenstellung()
+	
+	GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
+	Put(0,0),BildschirmHelfer.img2,pset
+	BildschirmHelfer.unlockscreen
+	BildschirmHelfer.ueberblenden()
+	
 	'Eingabe machen
 	Dim as Integer Eingabe
 	Do
@@ -380,6 +391,10 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 	'ueberpruefen
 	return Eingabe = 1
 end function
+
+sub standardSpielAufgabe.zeichneAufgabenstellung()
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+end sub
 
 sub standardSpielAufgabe.RedimRechteckArray(groesse as Short)
 	Redim variablesRechteckArray (1 to groesse)
@@ -420,6 +435,8 @@ type SpielInterface extends Object
 		declare abstract function getAktuellePunkte() as short
 		declare abstract sub setAktuellePunkte(punkte as short)
 		declare abstract function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
+		declare abstract sub zeichneHintergrund()
+		declare abstract sub zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
 end type
 
 type SpielDekorator extends SpielInterface 'TODO Standardimplementierungen der Methoden, die SpielInterfaceSpeicher aufrufen, sowie Konstruktor, an den man das übergeben kann.
@@ -429,6 +446,8 @@ type SpielDekorator extends SpielInterface 'TODO Standardimplementierungen der M
 		declare abstract function getAktuellePunkte() as short
 		declare abstract sub setAktuellePunkte(punkte as short)
 		declare abstract function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
+		declare abstract sub zeichneHintergrund()
+		declare abstract sub zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
 	private:
 		as SpielInterface pointer SpielInterfaceSpeicher
 end type
@@ -442,6 +461,8 @@ type StandardSpiel extends SpielInterface
 		declare virtual function getAktuellePunkte() as short
 		declare virtual sub setAktuellePunkte(punkte as short)
 		declare virtual function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
+		declare virtual sub zeichneHintergrund()
+		declare virtual sub zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
 	private:
 		as Short anzahlLevel
 		as Short aktuellePunkte
@@ -488,8 +509,16 @@ end function
 Sub StandardSpiel.spielen(level as short, spiel as short)
 	this.modus = spiel 'TODO Entfernen, wenn statt modus und spiel - Übergabe zwei Klassen für die unterschiedlichen Spiele existieren.
 
+	dim as boolean abbruch = false
 	Do
+		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
+		
 		Dim as SpielAufgabenInterface pointer aktuelleSpielAufgabe = getSpielAufgabe(level)
+		
+		BildschirmHelfer.lockScreen()
+		this.zeichneHintergrund()
+		this.zeichneLevelInfo(level, this.getAktuellePunkte)
+		
 		Dim as Boolean erfolg = aktuelleSpielAufgabe->aufgabeAnbietenUndErfolgZurueckgeben()
 		
 		if erfolg then
@@ -500,19 +529,33 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		if getAktuellePunkte() < 0 then
 			this.setAktuellePunkte(0)
 		end if
-	Loop Until this.getAktuellePunkte() >= this.getNoetigePunkte()
+		
+		MenueFuehrung.Warten(true)
+	Loop Until this.getAktuellePunkte() >= this.getNoetigePunkte() or abbruch
 
 	Sleep 800
-	dim as Integer AnzeilZeilen = 3
-	
-	dim as integer i
-	for i = 1 to AnzeilZeilen 
-		dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i)
-		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
-	next
-	
-	MenueFuehrung.Warten()
+	if not abbruch then
+		dim as Integer AnzeilZeilen = 3
+		
+		dim as integer i
+		for i = 1 to AnzeilZeilen 
+			dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i)
+			GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
+		next
+		
+		MenueFuehrung.Warten()
+	end if
+
 End Sub
+
+sub StandardSpiel.zeichneHintergrund()
+	BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+end sub
+
+sub StandardSpiel.zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
+	GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & aktuellesLevel, GrafikEinstellungen.skalierungsfaktor)  
+	GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
+end sub
 
 '=========================================Programm=======================================
 
