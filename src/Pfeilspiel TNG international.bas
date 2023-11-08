@@ -115,7 +115,6 @@ namespace MenueFuehrung
 		Loop Until Weiter.wirdGeklickt()
 	End Sub
 
-
 	Declare function LevelCodeInput( TextField as TextBoxType) as string
 	function LevelCodeInput( TextField as TextBoxType) as string
 				dim as string letter
@@ -136,7 +135,6 @@ namespace MenueFuehrung
 				loop until  asc(letter)=13 'Ende durch ENTER
 				return TextField.GetString()
 	End function 
-
 
 	Declare Function Spielauswahl() as Short
 	Function Spielauswahl() as Short
@@ -188,7 +186,6 @@ namespace MenueFuehrung
 			Next
 		Loop
 	End Function 'Spielauswahl
-
 
 	Declare Sub Sprachauswahl()
 	Sub Sprachauswahl()
@@ -326,16 +323,92 @@ end namespace 'MenueFuehrung
 '=========================================SpielAufgabe==================================
 
 type SpielAufgabenInterface extends Object
-
+	declare abstract function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+	declare abstract sub rechteckeGenerieren()
+	declare abstract function getAnzahlDerRechtecke() as Short
+	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
+	declare abstract sub RedimRechteckArray(groesse as Short)
+	Protected:
+		as Rechteck variablesRechteckArray(any) 
 end type
 
 type SpielAufgabenDekorator extends SpielAufgabenInterface
-	as SpielAufgabenInterface spielAufgabenSpeicher
+	as SpielAufgabenInterface pointer spielAufgabenSpeicher
+	declare abstract sub rechteckeGenerieren()
+	declare abstract function getAnzahlDerRechtecke() as Short
+	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
+	declare abstract sub RedimRechteckArray(groesse as Short)
 end type
 
 type standardSpielAufgabe extends SpielAufgabenInterface
 
+	
+	declare virtual function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+	declare virtual sub rechteckeGenerieren()
+	declare virtual function getAnzahlDerRechtecke() as Short
+	declare virtual sub setAnzahlDerRechtecke(anzahl as Short)
+	declare virtual sub RedimRechteckArray(groesse as Short)
+	declare constructor()
+	Protected:
+		anzahlDerRechtecke as Short
 end type
+
+constructor standardSpielAufgabe
+	setAnzahlDerRechtecke(6)
+end constructor
+
+function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+	rechteckeGenerieren()
+	
+	' Rechtecke Anzeigen
+	Dim as Integer i
+	for i = 1 to UBound(this.variablesRechteckArray)
+		this.variablesRechteckArray(i).anzeigen()
+	next
+	'Eingabe machen
+	Dim as Integer Eingabe
+	Do
+		'If AbbrechenButton() = 1 Then end
+		For i = 1 To UBound(this.variablesRechteckArray)
+			If variablesRechteckArray(i).wirdGeklickt() Then
+				Eingabe = i
+				exit do
+			EndIf
+		Next
+	Loop
+	
+	'ueberpruefen
+	return Eingabe = 1
+end function
+
+sub standardSpielAufgabe.RedimRechteckArray(groesse as Short)
+	Redim variablesRechteckArray (1 to groesse)
+end sub
+
+sub standardSpielAufgabe.rechteckeGenerieren()
+	RedimRechteckArray(getAnzahlDerRechtecke())
+	Dim as Short i
+	For i = 1 To getAnzahlDerRechtecke()
+		variablesRechteckArray(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+		variablesRechteckArray(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+		variablesRechteckArray(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+		variablesRechteckArray(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i)
+		variablesRechteckArray(i).farbe = RGB(0,100,255)
+	Next
+end sub
+
+function standardSpielAufgabe.getAnzahlDerRechtecke() as Short
+	return this.anzahlDerRechtecke
+end function
+
+sub standardSpielAufgabe.setAnzahlDerRechtecke(anzahl as Short)
+	this.anzahlDerRechtecke = anzahl
+	RedimRechteckArray(anzahl)
+end sub
+
+
+
+
 
 
 '===========================================Spiel========================================
@@ -343,11 +416,19 @@ end type
 type SpielInterface extends Object
 	public:
 		declare abstract sub spielen(level as short, spiel as short)
+		declare abstract function getNoetigePunkte() as short
+		declare abstract function getAktuellePunkte() as short
+		declare abstract sub setAktuellePunkte(punkte as short)
+		declare abstract function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 end type
 
-type SpielDekorator extends SpielInterface
+type SpielDekorator extends SpielInterface 'TODO Standardimplementierungen der Methoden, die SpielInterfaceSpeicher aufrufen, sowie Konstruktor, an den man das übergeben kann.
 	public:
 		declare abstract sub spielen(level as short, spiel as short)
+		declare abstract function getNoetigePunkte() as short
+		declare abstract function getAktuellePunkte() as short
+		declare abstract sub setAktuellePunkte(punkte as short)
+		declare abstract function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 	private:
 		as SpielInterface pointer SpielInterfaceSpeicher
 end type
@@ -357,235 +438,74 @@ type StandardSpiel extends SpielInterface
 		declare virtual sub spielen(level as short, spiel as short)
 		declare constructor()
 		declare function getAnzahlLevel() as Short
+		declare virtual function getNoetigePunkte() as short
+		declare virtual function getAktuellePunkte() as short
+		declare virtual sub setAktuellePunkte(punkte as short)
+		declare virtual function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 	private:
 		as Short anzahlLevel
+		as Short aktuellePunkte
+		as Short modus
 end type
 
 Constructor StandardSpiel()
 	this.anzahlLevel = 6
+	this.aktuellePunkte = 0
 end Constructor
+
+function StandardSpiel.getAktuellePunkte() as short
+	return this.aktuellePunkte
+end function
+
+sub StandardSpiel.setAktuellePunkte(punkte as short)
+	this.aktuellePunkte = punkte
+end sub
 
 function StandardSpiel.getAnzahlLevel() as Short
 	return this.anzahlLevel
 end function
 
-Sub StandardSpiel.spielen(level as short, spiel as short)
-	Dim As Integer Punkte, AnzahlRechtecke
-	Dim As Integer ende,jj,x_alt,y_alt
-	
-	Dim Abstand As Integer
-	Abstand = GrafikEinstellungen.groesseTextzeichen.y + 1
+function StandardSpiel.getNoetigePunkte() as Short
+	return 100
+end function
 
-	Dim AnzahlRechteckeInLevel(1 to 6) as Short = {5,9,17,27,9,17} 
-	If level < 1 Or level > 6 Then
-		AnzahlRechtecke = 1
-	else 
-		AnzahlRechtecke = AnzahlRechteckeInLevel(level)
-	EndIf
-	if spiel = 2 then
-		AnzahlRechteckeInLevel(1) = 7
-		AnzahlRechteckeInLevel(2) = 10
-		AnzahlRechteckeInLevel(3) = 13
+function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
+	if modus >= 2 then
+		if level <= 4 then
+			function = new standardSpielAufgabe()
+		Else
+			function = new standardSpielAufgabe() 'TODO spielaufgabe mit fliegendem Pfeil
+		end if
+	else
+		if rnd() < 0.3 then
+			function = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
+		Else
+			function = new standardSpielAufgabe()
+		end if
 	end if
-	
-	
-	
-	Dim AktuellerPfeil As Pfeil
-	AktuellerPfeil.farbe = GrafikEinstellungen.DunkleresRot
-	Color RGB(0,0,0),RGB(255,255,255)
-	Punkte = 0
-	
+end function
 
-	'Rechtecke laden
-	Dim RechteckVar(100) As Rechteck
-	Dim as Integer i
-	For i = 1 To AnzahlRechtecke
-		RechteckVar(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
-		RechteckVar(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
-		RechteckVar(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/AnzahlRechtecke * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
-		RechteckVar(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/AnzahlRechtecke * (i)
-		RechteckVar(i).farbe = RGB(0,100,255)
-	Next
+Sub StandardSpiel.spielen(level as short, spiel as short)
+	this.modus = spiel 'TODO Entfernen, wenn statt modus und spiel - Übergabe zwei Klassen für die unterschiedlichen Spiele existieren.
+
 	Do
-	    GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
-	    BildschirmHelfer.lockscreen
+		Dim as SpielAufgabenInterface pointer aktuelleSpielAufgabe = getSpielAufgabe(level)
+		Dim as Boolean erfolg = aktuelleSpielAufgabe->aufgabeAnbietenUndErfolgZurueckgeben()
 		
-		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
-		GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & Level, GrafikEinstellungen.skalierungsfaktor)  
-		GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
-		
-		dim as Boolean waehleDasLetzte = false
-		dim as Boolean pfeilFliegt = false
-		
-		if spiel = 2 and level >= 2 and rnd()<0.20 then
-			waehleDasLetzte = true
-		end if
-		if spiel = 1 and level >= 5 then
-			pfeilFliegt = true
-		end if
-		
-		if not waehleDasLetzte then
-			If not pfeilFliegt Then
-				GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
-			Else
-				GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
-			EndIf
+		if erfolg then
+			this.setAktuellePunkte(this.getAktuellePunkte() + 10)
 		Else
-			If not pfeilFliegt Then
-				GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
-			Else
-				GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
-			EndIf
+			this.setAktuellePunkte(this.getAktuellePunkte() - 10)
 		end if
-		
-		GrafikHelfer.schreibeSkaliertInsGitter(0,4, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUSWAHL_RECHTECK_KLICK), GrafikEinstellungen.skalierungsfaktor)
-		'per Zufall Pfeil erzeugen
-		If not pfeilFliegt Then
-			AktuellerPfeil.x1 = 10 
-			AktuellerPfeil.y1 =GrafikEinstellungen.hoehe/2                                                                          
-			AktuellerPfeil.laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
-			AktuellerPfeil.Richtung = Rnd()*(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)-(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)/2                                                           '|
-		Else
-			Do
-				AktuellerPfeil.x1 = 10 
-				AktuellerPfeil.y1 =GrafikEinstellungen.hoehe/2                                                                          
-				AktuellerPfeil.laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
-				AktuellerPfeil.Richtung = Rnd()*180-180/2
-				For i = 0 To anzahlrechtecke
-					If RechteckVar(i).istPunktDarauf(	Punkt(	RechteckVar(i).x1,int(MatheHelfer.Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,							AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge,RechteckVar(i).x1, 9.81, GrafikEinstellungen.skalierungsfaktor)))						) Then
-							Exit Do
-					EndIf
-				Next
-			Loop		
-		EndIf
-		
-		
-		AktuellerPfeil.anzeigen()
-
-		For i = 1 To AnzahlRechtecke
-			RechteckVar(i).anzeigen()
-		Next
-		
-		'überblenden
-		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
-		Put(0,0),BildschirmHelfer.img2,pset
-		BildschirmHelfer.unlockscreen
-		BildschirmHelfer.ueberblenden()
-		
-		'Eingabe machen
-		Dim as Integer Eingabe
-		Do
-			'If AbbrechenButton() = 1 Then end
-			For i = 1 To AnzahlRechtecke
-				If RechteckVar(i).wirdGeklickt() Then
-					Eingabe = i
-					exit do
-				EndIf
-			Next
-		Loop
-		If Eingabe = 0 Then End
-		
-		'Richtung des AktuellerPfeils einzeichnen
-		dim as single x, y
-		x = AktuellerPfeil.x1+ COS((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '_ Hier wird der Start für das einzeichnen auf die AktuellerPfeilspitze gesetzt.
-		y = AktuellerPfeil.y1+ SIN((AktuellerPfeil.Richtung*Pi)/180)*AktuellerPfeil.laenge '/
-		If pfeilFliegt Then 
-				AktuellerPfeil.x1 = x 'X und Y müssen neu gespeichert werden, da diese Variablen noch gebraucht werden, die Werte aber nicht geändert
-				AktuellerPfeil.y1 = y 'werden dürfen. Die "Orginale" AktuellerPfeil.x1 und AktuellerPfeil.y1 werden nicht mehr gebraucht.
-		EndIf
-		'Die folgende For...Next-Schleife zeichnet eine Linie der AktuellerPfeilrichtung Pixel-für-Pixel ein:
-		ende = 0 'ende = 1 : Schleife wird abgebrochen
-		dim as Integer letztesRechteck = 0
-		For jj = 0 To Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)'ca. max. Länge einer schrägen Linie
-			'lockScreen
-			If not pfeilFliegt Then 'Gerade Linie, durch (Co)Sinus berechnet
-				x = x + COS((AktuellerPfeil.Richtung*Pi)/180)*1
-				y = y + SIN((AktuellerPfeil.Richtung*Pi)/180)*1
-				GrafikHelfer.dickeLinie  Int(x),Int(y),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
-			Else 'Flugbahn
-				x_alt = x
-				y_alt = y
-				x = jj
-				y = int(Mathehelfer.Wurfparabel(AktuellerPfeil.Richtung*-1,AktuellerPfeil.laenge,AktuellerPfeil.x1,AktuellerPfeil.y1,x,  9.81, GrafikEinstellungen.skalierungsfaktor))
-				If x >= AktuellerPfeil.x1 Then
-					GrafikHelfer.dickeLinie  Int(x_alt),Int(y_alt),Int(x),Int(y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
-				EndIf
-			EndIf
-				
-			'unlockScreen
-			'Testen, ob Pixel auf einem Rechteck ist
-			For i = 1 To AnzahlRechtecke
-				If RechteckVar(i).istPunktDarauf(Punkt(x,y)) Then
-					letztesRechteck = i
-				end if
-			Next
-			
-			
-			if (not waehleDasLetzte and letztesRechteck <> 0) or (waehleDasLetzte and x >= GrafikEinstellungen.breite and letztesRechteck<>0) then
-					i = letztesRechteck
-					If i = Eingabe Then 
-
-						Color RGB(0,255,0),RGB(255,255,255)
-						GrafikHelfer.schreibeSkaliertInsGitter(0,8,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10), GrafikEinstellungen.skalierungsfaktor, RGB(0,255,0))
-						Color RGB(0,0,0), RGB(255,255,255)
-						Punkte = Punkte + 10
-						
-						'Richtiges Rechteck grün:
-						Dim as Integer j
-						For j = 0 To 255
-							RechteckVar(i).anzeigen(RGB(0,j,255-j))
-							Sleep 2
-						Next
-						
-					Else
-						'Print 
-						'Print
-						If Punkte > 0 Then 
-							Color RGB(255,0,0),RGB(255,255,255)
-							GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),GrafikEinstellungen.skalierungsfaktor, GrafikEinstellungen.DunkleresRot )
-							Color RGB(0,0,0),RGB(255,255,255)
-							Punkte = Punkte - 10
-						Else
-							Color RGB(255,0,0),RGB(255,255,255)
-							GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),GrafikEinstellungen.skalierungsfaktoR, GrafikEinstellungen.DunkleresRot)
-							Color RGB(0,0,0),RGB(255,255,255) 
-						EndIf
-												
-						'Falsches Rechteck rot:
-						Dim as Integer j
-						For j = 0 To 255
-							RechteckVar(eingabe).anzeigen(RGB(j,0,255-j))
-							Sleep 2
-						Next
-						'For...Next-Schleife: Richtiges Rechteck blinkt grün
-						For j = 0 To 3
-							RechteckVar(i).anzeigen(RGB(0,255,0))
-							Sleep 400
-							RechteckVar(i).anzeigen(RGB(0,100,255))
-							Sleep 400
-						Next
-					End If
-					ende = 1
-				end if
-			
-			
-			dim as short accuracy = 1
-			
-#ifdef __FB_DOS__ 
-			accuracy = 15
-#endif
-			if jj mod accuracy = 0 then
-				regulate(450/accuracy,125)
-			end if
-			If ende = 1 Then Exit For
-		Next
-		Dim abbruchButton as StandardAbbrechenButton
-		MenueFuehrung.Warten(true)
-	Loop Until Punkte >= 100
+		if getAktuellePunkte() < 0 then
+			this.setAktuellePunkte(0)
+		end if
+	Loop Until this.getAktuellePunkte() >= this.getNoetigePunkte()
 
 	Sleep 800
 	dim as Integer AnzeilZeilen = 3
 	
+	dim as integer i
 	for i = 1 to AnzeilZeilen 
 		dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i)
 		GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
