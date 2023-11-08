@@ -325,12 +325,18 @@ end namespace 'MenueFuehrung
 type SpielAufgabenInterface extends Object
 	declare abstract function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 	declare abstract sub rechteckeGenerieren()
+	declare abstract sub pfeileGenerieren()
+	declare abstract function getAnzahlDerPfeile() as Short
+	declare abstract sub setAnzahlDerPfeile(anzahl as Short)
+	declare abstract sub RedimPfeilArray(groesse as Short)
 	declare abstract function getAnzahlDerRechtecke() as Short
 	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
 	declare abstract sub RedimRechteckArray(groesse as Short)
+
 	declare abstract sub zeichneAufgabenstellung()
 	Protected:
 		as Rechteck variablesRechteckArray(any) 
+		as Pfeil variablesPfeilArray(any) 
 end type
 
 
@@ -342,6 +348,11 @@ type SpielAufgabenDekorator extends SpielAufgabenInterface
 	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
 	declare abstract sub RedimRechteckArray(groesse as Short)
 	declare abstract sub zeichneAufgabenstellung()
+	declare abstract function getAnzahlDerPfeile() as Short
+	declare abstract sub setAnzahlDerPfeile(anzahl as Short)
+	declare abstract sub RedimPfeilArray(groesse as Short)
+	declare abstract sub pfeileGenerieren()
+
 end type
 
 type standardSpielAufgabe extends SpielAufgabenInterface
@@ -351,13 +362,20 @@ type standardSpielAufgabe extends SpielAufgabenInterface
 	declare virtual sub setAnzahlDerRechtecke(anzahl as Short)
 	declare virtual sub RedimRechteckArray(groesse as Short)
 	declare virtual sub zeichneAufgabenstellung()
+	declare virtual function getAnzahlDerPfeile() as Short
+	declare virtual sub setAnzahlDerPfeile(anzahl as Short)
+	declare virtual sub RedimPfeilArray(groesse as Short)
+	declare virtual sub pfeileGenerieren()
+
 	declare constructor()
 	Protected:
 		anzahlDerRechtecke as Short
+		anzahlDerPfeile as Short
 end type
 
 constructor standardSpielAufgabe
-	setAnzahlDerRechtecke(6)
+	setAnzahlDerRechtecke(5)
+	setAnzahlDerPfeile(1)
 end constructor
 
 function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
@@ -367,6 +385,12 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 	Dim as Integer i
 	for i = 1 to UBound(this.variablesRechteckArray)
 		this.variablesRechteckArray(i).anzeigen()
+	next
+	
+	pfeileGenerieren()
+	' Pfeile Anzeigen
+	for i = 1 to UBound(this.variablesPfeilArray)
+		this.variablesPfeilArray(i).anzeigen()
 	next
 	
 	this.zeichneAufgabenstellung()
@@ -396,19 +420,35 @@ sub standardSpielAufgabe.zeichneAufgabenstellung()
 	GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
 end sub
 
-sub standardSpielAufgabe.RedimRechteckArray(groesse as Short)
-	Redim variablesRechteckArray (1 to groesse)
-end sub
-
 sub standardSpielAufgabe.rechteckeGenerieren()
 	RedimRechteckArray(getAnzahlDerRechtecke())
-	Dim as Short i
+	dim i as Short
 	For i = 1 To getAnzahlDerRechtecke()
 		variablesRechteckArray(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
 		variablesRechteckArray(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
 		variablesRechteckArray(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
 		variablesRechteckArray(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i)
 		variablesRechteckArray(i).farbe = RGB(0,100,255)
+	Next
+End sub
+
+sub standardSpielAufgabe.RedimRechteckArray(groesse as Short)
+	Redim variablesRechteckArray (1 to groesse)
+end sub
+
+sub standardSpielAufgabe.RedimPfeilArray(groesse as Short)
+	Redim variablesPfeilArray (1 to groesse)
+end sub
+
+sub standardSpielAufgabe.pfeileGenerieren()
+	RedimPfeilArray(getAnzahlDerPfeile())
+	Dim as Short i
+	For i = 1 To getAnzahlDerPfeile()
+		variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
+		variablesPfeilArray(i).x1 = 10 
+		variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2                                                                          
+		variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
+		variablesPfeilArray(i).Richtung = Rnd()*(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)-(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)/2  
 	Next
 end sub
 
@@ -421,6 +461,14 @@ sub standardSpielAufgabe.setAnzahlDerRechtecke(anzahl as Short)
 	RedimRechteckArray(anzahl)
 end sub
 
+function standardSpielAufgabe.getAnzahlDerPfeile() as Short
+	return this.anzahlDerPfeile
+end function
+
+sub standardSpielAufgabe.setAnzahlDerPfeile(anzahl as Short)
+	this.anzahlDerPfeile = anzahl
+	RedimRechteckArray(anzahl)
+end sub
 
 
 
