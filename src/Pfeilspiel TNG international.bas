@@ -336,10 +336,16 @@ type SpielAufgabenInterface extends Object
 	declare abstract sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare abstract function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare abstract sub zeichneAufgabenstellung()
+	declare abstract sub setAktuellePunkte(p as short)
 	Protected:
 		as Rechteck variablesRechteckArray(any) 
 		as Pfeil variablesPfeilArray(any) 
 		as PunktSingle pfeilSchussPositionen(any) 'Benutzt für pfeilRichtungsVerfolgungInkrement().
+		anzahlDerRechtecke as Short
+		anzahlDerPfeile as Short
+		ausgewaehltesRechteckIndex as Short
+		falschBereitsAngezeigt as Boolean = false
+		aktuellePunkte as short
 end type
 
 
@@ -358,6 +364,7 @@ type SpielAufgabenDekorator extends SpielAufgabenInterface
 	declare abstract function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
 	declare abstract sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare abstract function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare abstract sub setAktuellePunkte(p as short)
 
 end type
 
@@ -375,12 +382,11 @@ type standardSpielAufgabe extends SpielAufgabenInterface
 	declare virtual function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
 	declare virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
-
+	declare virtual sub setAktuellePunkte(p as short)
+	declare sub zeigeKorrekteWahlAn(RechteckIndex as Short)
+	declare sub zeigeInkorrekteWahlAn(RechteckIndexKorrekt as Short,RechteckIndexFalsch as Short)
+	as short korrektesRechteck = -1
 	declare constructor()
-	Protected:
-		anzahlDerRechtecke as Short
-		anzahlDerPfeile as Short
-		ausgewaehltesRechteckIndex as Short
 end type
 
 constructor standardSpielAufgabe
@@ -445,7 +451,22 @@ function standardSpielAufgabe.pfeilRichtungVerfolgen() as boolean
 end function
 
 function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as boolean
-	return this.variablesRechteckArray(this.ausgewaehltesRechteckIndex).istPunktDarauf(Punkt(this.pfeilSchussPositionen(1).x,this.pfeilSchussPositionen(1).y))
+	
+	dim as short i 
+	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
+		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(1).x,pfeilSchussPositionen(1).y)) then
+			korrektesRechteck = i
+		end if
+	Next
+	if korrektesRechteck <> -1 Then
+		if korrektesRechteck = ausgewaehltesRechteckIndex then
+			zeigeKorrekteWahlAn(ausgewaehltesRechteckIndex)
+			return true
+		Else
+			zeigeInkorrekteWahlAn(korrektesRechteck, ausgewaehltesRechteckIndex)
+			return false
+		end if
+	end if
 end function
 
 sub standardSpielAufgabe.pfeilRichtungsVerfolgungInkrement(jj as integer)
@@ -514,7 +535,52 @@ sub standardSpielAufgabe.setAnzahlDerPfeile(anzahl as Short)
 	RedimRechteckArray(anzahl)
 end sub
 
+sub standardSpielAufgabe.setAktuellePunkte(p as short)
+	this.aktuellePunkte = p
+end sub
 
+sub standardSpielAufgabe.zeigeKorrekteWahlAn(i as Short)
+	Color RGB(0,255,0),RGB(255,255,255)
+	GrafikHelfer.schreibeSkaliertInsGitter(0,8,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10), GrafikEinstellungen.skalierungsfaktor, RGB(0,255,0))
+	Color RGB(0,0,0), RGB(255,255,255)
+	
+	'Richtiges Rechteck grün:
+	Dim as Integer j
+	For j = 0 To 255
+		variablesRechteckArray(i).anzeigen(RGB(0,j,255-j))
+		Sleep 2
+	Next
+end sub 
+
+sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
+	if not falschBereitsAngezeigt then
+		falschBereitsAngezeigt = true
+		'Print
+		If this.aktuellePunkte > 0 Then 
+			Color RGB(255,0,0),RGB(255,255,255)
+			GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),GrafikEinstellungen.skalierungsfaktor, GrafikEinstellungen.DunkleresRot )
+			Color RGB(0,0,0),RGB(255,255,255)
+		Else
+			Color RGB(255,0,0),RGB(255,255,255)
+			GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),GrafikEinstellungen.skalierungsfaktoR, GrafikEinstellungen.DunkleresRot)
+			Color RGB(0,0,0),RGB(255,255,255) 
+		EndIf
+								
+		'Falsches Rechteck rot:
+		Dim as Integer j
+		For j = 0 To 255
+			variablesRechteckArray(eingabe).anzeigen(RGB(j,0,255-j))
+			Sleep 2
+		Next
+		'For...Next-Schleife: Richtiges Rechteck blinkt grün
+		For j = 0 To 3
+			variablesRechteckArray(i).anzeigen(RGB(0,255,0))
+			Sleep 400
+			variablesRechteckArray(i).anzeigen(RGB(0,100,255))
+			Sleep 400
+		Next
+	end if
+end sub
 
 
 
@@ -606,6 +672,8 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
 		
 		Dim as SpielAufgabenInterface pointer aktuelleSpielAufgabe = getSpielAufgabe(level)
+		
+		aktuelleSpielAufgabe->setAktuellePunkte(this.getAktuellePunkte)
 		
 		BildschirmHelfer.lockScreen()
 		this.zeichneHintergrund()
