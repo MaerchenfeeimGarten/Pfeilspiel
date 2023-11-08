@@ -332,11 +332,14 @@ type SpielAufgabenInterface extends Object
 	declare abstract function getAnzahlDerRechtecke() as Short
 	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
 	declare abstract sub RedimRechteckArray(groesse as Short)
-
+	declare abstract function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
+	declare abstract sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare abstract function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare abstract sub zeichneAufgabenstellung()
 	Protected:
 		as Rechteck variablesRechteckArray(any) 
 		as Pfeil variablesPfeilArray(any) 
+		as PunktSingle pfeilSchussPositionen(any) 'Benutzt für pfeilRichtungsVerfolgungInkrement().
 end type
 
 
@@ -352,6 +355,9 @@ type SpielAufgabenDekorator extends SpielAufgabenInterface
 	declare abstract sub setAnzahlDerPfeile(anzahl as Short)
 	declare abstract sub RedimPfeilArray(groesse as Short)
 	declare abstract sub pfeileGenerieren()
+	declare abstract function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
+	declare abstract sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare abstract function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 
 end type
 
@@ -366,11 +372,15 @@ type standardSpielAufgabe extends SpielAufgabenInterface
 	declare virtual sub setAnzahlDerPfeile(anzahl as Short)
 	declare virtual sub RedimPfeilArray(groesse as Short)
 	declare virtual sub pfeileGenerieren()
+	declare virtual function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
+	declare virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 
 	declare constructor()
 	Protected:
 		anzahlDerRechtecke as Short
 		anzahlDerPfeile as Short
+		ausgewaehltesRechteckIndex as Short
 end type
 
 constructor standardSpielAufgabe
@@ -379,8 +389,8 @@ constructor standardSpielAufgabe
 end constructor
 
 function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+
 	rechteckeGenerieren()
-	
 	' Rechtecke Anzeigen
 	Dim as Integer i
 	for i = 1 to UBound(this.variablesRechteckArray)
@@ -406,15 +416,46 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 		'If AbbrechenButton() = 1 Then end
 		For i = 1 To UBound(this.variablesRechteckArray)
 			If variablesRechteckArray(i).wirdGeklickt() Then
-				Eingabe = i
+				this.ausgewaehltesRechteckIndex = i
 				exit do
 			EndIf
 		Next
 	Loop
 	
-	'ueberpruefen
-	return Eingabe = 1
+	return this.pfeilRichtungVerfolgen()
 end function
+
+function standardSpielAufgabe.pfeilRichtungVerfolgen() as boolean
+	dim as integer jj
+	For jj = 0 To Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)
+		pfeilRichtungsVerfolgungInkrement(jj)
+		if korrektesRechteckGetroffen() then
+			return true
+		end if
+		
+		dim as short accuracy = 1
+#ifdef __FB_DOS__ 
+		accuracy = 15
+#endif
+		if jj mod accuracy = 0 then
+			regulate(450/accuracy,125)
+		end if
+	next
+	return korrektesRechteckGetroffen(true)
+end function
+
+function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as boolean
+	return this.variablesRechteckArray(this.ausgewaehltesRechteckIndex).istPunktDarauf(Punkt(this.pfeilSchussPositionen(1).x,this.pfeilSchussPositionen(1).y))
+end function
+
+sub standardSpielAufgabe.pfeilRichtungsVerfolgungInkrement(jj as integer)
+	dim as integer i
+	for i = lbound(pfeilSchussPositionen) to ubound(pfeilSchussPositionen)
+		pfeilSchussPositionen(i).x = pfeilSchussPositionen(i).x + COS((variablesPfeilArray(i).Richtung*Pi)/180)*1
+		pfeilSchussPositionen(i).y = pfeilSchussPositionen(i).y + SIN((variablesPfeilArray(i).Richtung*Pi)/180)*1
+		GrafikHelfer.dickeLinie  Int(pfeilSchussPositionen(i).x),Int(pfeilSchussPositionen(i).y),Int(pfeilSchussPositionen(i).x),Int(pfeilSchussPositionen(i).y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
+	next
+end sub
 
 sub standardSpielAufgabe.zeichneAufgabenstellung()
 	GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
@@ -442,6 +483,7 @@ end sub
 
 sub standardSpielAufgabe.pfeileGenerieren()
 	RedimPfeilArray(getAnzahlDerPfeile())
+	Redim pfeilSchussPositionen (1 to getAnzahlDerPfeile())
 	Dim as Short i
 	For i = 1 To getAnzahlDerPfeile()
 		variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
@@ -449,6 +491,8 @@ sub standardSpielAufgabe.pfeileGenerieren()
 		variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2                                                                          
 		variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
 		variablesPfeilArray(i).Richtung = Rnd()*(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)-(68*GrafikEinstellungen.hoehe/GrafikEinstellungen.breite)/2  
+		pfeilSchussPositionen(i).x = variablesPfeilArray(i).x1+ COS((variablesPfeilArray(i).Richtung*Pi)/180)*variablesPfeilArray(i).laenge
+		pfeilSchussPositionen(i).y = variablesPfeilArray(i).y1+ SIN((variablesPfeilArray(i).Richtung*Pi)/180)*variablesPfeilArray(i).laenge
 	Next
 end sub
 
