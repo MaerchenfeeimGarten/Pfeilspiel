@@ -361,7 +361,7 @@ type standardSpielAufgabe extends SpielAufgabenInterface
 	declare virtual function getAnzahlDerRechtecke() as Short
 	declare virtual sub setAnzahlDerRechtecke(anzahl as Short)
 	declare virtual sub RedimRechteckArray(groesse as Short)
-	declare virtual sub zeichneAufgabenstellung()
+ 	declare virtual sub zeichneAufgabenstellung()
 	declare virtual function getAnzahlDerPfeile() as Short
 	declare virtual sub setAnzahlDerPfeile(anzahl as Short)
 	declare virtual sub RedimPfeilArray(groesse as Short)
@@ -561,6 +561,7 @@ end sub
 type SpielAufgabenWurf extends standardSpielAufgabe
 	declare  virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare  virtual sub pfeileGenerieren()
+	declare  virtual sub zeichneAufgabenstellung()
 end type
 
 sub SpielAufgabenWurf.pfeilRichtungsVerfolgungInkrement(jj as integer)
@@ -577,6 +578,10 @@ sub SpielAufgabenWurf.pfeilRichtungsVerfolgungInkrement(jj as integer)
 			GrafikHelfer.dickeLinie  Int(pfeilSchussPositionen(i).x-1),Int(y_min_1),Int(pfeilSchussPositionen(i).x),Int(pfeilSchussPositionen(i).y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
 		EndIf
 	next
+end sub
+
+sub SpielAufgabenWurf.zeichneAufgabenstellung()
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 sub SpielAufgabenWurf.pfeileGenerieren()
@@ -664,9 +669,10 @@ function StandardSpiel.getNoetigePunkte() as Short
 end function
 
 function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
+	Dim as SpielAufgabenInterface pointer sai
 	if modus = 1 then
 		if level <= 4 then
-			Dim as SpielAufgabenInterface pointer sai
+			
 			sai = new standardSpielAufgabe()
 			select case level
 				case 1
@@ -693,11 +699,13 @@ function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface
 			function = sai
 		end if
 	else
-		if rnd() < 0.3 then
-			function = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
+		if rnd() > 0.3 then
+			sai = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
 		Else
-			function = new standardSpielAufgabe()
+			sai = new SpielAufgabenWurf()
 		end if
+		sai->setAnzahlDerRechtecke(5+rnd()*level*2)
+		return sai
 	end if
 end function
 
