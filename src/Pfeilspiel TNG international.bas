@@ -321,9 +321,15 @@ namespace MenueFuehrung
 end namespace 'MenueFuehrung
 
 '=========================================SpielAufgabe==================================
+enum trinaer
+	_True
+	_False
+	_Null
+end enum
+
 
 type SpielAufgabenInterface extends Object
-	declare abstract function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+	declare abstract function aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 	declare abstract sub rechteckeGenerieren()
 	declare abstract sub pfeileGenerieren()
 	declare abstract function getAnzahlDerPfeile() as Short
@@ -332,9 +338,9 @@ type SpielAufgabenInterface extends Object
 	declare abstract function getAnzahlDerRechtecke() as Short
 	declare abstract sub setAnzahlDerRechtecke(anzahl as Short)
 	declare abstract sub RedimRechteckArray(groesse as Short)
-	declare abstract function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
+	declare abstract function pfeilRichtungVerfolgen() as trinaer 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
 	declare abstract sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
-	declare abstract function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare abstract function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as trinaer 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare abstract sub zeichneAufgabenstellung()
 	Protected:
 		as Rechteck variablesRechteckArray(any) 
@@ -346,88 +352,11 @@ type SpielAufgabenInterface extends Object
 		falschBereitsAngezeigt as Boolean = false
 end type
 
-'====================================SpielAufgabe/Dekorator=============================
-
-type SpielAufgabenDekorator extends SpielAufgabenInterface
-	as SpielAufgabenInterface pointer spielAufgabenSpeicher
-	declare constructor(spielAufgabenSpeicher as SpielAufgabenInterface ptr)
-	declare virtual function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
-	declare virtual sub rechteckeGenerieren()
-	declare virtual function getAnzahlDerRechtecke() as Short
-	declare virtual sub setAnzahlDerRechtecke(anzahl as Short)
-	declare virtual sub RedimRechteckArray(groesse as Short)
-	declare virtual sub zeichneAufgabenstellung()
-	declare virtual function getAnzahlDerPfeile() as Short
-	declare virtual sub setAnzahlDerPfeile(anzahl as Short)
-	declare virtual sub RedimPfeilArray(groesse as Short)
-	declare virtual sub pfeileGenerieren()
-	declare virtual function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
-	declare virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
-	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
-end type
-
-constructor SpielAufgabenDekorator(spielAufgabe as SpielAufgabenInterface ptr)
-	this.spielAufgabenSpeicher = spielAufgabe
-end constructor
-
-function SpielAufgabenDekorator.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
-	return this.spielAufgabenSpeicher->aufgabeAnbietenUndErfolgZurueckgeben()
-end function
-
-sub SpielAufgabenDekorator.rechteckeGenerieren()
-	this.spielAufgabenSpeicher->rechteckeGenerieren()
-end sub
-
-function SpielAufgabenDekorator.getAnzahlDerRechtecke() as Short
-	return this.spielAufgabenSpeicher->getAnzahlDerRechtecke()
-end function
-
-sub SpielAufgabenDekorator.setAnzahlDerRechtecke(anzahl as Short)
-	this.spielAufgabenSpeicher->setAnzahlDerRechtecke(anzahl)
-end sub
-
-sub SpielAufgabenDekorator.RedimRechteckArray(groesse as Short)
-	this.spielAufgabenSpeicher->RedimRechteckArray(groesse)
-end sub
-
-sub SpielAufgabenDekorator.zeichneAufgabenstellung()
-	this.spielAufgabenSpeicher->zeichneAufgabenstellung()
-end sub
-
-function SpielAufgabenDekorator.getAnzahlDerPfeile() as Short
-	return this.spielAufgabenSpeicher->getAnzahlDerPfeile()
-end function
-
-sub SpielAufgabenDekorator.setAnzahlDerPfeile(anzahl as Short)
-	this.spielAufgabenSpeicher->setAnzahlDerPfeile(anzahl)
-end sub
-
-sub SpielAufgabenDekorator.RedimPfeilArray(groesse as Short)
-	this.spielAufgabenSpeicher->RedimPfeilArray(groesse)
-end sub
-
-sub SpielAufgabenDekorator.pfeileGenerieren()
-	this.spielAufgabenSpeicher->pfeileGenerieren()
-end sub
-
-function SpielAufgabenDekorator.pfeilRichtungVerfolgen() as boolean
-	return this.spielAufgabenSpeicher->pfeilRichtungVerfolgen()
-end function
-
-sub SpielAufgabenDekorator.pfeilRichtungsVerfolgungInkrement(jj as integer)
-	this.spielAufgabenSpeicher->pfeilRichtungsVerfolgungInkrement(jj)
-end sub
-
-function SpielAufgabenDekorator.korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean
-	return this.spielAufgabenSpeicher->korrektesRechteckGetroffen(letzterDurchlauf)
-end function
-
-
- 
 '====================================SpielAufgabe/Standard=============================
 
+
 type standardSpielAufgabe extends SpielAufgabenInterface
-	declare virtual function aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+	declare virtual function aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 	declare virtual sub rechteckeGenerieren()
 	declare virtual function getAnzahlDerRechtecke() as Short
 	declare virtual sub setAnzahlDerRechtecke(anzahl as Short)
@@ -437,9 +366,9 @@ type standardSpielAufgabe extends SpielAufgabenInterface
 	declare virtual sub setAnzahlDerPfeile(anzahl as Short)
 	declare virtual sub RedimPfeilArray(groesse as Short)
 	declare virtual sub pfeileGenerieren()
-	declare virtual function pfeilRichtungVerfolgen() as boolean 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
+	declare virtual function pfeilRichtungVerfolgen() as trinaer 'Zeichnet die Pfeilrichtungsverfolgung und gibt am Ende zurück, ob das richige Element getroffen wurde.
 	declare virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
-	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as boolean 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as trinaer 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare sub zeigeKorrekteWahlAn(RechteckIndex as Short)
 	declare sub zeigeInkorrekteWahlAn(RechteckIndexKorrekt as Short,RechteckIndexFalsch as Short)
 	as short korrektesRechteck = -1
@@ -451,7 +380,7 @@ constructor standardSpielAufgabe
 	setAnzahlDerPfeile(1)
 end constructor
 
-function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
+function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 
 	rechteckeGenerieren()
 	' Rechtecke Anzeigen
@@ -488,12 +417,13 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as Boolean
 	return this.pfeilRichtungVerfolgen()
 end function
 
-function standardSpielAufgabe.pfeilRichtungVerfolgen() as boolean
+function standardSpielAufgabe.pfeilRichtungVerfolgen() as trinaer
 	dim as integer jj
 	For jj = 0 To Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)
 		pfeilRichtungsVerfolgungInkrement(jj)
-		if korrektesRechteckGetroffen() then
-			return true
+		dim as trinaer ergebnis = korrektesRechteckGetroffen()
+		if ergebnis<>trinaer._null then
+			return ergebnis
 		end if
 		
 		dim as short accuracy = 1
@@ -507,7 +437,7 @@ function standardSpielAufgabe.pfeilRichtungVerfolgen() as boolean
 	return korrektesRechteckGetroffen(true)
 end function
 
-function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as boolean
+function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as trinaer
 	
 	dim as short i 
 	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
@@ -518,11 +448,13 @@ function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boo
 	if korrektesRechteck <> -1 Then
 		if korrektesRechteck = ausgewaehltesRechteckIndex then
 			zeigeKorrekteWahlAn(ausgewaehltesRechteckIndex)
-			return true
+			return trinaer._true
 		Else
 			zeigeInkorrekteWahlAn(korrektesRechteck, ausgewaehltesRechteckIndex)
-			return false
+			return trinaer._false
 		end if
+	else
+		return trinaer._null
 	end if
 end function
 
@@ -625,15 +557,10 @@ end sub
 
 '=======================================SpielAufgabe/Wurf================================
 
-'type SpielAufgabenDekoratorWurf extends SpielAufgabenDekorator
-'	declare constructor(spielAufgabenSpeicher as SpielAufgabenInterface ptr)
-'	declare constructor(byref as const SpielAufgabenDekoratorWurf)
-'	declare overload virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
-'end type
 
 type SpielAufgabenWurf extends standardSpielAufgabe
-	'declare constructor(byref as const SpielAufgabenDekoratorWurf)
 	declare  virtual sub pfeilRichtungsVerfolgungInkrement(jj as integer) 'Jeweils ein Schritt des Liniezeichens der Pfeile. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare  virtual sub pfeileGenerieren()
 end type
 
 sub SpielAufgabenWurf.pfeilRichtungsVerfolgungInkrement(jj as integer)
@@ -652,13 +579,25 @@ sub SpielAufgabenWurf.pfeilRichtungsVerfolgungInkrement(jj as integer)
 	next
 end sub
 
-'constructor SpielAufgabenDekoratorWurf(spielAufgabenSpeicher as SpielAufgabenInterface ptr)
-'	base(spielAufgabenSpeicher)
-'end constructor
-
-'constructor SpielAufgabenDekoratorWurf(byref sadw as const SpielAufgabenDekoratorWurf)
-'	base(sadw)
-'end constructor
+sub SpielAufgabenWurf.pfeileGenerieren()
+	RedimPfeilArray(getAnzahlDerPfeile())
+	Redim pfeilSchussPositionen (1 to getAnzahlDerPfeile())
+	Dim as Short i,j
+	For i = 1 To getAnzahlDerPfeile()
+		Do
+			variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
+			variablesPfeilArray(i).x1 = 10 
+			variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2                                                                          
+			variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
+			variablesPfeilArray(i).Richtung = Rnd()*180-180/2
+			For j = 1 To getAnzahlDerRechtecke()
+				If variablesRechteckArray(j).istPunktDarauf(	Punkt(	variablesRechteckArray(j).x1,int(MatheHelfer.Wurfparabel(variablesPfeilArray(i).Richtung*-1,variablesPfeilArray(i).laenge,variablesPfeilArray(i).x1+ COS((variablesPfeilArray(i).Richtung*Pi)/180)*variablesPfeilArray(i).laenge,							variablesPfeilArray(i).y1+ SIN((variablesPfeilArray(i).Richtung*Pi)/180)*variablesPfeilArray(i).laenge,variablesRechteckArray(j).x1, 9.81, GrafikEinstellungen.skalierungsfaktor)))						) Then
+						Exit Do
+				EndIf
+			Next
+		Loop	
+	Next
+end sub
 
 '===========================================Spiel========================================
 
@@ -775,16 +714,16 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		this.zeichneHintergrund()
 		this.zeichneLevelInfo(level, this.getAktuellePunkte)
 		
-		Dim as Boolean erfolg = aktuelleSpielAufgabe->aufgabeAnbietenUndErfolgZurueckgeben()
+		Dim as trinaer erfolg = aktuelleSpielAufgabe->aufgabeAnbietenUndErfolgZurueckgeben()
 		
-		if erfolg then
+		if erfolg = trinaer._true then
 			this.setAktuellePunkte(this.getAktuellePunkte() + 10)
 			
 			Color RGB(0,255,0),RGB(255,255,255)
 			GrafikHelfer.schreibeSkaliertInsGitter(0,8,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10), GrafikEinstellungen.skalierungsfaktor, RGB(0,255,0))
 			Color RGB(0,0,0), RGB(255,255,255)
 	
-		Else
+		elseif erfolg = trinaer._false then
 			If this.getAktuellePunkte() > 0 Then 
 				Color RGB(255,0,0),RGB(255,255,255)
 				GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),GrafikEinstellungen.skalierungsfaktor, GrafikEinstellungen.DunkleresRot )
@@ -796,6 +735,8 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 			End If
 			
 			this.setAktuellePunkte(this.getAktuellePunkte() - 10)
+		else 'trinaer._null
+			' Auch der Computer macht mal Fehler...
 		end if
 		if getAktuellePunkte() < 0 then
 			this.setAktuellePunkte(0)
