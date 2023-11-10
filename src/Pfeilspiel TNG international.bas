@@ -249,10 +249,9 @@ namespace MenueFuehrung
 		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 		Color RGB(0,0,0),RGB(140,0,250)
 		GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
-		'init Textbox
-		dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
+		
 
-		TextField.SetColour(rgb(0,0,0))
+		
 
 		ZeichneLogo(RGB(0,70,100))
 		Dim as Integer j, i
@@ -290,34 +289,31 @@ namespace MenueFuehrung
 			Next
 		Loop
 		
-		Dim as String SEingabe
-		Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"}
-		if spiel = 2 then
-			levelcode(1) = ""
-			levelcode(2) = "705001"
-			levelcode(3) = "541227"
-			levelcode(4) = "107528"
-			levelcode(5) = "137526"
-			levelcode(6) = "305191"
-		end if
-		
-		If len(levelcode(Level)) > 0 then
-			SEingabe =  LevelCodeInput(TextField)
-		end if
-		if Level = 1 or SEingabe = levelcode(1) then
-			GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-			MenueFuehrung.Warten()
-			sleep 500
-		else 
-			GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
-			MenueFuehrung.Warten()
-			sleep 500
-			BildschirmHelfer.FensterSchliessen
-		end if
-		
+
 		return level
 	End Function
 
+	function ueberpruefeLevelCode(korrekterLevelCode as String, Level as Short) as boolean
+		Dim as String SEingabe
+		
+		'init Textbox
+		dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
+		TextField.SetColour(rgb(0,0,0))
+		
+		If len(korrekterLevelCode) > 0 then
+			SEingabe =  LevelCodeInput(TextField)
+		end if
+		if SEingabe = korrekterLevelCode or "" = korrekterLevelCode then
+			GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
+			MenueFuehrung.Warten()
+			return true
+		else 
+			GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
+			MenueFuehrung.Warten()
+			return false
+		end if
+		
+	end function
 end namespace 'MenueFuehrung
 
 '=========================================SpielAufgabe==================================
@@ -615,9 +611,10 @@ type SpielInterface extends Object
 		declare abstract function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 		declare abstract sub zeichneHintergrund()
 		declare abstract sub zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
+		declare abstract function getLevelCode(level as short, spiel as short) as String
 end type
 
-type SpielDekorator extends SpielInterface 'TODO Standardimplementierungen der Methoden, die SpielInterfaceSpeicher aufrufen, sowie Konstruktor, an den man das übergeben kann.
+type SpielDekorator extends SpielInterface
 	public:
 		declare abstract sub spielen(level as short, spiel as short)
 		declare abstract function getNoetigePunkte() as short
@@ -626,6 +623,7 @@ type SpielDekorator extends SpielInterface 'TODO Standardimplementierungen der M
 		declare abstract function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 		declare abstract sub zeichneHintergrund()
 		declare abstract sub zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
+		declare abstract function getLevelCode(level as short, spiel as short) as String
 	private:
 		as SpielInterface pointer SpielInterfaceSpeicher
 end type
@@ -641,6 +639,7 @@ type StandardSpiel extends SpielInterface
 		declare virtual function getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 		declare virtual sub zeichneHintergrund()
 		declare virtual sub zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
+		declare virtual function getLevelCode(level as short, spiel as short) as String
 	private:
 		as Short anzahlLevel
 		as Short aktuellePunkte
@@ -777,16 +776,37 @@ sub StandardSpiel.zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
 	GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
 end sub
 
+function StandardSpiel.getLevelCode(level as short, spiel as short) as String
+	if spiel = 1 and level >= 1 and level <= 6 then
+		Dim levelcode(1 to 6) as String = {"","009662","286735","530147","592542","499469"}
+		return levelcode(level)
+	Elseif spiel = 2 and level>= 1 and level <= 6 then
+		Dim levelcode(1 to 7) as String = {"","780845","921615","084068","954167","347574","867379"}
+		return levelcode(level)
+	end if
+	return ""
+end function
+
 '=========================================Programm=======================================
 
 Sub Programm()
-    MenueFuehrung.Sprachauswahl()
 	Do
+		MenueFuehrung.Sprachauswahl()
 		Dim as Short spielnummer = MenueFuehrung.Spielauswahl()
 		Dim as SpielInterface pointer spielobjekt = new StandardSpiel
 		Dim as Short level
+		
 		level = MenueFuehrung.FrageNachLevel(spielnummer)
-		spielobjekt->Spielen(level, spielnummer)
+		
+		Dim as boolean levelcodeKorrekt
+		levelcodeKorrekt = MenueFuehrung.ueberpruefeLevelCode(spielobjekt->getLevelCode(level, spielnummer),level)
+		
+		if levelcodeKorrekt then
+			spielobjekt->Spielen(level, spielnummer)
+		Else
+			BildschirmHelfer.FensterSchliessen()
+			End
+		end if
 	Loop Until not MenueFuehrung.Weiterspielen()
 End Sub
 
