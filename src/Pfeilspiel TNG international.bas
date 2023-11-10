@@ -258,7 +258,7 @@ namespace MenueFuehrung
 		if spiel = 1 then
 				j = 6 'Anzahl der Level
 		else
-				j = 3
+				j = 4
 		end if
 		'Auswahlbuttons laden:
 		Dim LevelAuswahl(100) As rechteck
@@ -642,11 +642,16 @@ type SpielAufgabeFarben extends standardSpielAufgabe
 	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as trinaer 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
 	declare virtual sub rechteckeGenerieren()
 	declare virtual sub pfeileGenerieren()
+	declare sub setDurcheinander(t as boolean)
 	protected:
 		as Integer farben(0 to 2)
 		as short korrekteFarbeIndex = -1
+		as boolean durcheinander = false
 end type
 
+sub SpielAufgabeFarben.setDurcheinander(t as boolean)
+	this.durcheinander = t
+end sub
 sub SpielAufgabeFarben.pfeileGenerieren()
     'setAnzahlDerPfeile(20)
     
@@ -716,6 +721,11 @@ sub SpielAufgabeFarben.rechteckeGenerieren()
 		variablesRechteckArray(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
 		variablesRechteckArray(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i)
 		variablesRechteckArray(i).farbe = farben(i mod 3)
+		if durcheinander then
+			dim as integer verschiebung = (rnd()-0.56)*-GrafikEinstellungen.breite/4*0.9
+			variablesRechteckArray(i).x1 += verschiebung
+			variablesRechteckArray(i).x2 += verschiebung
+		end if
 	Next
 	
 	korrekteFarbeIndex = rnd()*30000 mod 3
@@ -838,11 +848,16 @@ function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface
 		Else
 			sai = new SpielAufgabeDasLetzte()
 		end if
-		if level = 2 and rnd() > 0.3 then
-			sai = new SpielAufgabeFarben()
+		if level >= 2 and rnd() > 0.3 then
+			dim as  SpielAufgabeFarben pointer saf
+			saf = new SpielAufgabeFarben()
 			multiplikator = 2
+			if level >= 4  and rnd() > 0.2 then
+				saf->setDurcheinander(true)
+			end if
+			sai = saf
 		end if
-		if level >= 3 and rnd() > 0.2 then
+		if level >= 3 and rnd() < 0.2 then
 			sai = new SpielAufgabenWurf()
 		end if
 		sai->setAnzahlDerRechtecke((5+rnd()*level*2)*multiplikator)
