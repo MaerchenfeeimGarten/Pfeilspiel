@@ -600,6 +600,37 @@ sub SpielAufgabenWurf.pfeileGenerieren()
 	Next
 end sub
 
+'===================================SpielAufgabe/das Letzte==============================
+
+type SpielAufgabeDasLetzte extends standardSpielAufgabe
+	declare virtual sub zeichneAufgabenstellung()
+	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as trinaer 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
+end type
+
+function SpielAufgabeDasLetzte.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as trinaer
+	
+	dim as short i 
+	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
+		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(1).x,pfeilSchussPositionen(1).y)) then
+			korrektesRechteck = i
+		end if
+	Next
+	if korrektesRechteck <> -1 and letzterDurchlauf Then
+		if korrektesRechteck = ausgewaehltesRechteckIndex then
+			zeigeKorrekteWahlAn(ausgewaehltesRechteckIndex)
+			return trinaer._true
+		Else
+			zeigeInkorrekteWahlAn(korrektesRechteck, ausgewaehltesRechteckIndex)
+			return trinaer._false
+		end if
+	else
+		return trinaer._null
+	end if
+end function
+
+sub SpielAufgabeDasLetzte.zeichneAufgabenstellung()
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+end sub
 '===========================================Spiel========================================
 
 type SpielInterface extends Object
@@ -701,6 +732,9 @@ function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface
 		if rnd() > 0.3 then
 			sai = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
 		Else
+			sai = new SpielAufgabeDasLetzte()
+		end if
+		if level >= 3 and rnd() > 0.2 then
 			sai = new SpielAufgabenWurf()
 		end if
 		sai->setAnzahlDerRechtecke(5+rnd()*level*2)

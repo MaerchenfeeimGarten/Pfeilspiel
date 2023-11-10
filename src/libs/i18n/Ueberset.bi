@@ -24,6 +24,7 @@ Namespace Uebersetzungen
 		VIELFALT_PPT
 		AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK
 		AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK
+		AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK
 	end enum 
 
 	enum SpracheEnum explicit
@@ -106,13 +107,19 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow point to?"
-				case SpracheEnum.FRANZOESISCH: return "Task: sur lequel le rectangle la fleche rouge pointe-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: sur lequel le rectangle la fleche rouge pointe-t-elle?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK:
 			select case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow flies to?"
-				case SpracheEnum.FRANZOESISCH: return "Tâche: a quel rectangle la fleche rouge vole-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: a quel rectangle la fleche rouge vole-t-elle?"
+			end select
+		case TextEnum.AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK:
+			select case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil zuletzt?"
+				case SpracheEnum.ENGLISCH: return "Task: Which last rectangle does the red arrow points to?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle la fleche rouge montre-t-elle en dernier lieu?"
 			end select
 		case TextEnum.AUSWAHL_RECHTECK_KLICK:
 			select case s
