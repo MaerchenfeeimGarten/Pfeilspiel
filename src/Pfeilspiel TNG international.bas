@@ -900,7 +900,7 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		
 		dim as integer i
 		for i = 1 to AnzeilZeilen 
-			dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i)
+			dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i, getLevelCode(level+1,spiel))
 			GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
 		next
 		

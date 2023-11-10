@@ -39,8 +39,7 @@ Namespace Uebersetzungen
 	Dim Shared Sprache as SpracheEnum
 	
 	Declare Function uebersetzterText(s as SpracheEnum, t as TextEnum) As String
-	Declare Function uebersetzterGlueckwunschtext(s as SpracheEnum, level as Integer, zeilenauswahl as Integer) As String
-
+	Declare Function uebersetzterGlueckwunschtext(s as SpracheEnum, level as Integer, zeilenauswahl as Integer, levelcode as String) As String
 
 End Namespace
 
@@ -211,7 +210,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 	end select 'TextId
 end function
 
-function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.SpracheEnum, level as Integer, zeilenauswahl as Integer) As String
+function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.SpracheEnum, level as Integer, zeilenauswahl as Integer, levelcode as String) As String
 	dim as Integer AnzeilZeilen = 3
 	dim Zeile(1 to AnzeilZeilen) as String
 	Select Case s
@@ -220,23 +219,23 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 				Case 1 
 					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
 					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
-					Zeile(3) = "einen Freischaltcode. Dieser lautet:     LSTART1     "
+					Zeile(3) = "einen Freischaltcode. Dieser lautet:     "+levelcode+"     "
 				Case 2
 					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
 					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
-					Zeile(3) = "das Level 3:    S3LEVEL      Viel Spass!            "
+					Zeile(3) = "das Level 3:    "+levelcode+"      Viel Spass!            "
 				Case 3
 					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
 					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
-					Zeile(3) = "   LEV4WIS3                                          "
+					Zeile(3) = "   "+levelcode+"                                          "
 				Case 4
 					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
 					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
-					Zeile(3) = "lautet:    LEVE54321L                                "
+					Zeile(3) = "lautet:    "+levelcode+"                                "
 				Case 5
 					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
 					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
-					Zeile(3) = "Code:    LE654STAR                                    "
+					Zeile(3) = "Code:    "+levelcode+"                                    "
 				Case 6
 					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
 					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
@@ -251,23 +250,23 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 				Case 1 
 					Zeile(1) = "You now have 100 points and solved the level! To be   "
 					Zeile(2) = "able to play the next level, you will need an unlock  "
-					Zeile(3) = "code. This is: LSTART1                                "
+					Zeile(3) = "code. This is: "+levelcode+"                                "
 				Case 2
 					Zeile(1) = "Great! Now you have played through level 2 with 100   "
 					Zeile(2) = "points. Here is the next unlock code for the level 3: "
-					Zeile(3) = "          S3LEVEL      Have fun!                      "
+					Zeile(3) = "          "+levelcode+"      Have fun!                      "
 				Case 3:                   
 					Zeile(1) = "You have now played half of all levels! Continue like"
 					Zeile(2) = "this! The next level code for level 4 is:            "
-					Zeile(3) = "   LEV4WIS3                                          "
+					Zeile(3) = "   "+levelcode+"                                          "
 				Case 4
 					Zeile(1) = "You have already played through 4 of 6 levels. Great!"
 					Zeile(2) = "Now 2 more to go. The level code for level 5 is: "
-					Zeile(3) = "   LEVE54321L                                "
+					Zeile(3) = "   "+levelcode+"                                "
 				Case 5
 					Zeile(1) = "You have almost completed the game. Now only level 6 "
 					Zeile(2) = "is missing. For which there is again a code for this "
-					Zeile(3) = "level too::   LE654STAR                              "
+					Zeile(3) = "level too::   "+levelcode+"                              "
 				Case 6
 					Zeile(1) = "You now have 100 points and solved the level! With this"
 					Zeile(2) = "you have played through the whole game! That's great!  "
@@ -283,23 +282,23 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 				Case 1 
 					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
 					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
-					Zeile(3) = "einen Freischaltcode. Dieser lautet:     LSTART1     "
+					Zeile(3) = "einen Freischaltcode. Dieser lautet:     "+levelcode+"     "
 				Case 2
 					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
 					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
-					Zeile(3) = "das Level 3:    S3LEVEL      Viel Spass!            "
+					Zeile(3) = "das Level 3:    "+levelcode+"      Viel Spass!            "
 				Case 3
 					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
 					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
-					Zeile(3) = "   LEV4WIS3                                          "
+					Zeile(3) = "   "+levelcode+"                                          "
 				Case 4
 					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
 					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
-					Zeile(3) = "lautet:    LEVE54321L                                "
+					Zeile(3) = "lautet:    "+levelcode+"                                "
 				Case 5
 					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
 					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
-					Zeile(3) = "Code:    LE654STAR                                    "
+					Zeile(3) = "Code:    "+levelcode+"                                    "
 				Case 6
 					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
 					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
