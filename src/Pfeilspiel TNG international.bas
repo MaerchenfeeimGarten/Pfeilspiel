@@ -602,6 +602,7 @@ end sub
 
 '===================================SpielAufgabe/das Letzte==============================
 
+
 type SpielAufgabeDasLetzte extends standardSpielAufgabe
 	declare virtual sub zeichneAufgabenstellung()
 	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as trinaer 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
@@ -630,6 +631,108 @@ end function
 
 sub SpielAufgabeDasLetzte.zeichneAufgabenstellung()
 	GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+end sub
+
+
+'===================================SpielAufgabe/Mit Farben==============================
+
+
+type SpielAufgabeFarben extends standardSpielAufgabe
+	declare virtual sub zeichneAufgabenstellung()
+	declare virtual function korrektesRechteckGetroffen(letzterDurchlauf as boolean = false) as trinaer 'Prüft, ob das korrekte Rechteck getroffen wurde. Wird von pfeilRichtungVerfolgen() genutzt.
+	declare virtual sub rechteckeGenerieren()
+	declare virtual sub pfeileGenerieren()
+	protected:
+		as Integer farben(0 to 2)
+		as short korrekteFarbeIndex = -1
+end type
+
+sub SpielAufgabeFarben.pfeileGenerieren()
+    'setAnzahlDerPfeile(20)
+    
+	RedimPfeilArray(getAnzahlDerPfeile())
+	Redim pfeilSchussPositionen (1 to getAnzahlDerPfeile())
+	Dim as Short i
+	For i = 1 To getAnzahlDerPfeile()
+		variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
+		variablesPfeilArray(i).x1 = 10+rnd()* GrafikEinstellungen.breite/3.5
+		variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2 + (rnd()-0.5)*GrafikEinstellungen.hoehe/1.5                                                   
+		variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
+
+		
+		Do
+			variablesPfeilArray(i).Richtung = Rnd()*180 - 90
+			
+			pfeilSchussPositionen(i).x = variablesPfeilArray(i).x1+ COS((variablesPfeilArray(i).Richtung*Pi)/180)*variablesPfeilArray(i).laenge
+			pfeilSchussPositionen(i).y = variablesPfeilArray(i).y1+ SIN((variablesPfeilArray(i).Richtung*Pi)/180)*variablesPfeilArray(i).laenge
+			
+			'variablesPfeilArray(i).y1+ COS(...)*laenge_pfeil = x_wert
+			'variablesPfeilArray(i).y1+laenge_am_ende* COS(...) = GrafikEinstellungen.breite  | - variablesPfeilArray(i).y1
+			'laenge_am_ende*COS(...) = GrafikEinstellungen.breite - variablesPfeilArray(i).y1 | / COS(...)
+' 			' laenge_am_ende = (GrafikEinstellungen.breite - variablesPfeilArray(i).y1)/COS(...) 
+			dim as single laenge_am_ende = (GrafikEinstellungen.breite - GrafikEinstellungen.hoehe/70 - variablesPfeilArray(i).y1) / COS((variablesPfeilArray(i).Richtung*Pi)/180.0) 
+			
+			dim as single y_am_ende = variablesPfeilArray(i).y1+ SIN((variablesPfeilArray(i).Richtung*Pi)/180)*laenge_am_ende 
+			
+			if y_am_ende >= 0 and  y_am_ende <= GrafikEinstellungen.hoehe then
+				exit do
+			end if
+		loop
+	Next
+end sub
+
+function SpielAufgabeFarben.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as trinaer
+	
+	dim as short i 
+	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
+		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(1).x,pfeilSchussPositionen(1).y)) and variablesRechteckArray(i).farbe = farben(korrekteFarbeIndex) then
+			korrektesRechteck = i
+		end if
+	Next
+	if korrektesRechteck <> -1 Then
+		if korrektesRechteck = ausgewaehltesRechteckIndex then
+			zeigeKorrekteWahlAn(ausgewaehltesRechteckIndex)
+			return trinaer._true
+		Else
+			zeigeInkorrekteWahlAn(korrektesRechteck, ausgewaehltesRechteckIndex)
+			return trinaer._false
+		end if
+	else
+		return trinaer._null
+	end if
+end function
+
+sub SpielAufgabeFarben.rechteckeGenerieren()
+	RedimRechteckArray(getAnzahlDerRechtecke())
+	
+	farben(0) = RGB(255,100,100)
+	farben(1) = RGB(100,255,100)
+	farben(2) = RGB(100,100,255)
+	
+	dim i as Short
+	For i = 1 To getAnzahlDerRechtecke()
+		variablesRechteckArray(i).x1 = GrafikEinstellungen.breite-GrafikEinstellungen.breite/4
+		variablesRechteckArray(i).x2 = GrafikEinstellungen.breite-GrafikEinstellungen.hoehe/70
+		variablesRechteckArray(i).y1 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i-1) +(GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/70
+		variablesRechteckArray(i).y2 = (GrafikEinstellungen.hoehe-GrafikEinstellungen.hoehe/70)/getAnzahlDerRechtecke * (i)
+		variablesRechteckArray(i).farbe = farben(i mod 3)
+	Next
+	
+	korrekteFarbeIndex = rnd()*30000 mod 3
+end sub
+
+sub SpielAufgabeFarben.zeichneAufgabenstellung()
+	dim as string text
+	select case korrekteFarbeIndex
+		case 0:
+			text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_ROTES_RECHTECK)
+		case 1:
+			text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_GRUENES_RECHTECK)
+		case 2:
+			text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK)
+	end select
+	
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text , GrafikEinstellungen.skalierungsfaktor)
 end sub
 '===========================================Spiel========================================
 
@@ -729,15 +832,20 @@ function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface
 			function = sai
 		end if
 	else
+		dim as short multiplikator = 1
 		if rnd() > 0.3 then
 			sai = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
 		Else
 			sai = new SpielAufgabeDasLetzte()
 		end if
+		if level = 2 and rnd() > 0.3 then
+			sai = new SpielAufgabeFarben()
+			multiplikator = 2
+		end if
 		if level >= 3 and rnd() > 0.2 then
 			sai = new SpielAufgabenWurf()
 		end if
-		sai->setAnzahlDerRechtecke(5+rnd()*level*2)
+		sai->setAnzahlDerRechtecke((5+rnd()*level*2)*multiplikator)
 		return sai
 	end if
 end function

@@ -25,6 +25,9 @@ Namespace Uebersetzungen
 		AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK
 		AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK
 		AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK
+		AUFGABE_PFEIL_ZEIGT_AUF_ROTES_RECHTECK
+		AUFGABE_PFEIL_ZEIGT_AUF_GRUENES_RECHTECK
+		AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK
 	end enum 
 
 	enum SpracheEnum explicit
@@ -186,6 +189,24 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil zuletzt?"
 				case SpracheEnum.ENGLISCH: return "Task: On which rectangle does the red arrow last fly?"
 				case SpracheEnum.FRANZOESISCH: return "Tache : Sur quel rectangle la fleche rouge vole-t-elle en dernier lieu?"
+			end select
+		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_ROTES_RECHTECK
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches rote Rechteck zeigt der rote Pfeil?"
+				case SpracheEnum.ENGLISCH: return "Task: On which red rectangle does the red arrow point to?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle rouge pointe-t-elle la fleche rouge?"
+			end select
+		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_GRUENES_RECHTECK
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches gruene Rechteck zeigt der rote Pfeil?"
+				case SpracheEnum.ENGLISCH: return "Task: On which green rectangle does the red arrow point to?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle vert la fleche rouge pointe-t-elle?"
+			end select
+		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches blaue Rechteck zeigt der rote Pfeil?"
+				case SpracheEnum.ENGLISCH: return "Task: On which blue rectangle does the red arrow point to?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle bleu la fleche rouge pointe-t-elle?"
 			end select
 	end select 'TextId
 end function
