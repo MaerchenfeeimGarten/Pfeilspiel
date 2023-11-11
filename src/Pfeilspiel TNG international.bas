@@ -498,7 +498,11 @@ sub standardSpielAufgabe.pfeilRichtungsVerfolgungInkrement(jj as integer)
 end sub
 
 sub standardSpielAufgabe.zeichneAufgabenstellung()
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+	dim as string text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
+	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
+	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
+	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 sub standardSpielAufgabe.rechteckeGenerieren()
