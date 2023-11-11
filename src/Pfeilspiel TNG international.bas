@@ -30,7 +30,7 @@ namespace MenueFuehrung
 		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 
 		Color RGB(0,0,0),RGB(140,0,250)
-		GrafikHelfer.schreibeSkaliertInsGitter(1,-1, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
+		GrafikHelfer.schreibeSkaliertInsGitter(1,-1,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
 			dim as Integer j
 			j = 2 'Anzahl der Buttons
 			
@@ -196,9 +196,9 @@ namespace MenueFuehrung
 		Color RGB(0,0,0),RGB(140,0,250)
 		
 		ZeichneLogo(RGB(0,70,100))
-		
-		GrafikHelfer.schreibeSkaliertInsGitter(2,1,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor)
-		GrafikHelfer.schreibeSkaliertInsGitter(2,2,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor)
+		dim as integer vorschub = 1
+		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor) +1
+		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor) +1
 		'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
 		dim as Integer j,i
@@ -248,7 +248,7 @@ namespace MenueFuehrung
 		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
 		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
 		Color RGB(0,0,0),RGB(140,0,250)
-		GrafikHelfer.schreibeSkaliertInsGitter(2,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
+		GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,0,GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WELCHES_LEVEL),GrafikEinstellungen.skalierungsfaktor)
 		
 
 		
@@ -304,11 +304,11 @@ namespace MenueFuehrung
 			SEingabe =  LevelCodeInput(TextField)
 		end if
 		if SEingabe = korrekterLevelCode or "" = korrekterLevelCode then
-			GrafikHelfer.schreibeSkaliertInsGitter(2,3, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
+			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
 			MenueFuehrung.Warten()
 			return true
 		else 
-			GrafikHelfer.schreibeSkaliertInsGitter(2,3,  Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
+			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
 			MenueFuehrung.Warten()
 			return false
 		end if
@@ -502,7 +502,7 @@ sub standardSpielAufgabe.zeichneAufgabenstellung()
 	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
 	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
 	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
+	GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,3,GrafikEinstellungen.umbruchNach,text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 sub standardSpielAufgabe.rechteckeGenerieren()
@@ -877,9 +877,10 @@ end function
 
 function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface ptr
 	Dim as SpielAufgabenInterface pointer sai
+	sai = new standardSpielAufgabe()
 	if modus = 1 then
 		if level <= 4 then
-			
+		
 			sai = new standardSpielAufgabe()
 			select case level
 				case 1
@@ -954,17 +955,17 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 			this.setAktuellePunkte(this.getAktuellePunkte() + 10)
 			
 			Color RGB(0,255,0),RGB(255,255,255)
-			GrafikHelfer.schreibeSkaliertInsGitter(0,8,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10), GrafikEinstellungen.skalierungsfaktor, RGB(0,255,0))
+ 			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,8,GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.RICHTIG_PLUS_10), GrafikEinstellungen.skalierungsfaktor, RGB(0,255,0))
 			Color RGB(0,0,0), RGB(255,255,255)
 	
 		elseif erfolg = trinaer._false then
 			If this.getAktuellePunkte() > 0 Then 
 				Color RGB(255,0,0),RGB(255,255,255)
-				GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),GrafikEinstellungen.skalierungsfaktor, GrafikEinstellungen.DunkleresRot )
+				GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,8,GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH_MINUS_10),GrafikEinstellungen.skalierungsfaktor, GrafikEinstellungen.DunkleresRot )
 				Color RGB(0,0,0),RGB(255,255,255)
 			Else
 				Color RGB(255,0,0),RGB(255,255,255)
-				GrafikHelfer.schreibeSkaliertInsGitter(0,8, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),GrafikEinstellungen.skalierungsfaktoR, GrafikEinstellungen.DunkleresRot)
+				GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,8, GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCH),GrafikEinstellungen.skalierungsfaktoR, GrafikEinstellungen.DunkleresRot)
 				Color RGB(0,0,0),RGB(255,255,255) 
 			End If
 			
@@ -984,9 +985,10 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		dim as Integer AnzeilZeilen = 3
 		
 		dim as integer i
+		dim as integer vorschub = 1
 		for i = 1 to AnzeilZeilen 
 			dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i, getLevelCode(level+1,spiel))
-			GrafikHelfer.schreibeSkaliertInsGitter(0,13+i,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))
+			vorschub  = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,13+vorschub, GrafikEinstellungen.umbruchNach,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))+1
 		next
 		
 		MenueFuehrung.Warten()
