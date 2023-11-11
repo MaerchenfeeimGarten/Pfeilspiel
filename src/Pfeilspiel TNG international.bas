@@ -381,7 +381,7 @@ function standardSpielAufgabe.waehleFarbeFuerPfeil(i as short, byref farbText as
 	select case (i-1) mod 9
 		case 0
 			farbText = Uebersetzungen.TextFarbe.ROT
-			return GrafikEinstellungen.DunkleresRot
+			return  GrafikEinstellungen.DunkleresRot
 		case 1
 			farbText = Uebersetzungen.TextFarbe.GRUEN
 			return rgb(0,255,0)
@@ -461,7 +461,7 @@ function standardSpielAufgabe.pfeilRichtungVerfolgen() as trinaer
 		accuracy = 15
 #endif
 		if jj mod accuracy = 0 then
-			regulate(450/accuracy,125)
+			regulate(450/accuracy*GrafikEinstellungen.breite/1920.0,125)
 		end if
 	next
 	return korrektesRechteckGetroffen(true)
@@ -498,7 +498,7 @@ sub standardSpielAufgabe.pfeilRichtungsVerfolgungInkrement(jj as integer)
 end sub
 
 sub standardSpielAufgabe.zeichneAufgabenstellung()
-	dim as string text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
+ 	dim as string text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK)
 	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
 	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
 	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
@@ -997,7 +997,7 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 End Sub
 
 sub StandardSpiel.zeichneHintergrund()
-	BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
+	BildschirmHelfer.HintergrundZeichnen(215+40,133+40,44+40,129+40,47+40,90+40)
 end sub
 
 sub StandardSpiel.zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
