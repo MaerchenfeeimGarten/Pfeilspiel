@@ -631,7 +631,7 @@ sub SpielAufgabenWurf.zeichneAufgabenstellung()
 	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
 	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
 	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
+	GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,3,GrafikEinstellungen.umbruchNach,text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 sub SpielAufgabenWurf.pfeileGenerieren()
@@ -689,7 +689,7 @@ sub SpielAufgabeDasLetzte.zeichneAufgabenstellung()
 	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
 	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
 	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
+	GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,3,GrafikEinstellungen.umbruchNach ,text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 
@@ -805,9 +805,8 @@ sub SpielAufgabeFarben.zeichneAufgabenstellung()
 	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
 	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
 	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
-	
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text , GrafikEinstellungen.skalierungsfaktor)
+	GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,3,GrafikEinstellungen.umbruchNach, text, GrafikEinstellungen.skalierungsfaktor)
+
 end sub
 '===========================================Spiel========================================
 
@@ -1001,7 +1000,7 @@ end sub
 
 sub StandardSpiel.zeichneLevelInfo(aktuellesLevel as Short, punkte as Short)
 	GrafikHelfer.schreibeSkaliertInsGitter(0,0, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.L_E_V_E_L) & aktuellesLevel, GrafikEinstellungen.skalierungsfaktor)  
-	GrafikHelfer.schreibeSkaliertInsGitter(0,1, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
+	GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,1,GrafikEinstellungen.umbruchNach, "" & Punkte & Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PUNKTE_VON_PUNKTE), GrafikEinstellungen.skalierungsfaktor)  
 end sub
 
 function StandardSpiel.getLevelCode(level as short, spiel as short) as String

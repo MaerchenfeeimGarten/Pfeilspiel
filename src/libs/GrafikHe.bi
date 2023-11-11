@@ -161,4 +161,26 @@ Namespace GrafikHelfer
 			TextSkaliertZeichnen(Punkt(breite, hoehe), text, skalierungsfaktor, farbe)
 		end if 
 	End Sub
+	
+
+	Declare sub schreibeSkaliertInsGitterMitUmbruch(x as Integer,y as Integer, umbruch_nach_zeichen as integer, text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0))
+	sub schreibeSkaliertInsGitterMitUmbruch(x as Integer,y as Integer, umbruch_nach_zeichen as integer, text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0))
+		text += "hskdf sdjfh hfhh s fhsdkjfhsdjkfhjksdf hf sdhfskjd  hdf eruwkfh hfhfhf hheddn nnnn --- ."
+		dim as string zu_schreibender_Text = text
+		while len(zu_schreibender_Text) > umbruch_nach_zeichen
+			dim as integer position_leerzeichen =  len(zu_schreibender_Text)
+			dim as integer i
+			for i = 1 to len(zu_schreibender_Text)
+				if mid(zu_schreibender_Text,i,1) = " " and i <= umbruch_nach_zeichen then
+					position_leerzeichen = i
+				end if 
+			next
+			
+			dim as string jetzt_schreiben = left(zu_schreibender_Text,position_leerzeichen)
+			zu_schreibender_Text = right(zu_schreibender_Text,position_leerzeichen)
+			schreibeSkaliertInsGitter(x,y,jetzt_schreiben, skalierungsfaktor,farbe)
+			y += 1
+		wend
+		schreibeSkaliertInsGitter(x,y,zu_schreibender_Text, skalierungsfaktor,farbe)
+	end sub
 End Namespace 
