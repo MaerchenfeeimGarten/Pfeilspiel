@@ -1,4 +1,18 @@
+#include once "libs/strings/strings.bi"
+
 Namespace Uebersetzungen
+	enum TextFarbe explicit
+		ROT
+		GRUEN
+		BLAU
+		TURKIES
+		VIOLETT
+		GELB
+		ORANGE
+		SCHWARZ
+		WEISS
+		BRAUN
+	end enum
 	
 	enum TextEnum explicit
 		WELCHES_LEVEL 
@@ -40,6 +54,7 @@ Namespace Uebersetzungen
 	
 	Declare Function uebersetzterText(s as SpracheEnum, t as TextEnum) As String
 	Declare Function uebersetzterGlueckwunschtext(s as SpracheEnum, level as Integer, zeilenauswahl as Integer, levelcode as String) As String
+	Declare function ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEnum, text as string, f as TextFarbe) as String
 
 End Namespace
 
@@ -210,6 +225,94 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 	end select 'TextId
 end function
 
+function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEnum, text as string, f as TextFarbe) as String
+	select case f
+		case TextFarbe.ROT
+			return text
+		case TextFarbe.GRUEN
+			select Case s
+				case SpracheEnum.DEUTSCH
+					strings.replace(text, "rote Pfeil", "gruene Pfeil")
+				case SpracheEnum.ENGLISCH
+					strings.replace(text, "red arrow", "green arrow")
+				case SpracheEnum.FRANZOESISCH
+					strings.replace(text,"fleche rouge", "fleche verte ")
+			end select
+		case TextFarbe.BLAU
+			select Case s
+				case SpracheEnum.DEUTSCH
+					 strings.replace(text, "rote Pfeil", "blaue Pfeil")
+				case SpracheEnum.ENGLISCH
+					  strings.replace(text, "red arrow", "blue arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche bleue ")
+			end select
+		case TextFarbe.TURKIES
+			select Case s
+				case SpracheEnum.DEUTSCH
+					 strings.replace(text, "rote Pfeil", "tuerkise Pfeil")
+				case SpracheEnum.ENGLISCH
+					  strings.replace(text, "red arrow", "turquoise arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche turquoise")
+			end select
+		case TextFarbe.SCHWARZ
+			select Case s
+				case SpracheEnum.DEUTSCH
+					 strings.replace(text, "rote Pfeil", "schwarze Pfeil")
+				case SpracheEnum.ENGLISCH
+					  strings.replace(text, "red arrow", "black arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche noire")
+			end select
+		case TextFarbe.WEISS
+			select Case s
+				case SpracheEnum.DEUTSCH
+					 strings.replace(text, "rote Pfeil", "weisse Pfeil")
+				case SpracheEnum.ENGLISCH
+					  strings.replace(text, "red arrow", "white arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche blanche")
+			end select
+		case TextFarbe.ORANGE
+			select Case s
+				case SpracheEnum.DEUTSCH
+					strings.replace(text, "rote Pfeil", "orange Pfeil")
+				case SpracheEnum.ENGLISCH
+					strings.replace(text, "red arrow", "orange arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche orange")
+			end select
+		case TextFarbe.VIOLETT
+			select Case s
+				case SpracheEnum.DEUTSCH
+					strings.replace(text, "rote Pfeil", "violette Pfeil")
+				case SpracheEnum.ENGLISCH
+					strings.replace(text, "red arrow", "violet arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche violette")
+			end select
+		case TextFarbe.GELB
+			select Case s
+				case SpracheEnum.DEUTSCH
+					strings.replace(text, "rote Pfeil", "gelbe Pfeil")
+				case SpracheEnum.ENGLISCH
+					strings.replace(text, "red arrow", "yellow arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche jaune")
+			end select
+		case TextFarbe.BRAUN
+			select Case s
+				case SpracheEnum.DEUTSCH
+					strings.replace(text, "rote Pfeil", "braune Pfeil")
+				case SpracheEnum.ENGLISCH
+					strings.replace(text, "red arrow", "brown arrow")
+				case SpracheEnum.FRANZOESISCH
+					 strings.replace(text,"fleche rouge", "fleche brune")
+			end select
+	end select
+	return text
+end function
 function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.SpracheEnum, level as Integer, zeilenauswahl as Integer, levelcode as String) As String
 	dim as Integer AnzeilZeilen = 3
 	dim Zeile(1 to AnzeilZeilen) as String

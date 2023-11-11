@@ -258,7 +258,7 @@ namespace MenueFuehrung
 		if spiel = 1 then
 				j = 6 'Anzahl der Level
 		else
-				j = 4
+				j = 6
 		end if
 		'Auswahlbuttons laden:
 		Dim LevelAuswahl(100) As rechteck
@@ -346,12 +346,13 @@ type SpielAufgabenInterface extends Object
 		anzahlDerPfeile as Short
 		ausgewaehltesRechteckIndex as Short
 		falschBereitsAngezeigt as Boolean = false
+		as Integer KorrekterPfeilIndex = 1
 end type
 
 '====================================SpielAufgabe/Standard=============================
 
-
 type standardSpielAufgabe extends SpielAufgabenInterface
+	declare virtual function waehleFarbeFuerPfeil(i as short, byref farbText as Uebersetzungen.TextFarbe) as integer
 	declare virtual function aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 	declare virtual sub rechteckeGenerieren()
 	declare virtual function getAnzahlDerRechtecke() as Short
@@ -375,6 +376,39 @@ constructor standardSpielAufgabe
 	setAnzahlDerRechtecke(5)
 	setAnzahlDerPfeile(1)
 end constructor
+
+function standardSpielAufgabe.waehleFarbeFuerPfeil(i as short, byref farbText as Uebersetzungen.TextFarbe) as integer
+	select case (i-1) mod 9
+		case 0
+			farbText = Uebersetzungen.TextFarbe.ROT
+			return GrafikEinstellungen.DunkleresRot
+		case 1
+			farbText = Uebersetzungen.TextFarbe.GRUEN
+			return rgb(0,255,0)
+		case 2
+			farbText = Uebersetzungen.TextFarbe.BLAU
+			return rgb(0,0,254)
+		case 3
+			farbText = Uebersetzungen.TextFarbe.TURKIES
+			return rgb(0,254,255)
+		case 4
+			farbText = Uebersetzungen.TextFarbe.GELB
+			return rgb(255,255,0)
+		case 5
+			farbText = Uebersetzungen.TextFarbe.ORANGE
+			return rgb(255,255/2,0)
+		case 6
+			farbText = Uebersetzungen.TextFarbe.VIOLETT
+			return rgb(255,0,255)
+		case 7
+			farbText = Uebersetzungen.TextFarbe.WEISS
+			return rgb(255,255,255)
+		case 8
+			farbText = Uebersetzungen.TextFarbe.SCHWARZ
+			return rgb(0,0,0)
+	end select
+end function
+
 
 function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 
@@ -437,7 +471,7 @@ function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boo
 	
 	dim as short i 
 	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
-		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(1).x,pfeilSchussPositionen(1).y)) then
+		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(KorrekterPfeilIndex).x,pfeilSchussPositionen(KorrekterPfeilIndex).y)) then
 			korrektesRechteck = i
 		end if
 	Next
@@ -492,7 +526,8 @@ sub standardSpielAufgabe.pfeileGenerieren()
 	Redim pfeilSchussPositionen (1 to getAnzahlDerPfeile())
 	Dim as Short i
 	For i = 1 To getAnzahlDerPfeile()
-		variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
+		dim as Uebersetzungen.TextFarbe tf
+		variablesPfeilArray(i).farbe = waehleFarbeFuerPfeil(i, tf)
 		variablesPfeilArray(i).x1 = 10 
 		variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2                                                                          
 		variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
@@ -518,6 +553,7 @@ end function
 sub standardSpielAufgabe.setAnzahlDerPfeile(anzahl as Short)
 	this.anzahlDerPfeile = anzahl
 	RedimRechteckArray(anzahl)
+	KorrekterPfeilIndex = (int(rnd()*90000) mod getAnzahlDerPfeile())+1
 end sub
 
 
@@ -570,14 +606,18 @@ sub SpielAufgabenWurf.pfeilRichtungsVerfolgungInkrement(jj as integer)
 		pfeilSchussPositionen(i).x = jj
 		pfeilSchussPositionen(i).y = int(Mathehelfer.Wurfparabel(this.variablesPfeilArray(i).Richtung*-1,this.variablesPfeilArray(i).laenge,x,y,pfeilSchussPositionen(i).x,  9.81, GrafikEinstellungen.skalierungsfaktor))
 		y_min_1 = int(Mathehelfer.Wurfparabel(this.variablesPfeilArray(i).Richtung*-1,this.variablesPfeilArray(i).laenge,x,y,pfeilSchussPositionen(i).x-1,  9.81, GrafikEinstellungen.skalierungsfaktor))
-		If pfeilSchussPositionen(i).x >= x Then
+		If  pfeilSchussPositionen(i).x >= x Then
 			GrafikHelfer.dickeLinie  Int(pfeilSchussPositionen(i).x-1),Int(y_min_1),Int(pfeilSchussPositionen(i).x),Int(pfeilSchussPositionen(i).y), GrafikEinstellungen.skalierungsfaktor/2 , RGB(60,60,60)
 		EndIf
 	next
 end sub
 
 sub SpielAufgabenWurf.zeichneAufgabenstellung()
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+	dim as string text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK)
+	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
+	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
+	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 sub SpielAufgabenWurf.pfeileGenerieren()
@@ -586,7 +626,8 @@ sub SpielAufgabenWurf.pfeileGenerieren()
 	Dim as Short i,j
 	For i = 1 To getAnzahlDerPfeile()
 		Do
-			variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
+			dim as Uebersetzungen.TextFarbe ft = Uebersetzungen.TextFarbe.ROT
+			variablesPfeilArray(i).farbe = waehleFarbeFuerPfeil(i, ft)
 			variablesPfeilArray(i).x1 = 10 
 			variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2                                                                          
 			variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
@@ -612,7 +653,7 @@ function SpielAufgabeDasLetzte.korrektesRechteckGetroffen(letzterDurchlauf as bo
 	
 	dim as short i 
 	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
-		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(1).x,pfeilSchussPositionen(1).y)) then
+		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(KorrekterPfeilIndex).x,pfeilSchussPositionen(KorrekterPfeilIndex).y)) then
 			korrektesRechteck = i
 		end if
 	Next
@@ -630,7 +671,11 @@ function SpielAufgabeDasLetzte.korrektesRechteckGetroffen(letzterDurchlauf as bo
 end function
 
 sub SpielAufgabeDasLetzte.zeichneAufgabenstellung()
-	GrafikHelfer.schreibeSkaliertInsGitter(0,3,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK), GrafikEinstellungen.skalierungsfaktor)
+	dim as string text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK)
+	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
+	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
+	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
 end sub
 
 
@@ -659,7 +704,8 @@ sub SpielAufgabeFarben.pfeileGenerieren()
 	Redim pfeilSchussPositionen (1 to getAnzahlDerPfeile())
 	Dim as Short i
 	For i = 1 To getAnzahlDerPfeile()
-		variablesPfeilArray(i).farbe = GrafikEinstellungen.DunkleresRot
+		dim as Uebersetzungen.TextFarbe tf = Uebersetzungen.TextFarbe.ROT
+		variablesPfeilArray(i).farbe = waehleFarbeFuerPfeil(i,tf)
 		variablesPfeilArray(i).x1 = 10+rnd()* GrafikEinstellungen.breite/3.5
 		variablesPfeilArray(i).y1 =GrafikEinstellungen.hoehe/2 + (rnd()-0.5)*GrafikEinstellungen.hoehe/1.5                                                   
 		variablesPfeilArray(i).laenge = (GrafikEinstellungen.breite+GrafikEinstellungen.hoehe)/2 /6                                                                                                                          
@@ -690,7 +736,7 @@ function SpielAufgabeFarben.korrektesRechteckGetroffen(letzterDurchlauf as boole
 	
 	dim as short i 
 	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
-		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(1).x,pfeilSchussPositionen(1).y)) and variablesRechteckArray(i).farbe = farben(korrekteFarbeIndex) then
+		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(KorrekterPfeilIndex).x,pfeilSchussPositionen(KorrekterPfeilIndex).y)) and variablesRechteckArray(i).farbe = farben(korrekteFarbeIndex) then
 			korrektesRechteck = i
 		end if
 	Next
@@ -741,6 +787,11 @@ sub SpielAufgabeFarben.zeichneAufgabenstellung()
 		case 2:
 			text = Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK)
 	end select
+	
+	dim as Uebersetzungen.textFarbe tf = Uebersetzungen.TextFarbe.ROT
+	waehleFarbeFuerPfeil(KorrekterPfeilIndex, tf)
+	text = Uebersetzungen.ersetzteFarbennameVonPfeil(Uebersetzungen.Sprache, text, tf)
+	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text, GrafikEinstellungen.skalierungsfaktor)
 	
 	GrafikHelfer.schreibeSkaliertInsGitter(0,3,text , GrafikEinstellungen.skalierungsfaktor)
 end sub
@@ -843,12 +894,14 @@ function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface
 		end if
 	else
 		dim as short multiplikator = 1
-		if rnd() > 0.3 then
-			sai = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
-		Else
-			sai = new SpielAufgabeDasLetzte()
+		if level >= 2 then
+			if rnd() > 0.3 then
+				sai = new standardSpielAufgabe() 'TODO spielaufgabe mit letzes Objekt, das ausgewählt wird
+			Else
+				sai = new SpielAufgabeDasLetzte()
+			end if
 		end if
-		if level >= 2 and rnd() > 0.3 then
+		if level >= 3 and rnd() > 0.3 then
 			dim as  SpielAufgabeFarben pointer saf
 			saf = new SpielAufgabeFarben()
 			multiplikator = 2
@@ -857,8 +910,12 @@ function StandardSpiel.getSpielAufgabe(level as Short) as SpielAufgabenInterface
 			end if
 			sai = saf
 		end if
-		if level >= 3 and rnd() < 0.2 then
+		if level >= 5 and rnd() < 0.2 then
 			sai = new SpielAufgabenWurf()
+		end if
+		
+		if level >= 6 then
+			sai->setAnzahlDerPfeile(int(rnd()*3)+1)
 		end if
 		sai->setAnzahlDerRechtecke((5+rnd()*level*2)*multiplikator)
 		return sai
