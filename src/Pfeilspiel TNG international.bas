@@ -564,8 +564,11 @@ end sub
 sub standardSpielAufgabe.zeigeKorrekteWahlAn(i as Short)
 	'Richtiges Rechteck grün:
 	Dim as Integer j
+	dim as integer zielfarbe = RGB(0,255,0)
+	dim as integer startfarbe = variablesRechteckArray(i).farbe
+
 	For j = 0 To 255
-		variablesRechteckArray(i).anzeigen(RGB(0,j,255-j))
+		variablesRechteckArray(i).anzeigen(GrafikHelfer.farbeUeberblenden(startfarbe, zielfarbe, j))
 		Sleep 2
 	Next
 end sub 
@@ -573,18 +576,25 @@ end sub
 sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
 	if not falschBereitsAngezeigt then
 		falschBereitsAngezeigt = true
-							
+		
+		dim as integer zielfarbe = RGB(255,0,0)
+		dim as integer startfarbe = variablesRechteckArray(eingabe).farbe
+		
 		'Falsches Rechteck rot:
 		Dim as Integer j
 		For j = 0 To 255
-			variablesRechteckArray(eingabe).anzeigen(RGB(j,0,255-j))
+			variablesRechteckArray(eingabe).anzeigen( GrafikHelfer.farbeUeberblenden(startfarbe, zielfarbe, j))
 			Sleep 2
 		Next
+		
+		zielfarbe = RGB(0,255,0)
+		startfarbe = variablesRechteckArray(i).farbe
+		
 		'For...Next-Schleife: Richtiges Rechteck blinkt grün
 		For j = 0 To 3
-			variablesRechteckArray(i).anzeigen(RGB(0,255,0))
+			variablesRechteckArray(i).anzeigen(zielfarbe)
 			Sleep 400
-			variablesRechteckArray(i).anzeigen(RGB(0,100,255))
+			variablesRechteckArray(i).anzeigen(startfarbe)
 			Sleep 400
 		Next
 	end if

@@ -1,7 +1,22 @@
 #include once "MathHelf.bi"
 #include once "GrafikEi.bi"
 
+
+#define RGBA_R( c ) ( CULng( c ) Shr 16 And 255 )
+#define RGBA_G( c ) ( CULng( c ) Shr  8 And 255 )
+#define RGBA_B( c ) ( CULng( c )        And 255 )
+#define RGBA_A( c ) ( CULng( c ) Shr 24         )
+
 Namespace GrafikHelfer
+
+	Declare function farbeUeberblenden(f1 as integer, f2 as integer, step as integer) as integer
+	function farbeUeberblenden(f1 as integer, f2 as integer, stepp as integer) as integer
+		dim as integer r = RGBA_R(f1)*((255.0-stepp)/255.0) + RGBA_R(f2)*(stepp/255.0)
+		dim as integer g = RGBA_G(f1)*((255.0-stepp)/255.0) + RGBA_G(f2)*(stepp/255.0)
+		dim as integer b = RGBA_B(f1)*((255.0-stepp)/255.0) + RGBA_B(f2)*(stepp/255.0)
+		dim as integer a = RGBA_A(f1)*((255.0-stepp)/255.0) + RGBA_A(f2)*(stepp/255.0)
+		return rgba(r,g,b,a)
+	end function
 
 	'Quelle: https://www.freebasic.net/forum/viewtopic.php?t=22261
 	Declare sub dickeLinie(byval x1 As Integer,byval y1 As Integer,byval x2 As Integer,byval y2 As Integer,byval size As Integer,byval c As UInteger)
