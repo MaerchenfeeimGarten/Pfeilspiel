@@ -167,20 +167,17 @@ Namespace GrafikHelfer
 	function schreibeSkaliertInsGitterMitUmbruch(x as Integer,y as Integer, umbruch_nach_zeichen as integer, text as String, skalierungsfaktor as Single = 1, farbe as Integer = RGB(0,0,0)) as integer
 		dim as integer start = 1 
 		dim as integer _stop = len(text)
-		while _stop - start >= umbruch_nach_zeichen
-			dim as integer new_stop
-			for new_stop = _stop to start step -1
-				if mid(text, new_stop, 1) = " " and new_stop - start <= umbruch_nach_zeichen then
+		while len(text) - start > umbruch_nach_zeichen
+			for _stop = len(text) to start step -1
+				if mid(text, _stop, 1) = " " and _stop - start <= umbruch_nach_zeichen then
 					exit for
 				end if
 			next
-			_stop = new_stop
-			schreibeSkaliertInsGitter(x,y,mid(text, start, _stop), skalierungsfaktor,farbe)
-			start = new_stop + 1
-			_stop = len(text)
+			schreibeSkaliertInsGitter(x,y,mid(text, start, _stop - start), skalierungsfaktor,farbe)
+			start = _stop + 1
 			y+= 1
 		wend
-		schreibeSkaliertInsGitter(x,y,mid(text, start, _stop), skalierungsfaktor,farbe)
+		schreibeSkaliertInsGitter(x,y,mid(text, start, len(text)), skalierungsfaktor,farbe)
 		return y
 	end function
 End Namespace 
