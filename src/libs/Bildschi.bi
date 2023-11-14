@@ -48,8 +48,16 @@ Namespace BildschirmHelfer
 	Declare Sub FensterSchliessen()
 	Sub FensterSchliessen()
 		'Effekt zum Beenden:
-		BildschirmHelfer.img1 = Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32)
+		BildschirmHelfer.lockscreen
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
+		
+		put (0,0), Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32), PSET
+		
+		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - Version 0.0.1 - von MaerchenfeeImGarten - 2023", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
+		
+		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
+		Put(0,0),BildschirmHelfer.img2,pset
+		BildschirmHelfer.unlockscreen
 		BildschirmHelfer.Ueberblenden(6)
 		Sleep 2000
 		imagedestroy img1
