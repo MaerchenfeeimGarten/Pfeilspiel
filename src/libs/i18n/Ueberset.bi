@@ -42,6 +42,7 @@ Namespace Uebersetzungen
 		AUFGABE_PFEIL_ZEIGT_AUF_ROTES_RECHTECK
 		AUFGABE_PFEIL_ZEIGT_AUF_GRUENES_RECHTECK
 		AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK
+		COMPUTERFEHLER
 	end enum 
 
 	enum SpracheEnum explicit
@@ -222,6 +223,13 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 				case SpracheEnum.ENGLISCH: return "Task: On which blue rectangle does the red arrow point to?"
 				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle bleu la fleche rouge pointe-t-elle?"
 			end select
+		case TextEnum.COMPUTERFEHLER
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Upsi. Auch der Computer macht mal einen Fehler..."
+				case SpracheEnum.ENGLISCH: return "Upsi. The computer also makes a mistake... "
+				case SpracheEnum.FRANZOESISCH: return "Upsi. L'ordinateur fait aussi une erreur... "
+			end select
+			
 	end select 'TextId
 end function
 

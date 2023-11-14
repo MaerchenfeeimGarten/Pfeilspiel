@@ -384,7 +384,7 @@ function standardSpielAufgabe.waehleFarbeFuerPfeil(i as short, byref farbText as
 			return  GrafikEinstellungen.DunkleresRot
 		case 1
 			farbText = Uebersetzungen.TextFarbe.GRUEN
-			return rgb(0,255,0)
+			return rgb(0,160,0)
 		case 2
 			farbText = Uebersetzungen.TextFarbe.BLAU
 			return rgb(0,0,254)
@@ -980,7 +980,10 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 			
 			this.setAktuellePunkte(this.getAktuellePunkte() - 10)
 		else 'trinaer._null
-			' Auch der Computer macht mal Fehler...
+			
+			Color RGB(0,255,0),RGB(255,255,255)
+ 			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,8,GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.COMPUTERFEHLER), GrafikEinstellungen.skalierungsfaktor, RGB(70,70,70))
+			Color RGB(0,0,0), RGB(255,255,255)
 		end if
 		if getAktuellePunkte() < 0 then
 			this.setAktuellePunkte(0)
