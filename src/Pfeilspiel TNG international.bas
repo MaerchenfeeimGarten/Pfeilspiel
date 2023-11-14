@@ -1031,10 +1031,9 @@ end function
 '=========================================Programm=======================================
 
 Sub Programm()
-	
 	Do
 		MenueFuehrung.Sprachauswahl()
-		BildschirmHelfer.FensterSchliessen()
+
 		Dim as Short spielnummer = MenueFuehrung.Spielauswahl()
 		Dim as SpielInterface pointer spielobjekt = new StandardSpiel
 		Dim as Short level
