@@ -62,7 +62,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 	select case T
 		case TextEnum.WELCHES_LEVEL:
 			select case s
-				case SpracheEnum.DEUTSCH: return "Welches Level wollen sie spielen?"
+				case SpracheEnum.DEUTSCH: return "Welches Level wollen Sie spielen?"
 				case SpracheEnum.ENGLISCH: return "Which level do you want to play?"
 				case SpracheEnum.FRANZOESISCH: return "Quel niveau voulez-vous jouer? "
 			end select
@@ -74,7 +74,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.WOLLEN_NEUES_SPIEL:
 			select case s
-				case SpracheEnum.DEUTSCH: return "Wollen sie ein neues Spiel anfangen?"
+				case SpracheEnum.DEUTSCH: return "Wollen Sie ein neues Spiel anfangen?"
 				case SpracheEnum.ENGLISCH: return "Do you want to begin a new game?"
 				case SpracheEnum.FRANZOESISCH: return "Voulez-vous commencer un nouveau jeu?"
 			end select
@@ -94,13 +94,13 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select case s
 				case SpracheEnum.DEUTSCH: return "weiter"
 				case SpracheEnum.ENGLISCH: return "proceed"
-				case SpracheEnum.FRANZOESISCH: return "a partir de"
+				case SpracheEnum.FRANZOESISCH: return "continuer"
 			end select
 		case TextEnum.LEVELCODE_PROMPT:
 			select case s
-				case SpracheEnum.DEUTSCH: return "Levelcode? "
-				case SpracheEnum.ENGLISCH: return "Password for this level? "
-				case SpracheEnum.FRANZOESISCH: return "Mot de passe pour ce niveau? "
+				case SpracheEnum.DEUTSCH: return "Levelcode? >"
+				case SpracheEnum.ENGLISCH: return "Password for this level? >"
+				case SpracheEnum.FRANZOESISCH: return "Mot de passe pour ce niveau? >"
 			end select
 		case TextEnum.WILLKOMMEN_BEI_LEVEL:
 			select case s
@@ -124,7 +124,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow point to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: sur lequel le rectangle la fleche rouge pointe-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: sur quel le rectangle la fleche rouge pointe-t-elle?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK:
 			select case s
@@ -160,7 +160,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Richtig. Du bekommst 10 weitere Punkte."
 				case SpracheEnum.ENGLISCH: return "Right. You get 10 more points."
-				case SpracheEnum.FRANZOESISCH: return "C'est vrai. Vous obtenez 10 points de plus."
+				case SpracheEnum.FRANZOESISCH: return "C'est vrai. Vous perdez 10 points."
 			end select
 		case TextEnum.FALSCH_MINUS_10:
 			select Case s
