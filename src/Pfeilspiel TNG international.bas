@@ -563,14 +563,17 @@ end sub
 
 sub standardSpielAufgabe.zeigeKorrekteWahlAn(i as Short)
 	'Richtiges Rechteck grün:
-	Dim as Integer j
 	dim as integer zielfarbe = RGB(0,255,0)
 	dim as integer startfarbe = variablesRechteckArray(i).farbe
-
-	For j = 0 To 255
-		variablesRechteckArray(i).anzeigen(GrafikHelfer.farbeUeberblenden(startfarbe, zielfarbe, j))
-		Sleep 2
-	Next
+	Dim as Double starttime = Timer
+	Dim as Double j = 0
+	dim as double dauer = 1.7
+	do while j < 255 
+		BildschirmHelfer.lockscreen()
+			j = timelerp(starttime,dauer,0,255)
+			variablesRechteckArray(i).anzeigen(GrafikHelfer.farbeUeberblenden(startfarbe, zielfarbe, j))
+		BildschirmHelfer.unlockscreen()
+	loop
 end sub 
 
 sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
@@ -581,11 +584,16 @@ sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
 		dim as integer startfarbe = variablesRechteckArray(eingabe).farbe
 		
 		'Falsches Rechteck rot:
-		Dim as Integer j
-		For j = 0 To 255
-			variablesRechteckArray(eingabe).anzeigen( GrafikHelfer.farbeUeberblenden(startfarbe, zielfarbe, j))
-			Sleep 2
-		Next
+		
+		Dim as Double starttime = timer
+		Dim as Double j = 0
+		dim as double dauer = 1.7
+		do while j < 255 
+			BildschirmHelfer.lockscreen()
+				j = timelerp(starttime,dauer,0,255)
+				variablesRechteckArray(eingabe).anzeigen( GrafikHelfer.farbeUeberblenden(startfarbe, zielfarbe, j))
+			BildschirmHelfer.unlockscreen()
+		loop
 		
 		zielfarbe = RGB(0,255,0)
 		startfarbe = variablesRechteckArray(i).farbe
@@ -597,6 +605,7 @@ sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
 			variablesRechteckArray(i).anzeigen(startfarbe)
 			Sleep 400
 		Next
+		variablesRechteckArray(i).anzeigen(zielfarbe)
 	end if
 end sub
 

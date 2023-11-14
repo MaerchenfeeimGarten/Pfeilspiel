@@ -94,9 +94,9 @@ Function framerate() As Ulong
     '' function return : measured FPS value (for debug), in frames per second
     Static As Double t1
     Dim As Double t2 = Timer
-    #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
+#if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
     If t2 < t1 Then t1 -= 24 * 60 * 60
-    #endif
+#endif
     Dim As Ulong tf = 1 / (t2 - t1)
     t1 = t2
     Return tf
@@ -104,9 +104,9 @@ End Function
 
 Function timelerp(starttime as Double, durationInSecs as Double, startvalue as double, endvalue as double) as double
     Dim As Double t2 = Timer
-    #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
+#if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
     If t2 < starttime Then starttime -= 24 * 60 * 60
-    #endif
+#endif
     Dim as Double diff = (t2 - starttime)
     if diff < 0 then
         return 0

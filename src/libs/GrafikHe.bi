@@ -9,13 +9,29 @@
 
 Namespace GrafikHelfer
 
-	Declare function farbeUeberblenden(f1 as integer, f2 as integer, step as integer) as integer
-	function farbeUeberblenden(f1 as integer, f2 as integer, stepp as integer) as integer
+	Declare function farbWertEinschraenkung(wert as double) as Integer
+	function farbWertEinschraenkung(wert as double) as Integer
+		if wert > 255 then
+			return 255
+		elseif wert < 0 then
+			return 0
+		else 
+			return int(wert)
+		end if
+	end function
+
+	Declare function farbeUeberblenden(f1 as integer, f2 as integer, stepp as double) as integer
+	function farbeUeberblenden(f1 as integer, f2 as integer, stepp as double) as integer
+		if stepp < 0 then
+			stepp = 0
+		elseif stepp> 255 then
+			stepp = 255
+		end if
 		dim as integer r = RGBA_R(f1)*((255.0-stepp)/255.0) + RGBA_R(f2)*(stepp/255.0)
 		dim as integer g = RGBA_G(f1)*((255.0-stepp)/255.0) + RGBA_G(f2)*(stepp/255.0)
 		dim as integer b = RGBA_B(f1)*((255.0-stepp)/255.0) + RGBA_B(f2)*(stepp/255.0)
 		dim as integer a = RGBA_A(f1)*((255.0-stepp)/255.0) + RGBA_A(f2)*(stepp/255.0)
-		return rgba(r,g,b,a)
+		return rgba(farbWertEinschraenkung(r),farbWertEinschraenkung(g),farbWertEinschraenkung(b),farbWertEinschraenkung(a))
 	end function
 
 	'Quelle: https://www.freebasic.net/forum/viewtopic.php?t=22261
