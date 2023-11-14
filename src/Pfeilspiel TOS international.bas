@@ -71,7 +71,7 @@ Function UebersetzterText(TextId as Integer) As String
             select case Sprache
 			    case 1: return "weiter"
 			    case 2: return "proceed"
-			    case 3: return "a partir de"
+			    case 3: return "continuer"
 			end select
 		case 7:
             select case Sprache
@@ -101,7 +101,7 @@ Function UebersetzterText(TextId as Integer) As String
             select case Sprache
 			    case 1: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
 			    case 2: return "Task: Which rectangle does the red arrow point to?"
-			    case 3: return "Task: sur lequel le rectangle la fleche rouge pointe-t-elle?"
+			    case 3: return "Task: sur quel le rectangle la fleche rouge pointe-t-elle?"
 			end select
 		case 12:
             select case Sprache
@@ -131,7 +131,7 @@ Function UebersetzterText(TextId as Integer) As String
 			select Case Sprache
 			    case 1: return "Richtig. Du bekommst 10 weitere Punkte."
 			    case 2: return "Right. You get 10 more points."
-			    case 3: return "C'est vrai. Vous obtenez 10 points de plus."
+			    case 3: return "C'est vrai. Vous perdez 10 points."
 			end select
 		case 17:
 			select Case Sprache
