@@ -202,10 +202,11 @@ namespace MenueFuehrung
 		dim as integer vorschub = 1
 		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor) +1
 		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor) +1
+		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor) +1
 		'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
 		dim as Integer j,i
-		j = 2 'Anzahl der Sprachen. 
+		j = 3 'Anzahl der Sprachen. 
 		'Auswahlbuttons laden:
 		Dim SprachAuswahlButton(100) As rechteck
 		For i = 1 To j

@@ -391,29 +391,29 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 			'TODO: Muss noch übersetzt werden (auf Französisch)
 			Select Case level
 				Case 1 
-					Zeile(1) = "Du hast nun 100 Punkte und damit das Level geloest!  "
-					Zeile(2) = "Um das naechste Level spielen zu koennen, brauchst du"
-					Zeile(3) = "einen Freischaltcode. Dieser lautet:     "+levelcode+"     "
+					Zeile(1) = "Vous avez maintenant 100 points et vous avez ainsi 
+					Zeile(2) = "resolu le niveau. Pour jouer au niveau suivant, vous"
+					Zeile(3) = "avez besoin d'un code d'activation:   "+levelcode
 				Case 2
-					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
-					Zeile(2) = "gespielt. Hier ist der naechste Freischaltcode fuer "
-					Zeile(3) = "das Level 3:    "+levelcode+"      Viel Spass!            "
+					Zeile(1) = "C'est super. Maintenant vous avez joue jusqu'au niveau"
+					Zeile(2) = "2 avec 100 points. Voici le prochain code d'activation"
+					Zeile(3) = "pour le niveau 3: "+levelcode+" Amusez-vous bien. " 
 				Case 3
-					Zeile(1) = "Du hast nun die Haelfte aller Level gespielt! Weiter"
-					Zeile(2) = "so! Der naechste Levelcode fuer das Level 4 heisst:  "
-					Zeile(3) = "   "+levelcode+"                                          "
+					Zeile(1) = "Vous avez maintenant joue la moitié de tous les niveaux." 
+					Zeile(2) = "Continuez comme ça. Le code de niveau suivant pour le"
+					Zeile(3) = "niveau 4 est: "+levelcode
 				Case 4
-					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
-					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fuer das Level 5  "
-					Zeile(3) = "lautet:    "+levelcode+"                                "
+					Zeile(1) = "Vous avez deja joue 4 niveaux sur 6. C'est super. Il "
+					Zeile(2) = "manque donc donc encore 2. Le code de niveau 5 est:"
+					Zeile(3) = "   " +levelcode+"                                "
 				Case 5
-					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
-					Zeile(2) = "noch das Level 6. Auch dafuer gibt es wieder einen  "
-					Zeile(3) = "Code:    "+levelcode+"                                    "
+					Zeile(1) = "Vous avez presque joue a travers le jeu. Aujourd'hui,"
+					Zeile(2) = "seul le niveau manque de 6. Il existe egalement un code"
+					Zeile(3) = "a cet effet:     "+levelcode+"                   "
 				Case 6
-					Zeile(1) = "Du hast nun 100 Punkte und das Level geloest! Damit  "
-					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
-					Zeile(3) = "lichen Glueckwunsch!     "
+					Zeile(1) = "Vous avez maintenant 100 points et le niveau. Avec cela,"
+					Zeile(2) = "vous avez joue tout au long du jeu. Felicitations."
+					Zeile(3) = ""
 				Case Else
 					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
 					Zeile(2) = "aber nichts besonderes ist, haettest du das Spiel gar "
