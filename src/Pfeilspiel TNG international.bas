@@ -66,6 +66,7 @@ namespace MenueFuehrung
 					Exit Do
 				EndIf
 			Next
+			sleep 1
 		Loop
 		If eingabe = 1 Then 
 			Sleep 800
@@ -112,6 +113,7 @@ namespace MenueFuehrung
 					EndIf
 				EndIf
 			EndIf
+			sleep 1
 		Loop Until Weiter.wirdGeklickt()
 	End Sub
 
@@ -122,15 +124,15 @@ namespace MenueFuehrung
 
 				TextField.CopyBackground()
 				DO
-				BildschirmHelfer.lockscreen
-					TextField.Redraw()
-				BildschirmHelfer.unlockscreen
-				letter=inkey 'Eingabe abfragen
-				if letter<>"" then 'Es wurde etwas eingeben.
-					TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
-				end if
-				if (asc(letter) = 27) then textfield.setstring("")
-				sleep 1 'CPU-Auslastung reduzieren
+					BildschirmHelfer.lockscreen
+						TextField.Redraw()
+					BildschirmHelfer.unlockscreen
+					letter=inkey 'Eingabe abfragen
+					if letter<>"" then 'Es wurde etwas eingeben.
+						TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
+					end if
+					if (asc(letter) = 27) then textfield.setstring("")
+					sleep 1 'CPU-Auslastung reduzieren
 					
 				loop until  asc(letter)=13 'Ende durch ENTER
 				return TextField.GetString()
@@ -184,6 +186,7 @@ namespace MenueFuehrung
 					Return i
 				EndIf
 			Next
+			sleep 1
 		Loop
 	End Function 'Spielauswahl
 
@@ -239,6 +242,7 @@ namespace MenueFuehrung
 					Exit Do
 				EndIf
 			Next
+			sleep 1
 		Loop
 	End Sub 'Sprachauswahl
 
@@ -287,6 +291,7 @@ namespace MenueFuehrung
 					Exit Do
 				EndIf
 			Next
+			sleep 1
 		Loop
 		
 
@@ -442,6 +447,7 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 				exit do
 			EndIf
 		Next
+		sleep 1
 	Loop
 	
 	return this.pfeilRichtungVerfolgen()
@@ -462,6 +468,9 @@ function standardSpielAufgabe.pfeilRichtungVerfolgen() as trinaer
 #endif
 		if jj mod accuracy = 0 then
 			regulate(450/accuracy*GrafikEinstellungen.breite/1920.0,125)
+		end if
+		if jj mod 5 = 0 then
+			sleep 1
 		end if
 	next
 	return korrektesRechteckGetroffen(true)
@@ -660,6 +669,7 @@ sub SpielAufgabenWurf.pfeileGenerieren()
 						Exit Do
 				EndIf
 			Next
+			sleep 1
 		Loop	
 	Next
 end sub
@@ -990,6 +1000,7 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		end if
 		
 		MenueFuehrung.Warten(true)
+		sleep 1
 	Loop Until this.getAktuellePunkte() >= this.getNoetigePunkte() or abbruch
 
 	Sleep 800

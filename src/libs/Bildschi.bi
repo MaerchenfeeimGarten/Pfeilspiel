@@ -88,6 +88,11 @@ Namespace BildschirmHelfer
 				yy = 800
 		End Select
 		
+		if xx= 512 and yy=512 then 'wasm
+			xx = 1280
+			yy = 768
+		end if
+		
 		GrafikEinstellungen.breite = xx
 		GrafikEinstellungen.hoehe = yy
 		
