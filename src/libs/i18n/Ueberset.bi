@@ -391,7 +391,7 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 			'TODO: Muss noch übersetzt werden (auf Französisch)
 			Select Case level
 				Case 1 
-					Zeile(1) = "Vous avez maintenant 100 points et vous avez ainsi 
+					Zeile(1) = "Vous avez maintenant 100 points et vous avez ainsi"
 					Zeile(2) = "resolu le niveau. Pour jouer au niveau suivant, vous"
 					Zeile(3) = "avez besoin d'un code d'activation:   "+levelcode
 				Case 2

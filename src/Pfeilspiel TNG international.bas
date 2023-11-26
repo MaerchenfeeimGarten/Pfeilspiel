@@ -1009,10 +1009,10 @@ Sub StandardSpiel.spielen(level as short, spiel as short)
 		dim as Integer AnzeilZeilen = 3
 		
 		dim as integer i
-		dim as integer vorschub = 1
+		dim as integer vorschub = 13
 		for i = 1 to AnzeilZeilen 
 			dim as String text = Uebersetzungen.uebersetzterGlueckwunschtext(Uebersetzungen.Sprache, level, i, getLevelCode(level+1,spiel))
-			vorschub  = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,13+vorschub, GrafikEinstellungen.umbruchNach,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))+1
+			vorschub  = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(0,vorschub, GrafikEinstellungen.umbruchNach,text,GrafikEinstellungen.skalierungsfaktor, RGB(255,200,15))+1
 		next
 		
 		MenueFuehrung.Warten()
