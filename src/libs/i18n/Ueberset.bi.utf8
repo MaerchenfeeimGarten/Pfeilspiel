@@ -118,7 +118,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.PUNKTE_VON_PUNKTE:
 			select case s
-				case SpracheEnum.DEUTSCH: return " Punkte von 100, die nîtig sind, um das Level zu beenden."
+				case SpracheEnum.DEUTSCH: return " Punkte von 100, die n√∂tig sind, um das Level zu beenden."
 				case SpracheEnum.ENGLISCH: return " points out of 100, which are necessary to finish the level."
 				case SpracheEnum.FRANZOESISCH: return " points sur 100, qui sont necessaires pour terminer le niveau."
 			end select
@@ -178,7 +178,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.BITTE_WAEHLE_SPIEL:
 			select Case s
-				case SpracheEnum.DEUTSCH: return "Bitte wÑhlen Sie ein Spiel aus."
+				case SpracheEnum.DEUTSCH: return "Bitte w√§hlen Sie ein Spiel aus."
 				case SpracheEnum.ENGLISCH: return "Please choose a game."
 				case SpracheEnum.FRANZOESISCH: return "S'il vous plait, choisissez un jeu."
 			end select
@@ -214,7 +214,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_GRUENES_RECHTECK
 			select Case s
-				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches grÅne Rechteck zeigt der rote Pfeil?"
+				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches gr√ºne Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: On which green rectangle does the red arrow point to?"
 				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle vert la fleche rouge pointe-t-elle?"
 			end select
@@ -232,7 +232,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			end select
 		case TextEnum.SPRACHE_WAEHLEN
 			select Case s
-				case SpracheEnum.DEUTSCH: return "DE: Bitte eine Sprache wÑhlen."
+				case SpracheEnum.DEUTSCH: return "DE: Bitte eine Sprache w√§hlen."
 				case SpracheEnum.ENGLISCH: return "EN: Please choose a language. "
 				case SpracheEnum.FRANZOESISCH: return "FR: Veuillez choisir une langue"
 			end select
@@ -246,7 +246,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 		case TextFarbe.GRUEN
 			select Case s
 				case SpracheEnum.DEUTSCH
-					strings.replace(text, "rote Pfeil", "grÅne Pfeil")
+					strings.replace(text, "rote Pfeil", "gr√ºne Pfeil")
 				case SpracheEnum.ENGLISCH
 					strings.replace(text, "red arrow", "green arrow")
 				case SpracheEnum.FRANZOESISCH
@@ -264,7 +264,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 		case TextFarbe.TURKIES
 			select Case s
 				case SpracheEnum.DEUTSCH
-					 strings.replace(text, "rote Pfeil", "tÅrkise Pfeil")
+					 strings.replace(text, "rote Pfeil", "t√ºrkise Pfeil")
 				case SpracheEnum.ENGLISCH
 					  strings.replace(text, "red arrow", "turquoise arrow")
 				case SpracheEnum.FRANZOESISCH
@@ -282,7 +282,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 		case TextFarbe.WEISS
 			select Case s
 				case SpracheEnum.DEUTSCH
-					 strings.replace(text, "rote Pfeil", "wei·e Pfeil")
+					 strings.replace(text, "rote Pfeil", "wei√üe Pfeil")
 				case SpracheEnum.ENGLISCH
 					  strings.replace(text, "red arrow", "white arrow")
 				case SpracheEnum.FRANZOESISCH
@@ -334,32 +334,32 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 		Case Uebersetzungen.SpracheEnum.DEUTSCH:
 			Select Case level
 				Case 1 
-					Zeile(1) = "Du hast nun 100 Punkte und damit das Level gelîst!  "
-					Zeile(2) = "Um das nÑchste Level spielen zu kînnen, brauchst du"
+					Zeile(1) = "Du hast nun 100 Punkte und damit das Level gel√∂st!  "
+					Zeile(2) = "Um das n√§chste Level spielen zu k√∂nnen, brauchst du"
 					Zeile(3) = "einen Freischaltcode. Dieser lautet:     "+levelcode+"     "
 				Case 2
 					Zeile(1) = "Super! Nun hast du mit 100 Punkten auch Level 2 durch-"
-					Zeile(2) = "gespielt. Hier ist der nÑchste Freischaltcode fÅr "
-					Zeile(3) = "das Level 3:    "+levelcode+"      Viel Spa·!            "
+					Zeile(2) = "gespielt. Hier ist der n√§chste Freischaltcode f√ºr "
+					Zeile(3) = "das Level 3:    "+levelcode+"      Viel Spa√ü!            "
 				Case 3
-					Zeile(1) = "Du hast nun die HÑlfte aller Level gespielt! Weiter"
-					Zeile(2) = "so! Der nÑchste Levelcode fÅr das Level 4 hei·t:  "
+					Zeile(1) = "Du hast nun die H√§lfte aller Level gespielt! Weiter"
+					Zeile(2) = "so! Der n√§chste Levelcode f√ºr das Level 4 hei√üt:  "
 					Zeile(3) = "   "+levelcode+"                                          "
 				Case 4
 					Zeile(1) = "Du hast schon 4 von 6 Level durchgespielt. Super! Jetzt"
-					Zeile(2) = "fehlen demnach noch 2. Der Levelcode fÅr das Level 5  "
+					Zeile(2) = "fehlen demnach noch 2. Der Levelcode f√ºr das Level 5  "
 					Zeile(3) = "lautet:    "+levelcode+"                                "
 				Case 5
 					Zeile(1) = "Du hast das Spiel fast durchgespielt. Jetzt fehlt nur-"
-					Zeile(2) = "noch das Level 6. Auch dafÅr gibt es wieder einen  "
+					Zeile(2) = "noch das Level 6. Auch daf√ºr gibt es wieder einen  "
 					Zeile(3) = "Code:    "+levelcode+"                                    "
 				Case 6
-					Zeile(1) = "Du hast nun 100 Punkte und das Level gelîst! Damit  "
+					Zeile(1) = "Du hast nun 100 Punkte und das Level gel√∂st! Damit  "
 					Zeile(2) = "hast du auch das komplette Spiel durchgespielt! Herz-"
-					Zeile(3) = "lichen GlÅckwunsch!     "
+					Zeile(3) = "lichen Gl√ºckwunsch!     "
 				Case Else
 					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
-					Zeile(2) = "aber nichts besonderes ist, hÑttest du das Spiel gar "
+					Zeile(2) = "aber nichts besonderes ist, h√§ttest du das Spiel gar "
 					Zeile(3) = "nicht spielen brauchen..."
 			End Select
 		Case Uebersetzungen.SpracheEnum.ENGLISCH:
@@ -394,7 +394,7 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 					Zeile(3) = "play the game at all.."
 			End Select
 		Case Uebersetzungen.SpracheEnum.FRANZOESISCH:
-			'TODO: Muss noch Åbersetzt werden (auf Franzîsisch)
+			'TODO: Muss noch √ºbersetzt werden (auf Franz√∂sisch)
 			Select Case level
 				Case 1 
 					Zeile(1) = "Vous avez maintenant 100 points et vous avez ainsi"
@@ -405,8 +405,8 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 					Zeile(2) = "2 avec 100 points. Voici le prochain code d'activation"
 					Zeile(3) = "pour le niveau 3: "+levelcode+" Amusez-vous bien. " 
 				Case 3
-					Zeile(1) = "Vous avez maintenant joue la moitiÇ de tous les niveaux." 
-					Zeile(2) = "Continuez comme áa. Le code de niveau suivant pour le"
+					Zeile(1) = "Vous avez maintenant joue la moiti√© de tous les niveaux." 
+					Zeile(2) = "Continuez comme √ßa. Le code de niveau suivant pour le"
 					Zeile(3) = "niveau 4 est: "+levelcode
 				Case 4
 					Zeile(1) = "Vous avez deja joue 4 niveaux sur 6. C'est super. Il "
@@ -422,7 +422,7 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 					Zeile(3) = ""
 				Case Else
 					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
-					Zeile(2) = "aber nichts besonderes ist, hÑttest du das Spiel gar "
+					Zeile(2) = "aber nichts besonderes ist, h√§ttest du das Spiel gar "
 					Zeile(3) = "nicht spielen brauchen..."
 			End Select
 	End Select 'Sprache
