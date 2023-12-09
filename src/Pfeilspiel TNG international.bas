@@ -66,7 +66,7 @@ namespace MenueFuehrung
 					Exit Do
 				EndIf
 			Next
-			sleep 1
+			sleep 15
 		Loop
 		If eingabe = 1 Then 
 			Sleep 800
@@ -113,7 +113,7 @@ namespace MenueFuehrung
 					EndIf
 				EndIf
 			EndIf
-			sleep 1
+			sleep 15
 		Loop Until Weiter.wirdGeklickt()
 	End Sub
 
@@ -132,7 +132,7 @@ namespace MenueFuehrung
 						TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
 					end if
 					if (asc(letter) = 27) then textfield.setstring("")
-					sleep 1 'CPU-Auslastung reduzieren
+					sleep 10 'CPU-Auslastung reduzieren
 					
 				loop until  asc(letter)=13 'Ende durch ENTER
 				return TextField.GetString()
@@ -186,7 +186,7 @@ namespace MenueFuehrung
 					Return i
 				EndIf
 			Next
-			sleep 1
+			sleep 15
 		Loop
 	End Function 'Spielauswahl
 
@@ -243,7 +243,7 @@ namespace MenueFuehrung
 					Exit Do
 				EndIf
 			Next
-			sleep 1
+			sleep 15
 		Loop
 	End Sub 'Sprachauswahl
 
@@ -292,7 +292,7 @@ namespace MenueFuehrung
 					Exit Do
 				EndIf
 			Next
-			sleep 1
+			sleep 15
 		Loop
 		
 
@@ -448,7 +448,7 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 				exit do
 			EndIf
 		Next
-		sleep 1
+		sleep 15
 	Loop
 	
 	return this.pfeilRichtungVerfolgen()
@@ -470,9 +470,11 @@ function standardSpielAufgabe.pfeilRichtungVerfolgen() as trinaer
 		if jj mod accuracy = 0 then
 			regulate(450/accuracy*GrafikEinstellungen.breite/1920.0,125)
 		end if
+#ifdef __FB_JS__
 		if jj mod 5 = 0 then
 			sleep 1
 		end if
+#endif
 	next
 	return korrektesRechteckGetroffen(true)
 end function
