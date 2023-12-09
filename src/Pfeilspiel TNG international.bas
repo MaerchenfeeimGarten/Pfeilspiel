@@ -200,9 +200,9 @@ namespace MenueFuehrung
 		
 		ZeichneLogo(RGB(0,70,100))
 		dim as integer vorschub = 1
-		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"DE: Bitte eine Sprache waehlen.",GrafikEinstellungen.skalierungsfaktor) +1
-		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"EN: Please choose a language.",GrafikEinstellungen.skalierungsfaktor) +1
-		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor) +1
+		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.SpracheEnum.DEUTSCH, Uebersetzungen.TextEnum.SPRACHE_WAEHLEN),GrafikEinstellungen.skalierungsfaktor) +1
+		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.SpracheEnum.ENGLISCH, Uebersetzungen.TextEnum.SPRACHE_WAEHLEN),GrafikEinstellungen.skalierungsfaktor) +1
+		vorschub = GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,vorschub,GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.SpracheEnum.FRANZOESISCH, Uebersetzungen.TextEnum.SPRACHE_WAEHLEN),GrafikEinstellungen.skalierungsfaktor) +1
 		'GrafikHelfer.schreibeSkaliertInsGitter(2,3,"FR: Veuillez choisir une langue.",GrafikEinstellungen.skalierungsfaktor)
 
 		dim as Integer j,i
