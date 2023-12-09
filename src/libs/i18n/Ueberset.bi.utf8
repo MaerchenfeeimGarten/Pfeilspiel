@@ -66,7 +66,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select case s
 				case SpracheEnum.DEUTSCH: return "Welches Level wollen Sie spielen?"
 				case SpracheEnum.ENGLISCH: return "Which level do you want to play?"
-				case SpracheEnum.FRANZOESISCH: return "Quel niveau voulez-vous jouer? "
+				case SpracheEnum.FRANZOESISCH: return "Quel niveau voulez-vous jouer?"
 			end select
 		case TextEnum.ABBRECHEN:
 			select case s
@@ -120,31 +120,31 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select case s
 				case SpracheEnum.DEUTSCH: return " Punkte von 100, die nötig sind, um das Level zu beenden."
 				case SpracheEnum.ENGLISCH: return " points out of 100, which are necessary to finish the level."
-				case SpracheEnum.FRANZOESISCH: return " points sur 100, qui sont necessaires pour terminer le niveau."
+				case SpracheEnum.FRANZOESISCH: return " points sur 100, qui sont nécessaires pour terminer le niveau."
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_RECHTECK:
 			select case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow point to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: sur quel le rectangle la fleche rouge pointe-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: sur quel le rectangle la flèche rouge pointe-t-elle?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_RECHTECK:
 			select case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: Which rectangle does the red arrow flies to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: a quel rectangle la fleche rouge vole-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: a quel rectangle la flèche rouge vole-t-elle?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEITG_AUF_LETZTES_RECHTECK:
 			select case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil zuletzt?"
 				case SpracheEnum.ENGLISCH: return "Task: Which last rectangle does the red arrow points to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle la fleche rouge montre-t-elle en dernier lieu?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle la flèche rouge montre-t-elle en dernier lieu?"
 			end select
 		case TextEnum.AUSWAHL_RECHTECK_KLICK:
 			select case s
 				case SpracheEnum.DEUTSCH: return "Zur Auswahl auf das Rechteck klicken."
 				case SpracheEnum.ENGLISCH: return "Click on the rectangle to select."
-				case SpracheEnum.FRANZOESISCH: return "Cliquez sur le rectangle pour selectionner."
+				case SpracheEnum.FRANZOESISCH: return "Cliquez sur le rectangle pour sélectionner."
 			end select
 		case TextEnum.FALSCH_NEUER_VERSUCH:
 			select case s
@@ -186,43 +186,43 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Standard"
 				case SpracheEnum.ENGLISCH: return "Default"
-				case SpracheEnum.FRANZOESISCH: return "Par defaut"
+				case SpracheEnum.FRANZOESISCH: return "Par défaut"
 			end select
 		case TextEnum.VIELFALT_PPT
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Vielfalt.ppt"
 				case SpracheEnum.ENGLISCH: return "diversity.ppt"
-				case SpracheEnum.FRANZOESISCH: return "diversite.ppt"
+				case SpracheEnum.FRANZOESISCH: return "Diversité.ppt"
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_LETZTES_RECHTECK
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck zeigt der rote Pfeil zuletzt?"
 				case SpracheEnum.ENGLISCH: return "Task: On which rectangle does the red arrow last show?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle la fleche rouge montre-t-elle en dernier lieu? "
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle la flèche rouge montre-t-elle en dernier lieu?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_FLIEGT_AUF_LETZTES_RECHTECK
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches Rechteck fliegt der rote Pfeil zuletzt?"
 				case SpracheEnum.ENGLISCH: return "Task: On which rectangle does the red arrow last fly?"
-				case SpracheEnum.FRANZOESISCH: return "Tache : Sur quel rectangle la fleche rouge vole-t-elle en dernier lieu?"
+				case SpracheEnum.FRANZOESISCH: return "Tache : Sur quel rectangle la flèche rouge vole-t-elle en dernier lieu?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_ROTES_RECHTECK
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches rote Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: On which red rectangle does the red arrow point to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle rouge pointe-t-elle la fleche rouge?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle rouge pointe-t-elle la flèche rouge?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_GRUENES_RECHTECK
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches grüne Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: On which green rectangle does the red arrow point to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle vert la fleche rouge pointe-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle vert la flèche rouge pointe-t-elle?"
 			end select
 		case TextEnum.AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Aufgabe: Auf welches blaue Rechteck zeigt der rote Pfeil?"
 				case SpracheEnum.ENGLISCH: return "Task: On which blue rectangle does the red arrow point to?"
-				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle bleu la fleche rouge pointe-t-elle?"
+				case SpracheEnum.FRANZOESISCH: return "Tache: Sur quel rectangle bleu la flèche rouge pointe-t-elle?"
 			end select
 		case TextEnum.COMPUTERFEHLER
 			select Case s
@@ -250,7 +250,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					strings.replace(text, "red arrow", "green arrow")
 				case SpracheEnum.FRANZOESISCH
-					strings.replace(text,"fleche rouge", "fleche verte ")
+					strings.replace(text,"flèche rouge", "flèche verte ")
 			end select
 		case TextFarbe.BLAU
 			select Case s
@@ -259,7 +259,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					  strings.replace(text, "red arrow", "blue arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche bleue ")
+					 strings.replace(text,"flèche rouge", "flèche bleue ")
 			end select
 		case TextFarbe.TURKIES
 			select Case s
@@ -268,7 +268,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					  strings.replace(text, "red arrow", "turquoise arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche turquoise")
+					 strings.replace(text,"flèche rouge", "flèche turquoise")
 			end select
 		case TextFarbe.SCHWARZ
 			select Case s
@@ -277,7 +277,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					  strings.replace(text, "red arrow", "black arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche noire")
+					 strings.replace(text,"flèche rouge", "flèche noire")
 			end select
 		case TextFarbe.WEISS
 			select Case s
@@ -286,7 +286,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					  strings.replace(text, "red arrow", "white arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche blanche")
+					 strings.replace(text,"flèche rouge", "flèche blanche")
 			end select
 		case TextFarbe.ORANGE
 			select Case s
@@ -295,7 +295,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					strings.replace(text, "red arrow", "orange arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche orange")
+					 strings.replace(text,"flèche rouge", "flèche orange")
 			end select
 		case TextFarbe.VIOLETT
 			select Case s
@@ -304,7 +304,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					strings.replace(text, "red arrow", "violet arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche violette")
+					 strings.replace(text,"flèche rouge", "flèche violette")
 			end select
 		case TextFarbe.GELB
 			select Case s
@@ -313,7 +313,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					strings.replace(text, "red arrow", "yellow arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche jaune")
+					 strings.replace(text,"flèche rouge", "flèche jaune")
 			end select
 		case TextFarbe.BRAUN
 			select Case s
@@ -322,7 +322,7 @@ function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEn
 				case SpracheEnum.ENGLISCH
 					strings.replace(text, "red arrow", "brown arrow")
 				case SpracheEnum.FRANZOESISCH
-					 strings.replace(text,"fleche rouge", "fleche brune")
+					 strings.replace(text,"flèche rouge", "flèche brune")
 			end select
 	end select
 	return text
@@ -401,24 +401,24 @@ function Uebersetzungen.uebersetzterGlueckwunschtext(s as Uebersetzungen.Sprache
 					Zeile(2) = "resolu le niveau. Pour jouer au niveau suivant, vous"
 					Zeile(3) = "avez besoin d'un code d'activation:   "+levelcode
 				Case 2
-					Zeile(1) = "C'est super. Maintenant vous avez joue jusqu'au niveau"
+					Zeile(1) = "C'est super. Maintenant vous avez joué jusqu'au niveau"
 					Zeile(2) = "2 avec 100 points. Voici le prochain code d'activation"
 					Zeile(3) = "pour le niveau 3: "+levelcode+" Amusez-vous bien. " 
 				Case 3
-					Zeile(1) = "Vous avez maintenant joue la moitié de tous les niveaux." 
+					Zeile(1) = "Vous avez maintenant joué la moitié de tous les niveaux." 
 					Zeile(2) = "Continuez comme ça. Le code de niveau suivant pour le"
 					Zeile(3) = "niveau 4 est: "+levelcode
 				Case 4
-					Zeile(1) = "Vous avez deja joue 4 niveaux sur 6. C'est super. Il "
+					Zeile(1) = "Vous avez déjà joué 4 niveaux sur 6. C'est super. Il "
 					Zeile(2) = "manque donc donc encore 2. Le code de niveau 5 est:"
 					Zeile(3) = "   " +levelcode+"                                "
 				Case 5
-					Zeile(1) = "Vous avez presque joue a travers le jeu. Aujourd'hui,"
+					Zeile(1) = "Vous avez presque joué à travers le jeu. Aujourd'hui,"
 					Zeile(2) = "seul le niveau manque de 6. Il existe egalement un code"
 					Zeile(3) = "a cet effet:     "+levelcode+"                   "
 				Case 6
 					Zeile(1) = "Vous avez maintenant 100 points et le niveau. Avec cela,"
-					Zeile(2) = "vous avez joue tout au long du jeu. Felicitations."
+					Zeile(2) = "vous avez joué tout au long du jeu. Félicitations."
 					Zeile(3) = ""
 				Case Else
 					Zeile(1) = "Du hast nun 100 Punkte! Da das bei nur EINEM Rechteck "
