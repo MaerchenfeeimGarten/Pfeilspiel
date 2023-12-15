@@ -521,32 +521,40 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 end function
 
 function standardSpielAufgabe.pfeilRichtungVerfolgen() as trinaer
-	dim as integer jj
-	For jj = 0 To Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)
-		pfeilRichtungsVerfolgungInkrement(jj)
-		dim as trinaer ergebnis = korrektesRechteckGetroffen()
-		if ergebnis<>trinaer._null then
-			return ergebnis
-		end if
-		
-		dim as short accuracy = 1
-#ifdef __FB_DOS__ 
-		accuracy = 15
-#endif
-		if jj mod accuracy = 0 then
-			regulate(450/accuracy*GrafikEinstellungen.breite/1920.0,125)
-		end if
-#ifdef __FB_JS__
-		if jj mod 5 = 0 then
-			sleep 1
-		end if
-#endif
-	next
+	dim as integer jj = 0
+	dim as integer start = 0
+	dim as integer stopp = Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)
+	dim as double starttime = timer
+	dim as double dauer = 6
+	dim as integer naechsteBildschirmaktualisierungBei = 1
+	do
+		naechsteBildschirmaktualisierungBei = timelerp(starttime,dauer,0,stopp)
+		BildschirmHelfer.lockScreen()
+			for jj = jj to naechsteBildschirmaktualisierungBei
+ 				pfeilRichtungsVerfolgungInkrement(jj)
+				dim as trinaer ergebnis = korrektesRechteckGetroffen()
+				if ergebnis<>trinaer._null then
+					return ergebnis
+				end if
+			Next
+		BildschirmHelfer.unlockScreen()
+'		dim as short accuracy = 1
+'#ifdef __FB_DOS__ 
+'		accuracy = 15
+'#endif
+'		if jj mod accuracy = 0 then
+'			regulate(450/accuracy*GrafikEinstellungen.breite/1920.0,125)
+'		end if
+'#ifdef __FB_JS__
+'		if jj mod 5 = 0 then
+'			sleep 1
+'		end if
+'#endif
+	loop until jj >= stopp
 	return korrektesRechteckGetroffen(true)
 end function
 
 function standardSpielAufgabe.korrektesRechteckGetroffen(letzterDurchlauf as boolean) as trinaer
-	
 	dim as short i 
 	for i = lbound(variablesRechteckArray) to ubound(variablesRechteckArray) 
 		if variablesRechteckArray(i).istPunktDarauf(Punkt(pfeilSchussPositionen(KorrekterPfeilIndex).x,pfeilSchussPositionen(KorrekterPfeilIndex).y)) then
@@ -640,12 +648,14 @@ end sub
 
 
 sub standardSpielAufgabe.zeigeKorrekteWahlAn(i as Short)
+	BildschirmHelfer.unlockScreen()
 	'Richtiges Rechteck grün:
 	dim as integer zielfarbe = RGB(0,255,0)
 	dim as integer startfarbe = variablesRechteckArray(i).farbe
 	Dim as Double starttime = Timer
 	Dim as Double j = 0
 	dim as double dauer = 1.7
+	
 	do while j < 255 
 		BildschirmHelfer.lockscreen()
 			j = timelerp(starttime,dauer,0,255)
@@ -655,6 +665,7 @@ sub standardSpielAufgabe.zeigeKorrekteWahlAn(i as Short)
 end sub 
 
 sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
+	BildschirmHelfer.unlockScreen()
 	if not falschBereitsAngezeigt then
 		falschBereitsAngezeigt = true
 		
