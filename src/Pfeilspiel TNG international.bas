@@ -119,22 +119,88 @@ namespace MenueFuehrung
 
 	Declare function LevelCodeInput( TextField as TextBoxType) as string
 	function LevelCodeInput( TextField as TextBoxType) as string
-				dim as string letter
+				get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+				dim as string letter, zurueck, ok
+				dim  eingabefeld(1 to 3,1 to 4) as Rechteck
+				dim as integer x,y
+				
+				zurueck = "<--"
+				ok = "OK"
+				
+				for x = 1 to 3
+					for y = 1 to 4 
+						
+						eingabefeld(x,y).x1 = GrafikEinstellungen.breite/20 + GrafikEinstellungen.breite/5*(x-1)
+						eingabefeld(x,y).y1 = GrafikEinstellungen.hoehe/5+GrafikEinstellungen.hoehe/5.5*(y-1)
+ 						eingabefeld(x,y).x2 = GrafikEinstellungen.breite/20 + GrafikEinstellungen.breite/5*(x)-GrafikEinstellungen.breite/36
+						eingabefeld(x,y).y2 =  GrafikEinstellungen.hoehe/5+GrafikEinstellungen.hoehe/5.5*(y)-GrafikEinstellungen.hoehe/36
+						eingabefeld(x,y).farbe = RGB(0,150,150)
+						
+					next
+				next
+				
+				eingabefeld(1,1).beschriftung = "1"
+				eingabefeld(1,2).beschriftung = "4"
+				eingabefeld(1,3).beschriftung = "7"
+				eingabefeld(1,4).beschriftung = "0"
+				             
+				eingabefeld(2,1).beschriftung = "2"
+				eingabefeld(2,2).beschriftung = "5"
+				eingabefeld(2,3).beschriftung = "8"
+				eingabefeld(2,4).beschriftung = zurueck
+				             
+				eingabefeld(3,1).beschriftung = "3"
+				eingabefeld(3,2).beschriftung = "6"
+				eingabefeld(3,3).beschriftung = "9"
+				eingabefeld(3,4).beschriftung = ok
+				
 				TextField.SetPrompt(Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.LEVELCODE_PROMPT))
-
 				TextField.CopyBackground()
+				
+				dim as boolean ersterDurchlauf = true
 				DO
 					BildschirmHelfer.lockscreen
-						TextField.Redraw()
-					BildschirmHelfer.unlockscreen
+					for x = 1 to 3
+						for y = 1 to 4 
+							eingabefeld(x,y).anzeigen()
+						Next
+					next 
+						
+					if ersterDurchlauf then
+					    get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
+						Put(0,0),BildschirmHelfer.img2,pset
+						BildschirmHelfer.unlockscreen
+						BildschirmHelfer.ueberblenden
+						ersterDurchlauf = false
+						else
+						BildschirmHelfer.unlockscreen
+					end if
+					
+					TextField.Redraw()
+					
 					letter=inkey 'Eingabe abfragen
-					if letter<>"" then 'Es wurde etwas eingeben.
-						TextField.NewLetter(letter) 'Zeichen an Textboxc	^ weiterreichen.
+					
+					for x = 1 to 3
+						for y = 1 to 4 
+							if eingabefeld(x,y).wirdGeklickt() then
+								letter = eingabefeld(x,y).beschriftung
+							end if
+						Next
+					next 
+					
+					if letter<>"" and letter <> ok then 'Es wurde etwas eingeben.
+						if letter = zurueck then letter = chr(8)'Löschtaste
+						TextField.NewLetter(letter) 'Zeichen an Textbox weiterreichen.
+						Dim As Integer MM,MDruck
+						do' warten, bis die Maustaste wieder losgelassen wurde
+							sleep 10
+							GetMouse MM,MM,MM,MDruck
+						loop until MDruck = 0
 					end if
 					if (asc(letter) = 27) then textfield.setstring("")
 					sleep 10 'CPU-Auslastung reduzieren
 					
-				loop until  asc(letter)=13 'Ende durch ENTER
+				loop until  asc(letter)=13 or letter = ok 'Ende durch ENTER
 				return TextField.GetString()
 	End function 
 
