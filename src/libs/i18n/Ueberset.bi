@@ -72,7 +72,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select case s
 				case SpracheEnum.DEUTSCH: return "abbrechen"
 				case SpracheEnum.ENGLISCH: return "cancel"
-				case SpracheEnum.FRANZOESISCH: return "qannuler"
+				case SpracheEnum.FRANZOESISCH: return "annuler"
 			end select
 		case TextEnum.WOLLEN_NEUES_SPIEL:
 			select case s
@@ -162,13 +162,13 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Richtig. Du bekommst 10 weitere Punkte."
 				case SpracheEnum.ENGLISCH: return "Right. You get 10 more points."
-				case SpracheEnum.FRANZOESISCH: return "C'est vrai. Vous perdez 10 points."
+				case SpracheEnum.FRANZOESISCH: return "C'est vrai. Vous gagnez 10 points."
 			end select
 		case TextEnum.FALSCH_MINUS_10:
 			select Case s
 				case SpracheEnum.DEUTSCH: return "Falsch. Es werden 10 Punkte abgezogen."
 				case SpracheEnum.ENGLISCH: return "Incorrect. You loose 10 points."
-				case SpracheEnum.FRANZOESISCH: return "Faux. Il y aura 10 points."
+				case SpracheEnum.FRANZOESISCH: return "Faux. Vous perdez 10 points."
 			end select
 		case TextEnum.FALSCH:
 			select Case s
