@@ -1,6 +1,7 @@
 #include once "fbgfx.bi"
 #include once "GrafikEi.bi"
 #include once "timer/delay.bi"
+#include once "GrafElem/Rechteck.bi"
 
 Namespace BildschirmHelfer
 	Dim As Integer FPS = 43
@@ -8,14 +9,30 @@ Namespace BildschirmHelfer
 	Dim Shared As FB.Image Ptr img1, img2
 
 	Sub lockScreen()
-	ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
-	ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
+		ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+		ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
 	End Sub
-
+	
+	sub SchliessenButtonAbarbeiten()
+		static as Rechteck schliessenButton
+		schliessenButton.farbe = RGB(255,60,60)
+		schliessenButton.farbe_rand = RGB(225,0,0)
+		schliessenButton.beschriftung = "x"
+		schliessenButton.x1 = GrafikEinstellungen.breite - (GrafikEinstellungen.groesseTextzeichen.x+2)*GrafikEinstellungen.skalierungsfaktor
+		schliessenButton.y1 = 0
+		schliessenButton.x2 = GrafikEinstellungen.breite - 1
+		schliessenButton.y2 = (GrafikEinstellungen.groesseTextzeichen.x+2)*GrafikEinstellungen.skalierungsfaktor
+		schliessenButton.anzeigen()
+		if schliessenButton.wirdGeklickt() then
+			end
+		end if
+	end sub
+	
 	Sub unlockScreen()
-	ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
-	ScreenSync               ' auf die Bildschirmaktualisierung warten
-	ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+		ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
+		ScreenSync               ' auf die Bildschirmaktualisierung warten
+		ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+		SchliessenButtonAbarbeiten()
 	End Sub
 
 
