@@ -29,10 +29,10 @@ Namespace BildschirmHelfer
 	end sub
 	
 	Sub unlockScreen()
+		SchliessenButtonAbarbeiten()
 		ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
 		ScreenSync               ' auf die Bildschirmaktualisierung warten
 		ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
-		SchliessenButtonAbarbeiten()
 	End Sub
 
 
