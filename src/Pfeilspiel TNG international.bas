@@ -11,6 +11,7 @@
 #Include once "libs/timer/delay.bi"
 #Include once "libs/SpielEle/AbbruchB.bi"
 #Include once "libs/SpielEle/Logo.bi"
+#Include once "libs/Bildschi.bi"
 
 #ifdef __FB_DOS__ 
 ScreenRes  640,480 ,32,2, &h04 Or 8 
@@ -62,6 +63,7 @@ namespace MenueFuehrung
 		Do
 			For i = 1 To j
 				If ButtonWeiterspielenJaNein(i).wirdGeklickt() Then
+					BildschirmHelfer.SchliessenButtonAbarbeiten()
 					Eingabe = i
 					Exit Do
 				EndIf
@@ -101,6 +103,7 @@ namespace MenueFuehrung
 		
 		'Logik
 		Do
+			BildschirmHelfer.SchliessenButtonAbarbeiten()
 			If AbbrechenAnbieten Then
 				If abbruchbutton.wurdeGeklickt() Then
 					If Weiterspielen() Then
@@ -159,6 +162,7 @@ namespace MenueFuehrung
 				
 				dim as boolean ersterDurchlauf = true
 				DO
+					BildschirmHelfer.SchliessenButtonAbarbeiten()
 					BildschirmHelfer.lockscreen
 					for x = 1 to 3
 						for y = 1 to 4 
@@ -247,6 +251,7 @@ namespace MenueFuehrung
 		'Auswahlbuttons abfragen:
 
 		Do
+			BildschirmHelfer.SchliessenButtonAbarbeiten()
 			For i = 1 To j
 				If SpielAuswahlButton(i).wirdGeklickt() Then
 					Return i
@@ -303,6 +308,7 @@ namespace MenueFuehrung
 		'Auswahlbuttons abfragen:
 
 		Do
+			BildschirmHelfer.SchliessenButtonAbarbeiten()
 			For i = 1 To j
 				If SprachAuswahlButton(i).wirdGeklickt() Then
 					Uebersetzungen.Sprache = i
@@ -352,6 +358,7 @@ namespace MenueFuehrung
 		'Auswahlbuttons abfragen:
 		Dim as Short Level
 		Do
+			BildschirmHelfer.SchliessenButtonAbarbeiten()
 			For i = 1 To j
 				If Levelauswahl(i).wirdGeklickt() Then
 					Level = i
@@ -507,6 +514,7 @@ function standardSpielAufgabe.aufgabeAnbietenUndErfolgZurueckgeben() as trinaer
 	'Eingabe machen
 	Dim as Integer Eingabe
 	Do
+		BildschirmHelfer.SchliessenButtonAbarbeiten()
 		'If AbbrechenButton() = 1 Then end
 		For i = 1 To UBound(this.variablesRechteckArray)
 			If variablesRechteckArray(i).wirdGeklickt() Then

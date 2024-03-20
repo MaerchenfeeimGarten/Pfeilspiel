@@ -13,6 +13,8 @@ Namespace BildschirmHelfer
 		ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
 	End Sub
 	
+	Declare Sub FensterSchliessen()
+	
 	sub SchliessenButtonAbarbeiten()
 		static as Rechteck schliessenButton
 		schliessenButton.farbe = RGB(255,60,60)
@@ -24,12 +26,14 @@ Namespace BildschirmHelfer
 		schliessenButton.y2 = (GrafikEinstellungen.groesseTextzeichen.x+2)*GrafikEinstellungen.skalierungsfaktor
 		schliessenButton.anzeigen()
 		if schliessenButton.wirdGeklickt() then
-			end
+			FensterSchliessen()
 		end if
 	end sub
 	
-	Sub unlockScreen()
-		SchliessenButtonAbarbeiten()
+	Sub unlockScreen(schliessenbutton as boolean = True)
+		if schliessenbutton then
+			SchliessenButtonAbarbeiten()
+		end if 
 		ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
 		ScreenSync               ' auf die Bildschirmaktualisierung warten
 		ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
@@ -49,7 +53,7 @@ Namespace BildschirmHelfer
 	End Sub
 
 	
-	Sub Ueberblenden(dauer as Double = 3)
+	Sub Ueberblenden(dauer as Double = 3, schliessenButton as Boolean = true)
 		Dim as Double starttime = timer
 		Dim as Double i = 0
 		do while i < 255 
@@ -58,11 +62,11 @@ Namespace BildschirmHelfer
 			cls
 			put (0,0),img2,ALPHA,255
 			put (0,0),img1,ALPHA,int(i)
-			BildschirmHelfer.unlockscreen()
+			BildschirmHelfer.unlockscreen(schliessenButton)
 		loop
 	End sub
 	
-	Declare Sub FensterSchliessen()
+	
 	Sub FensterSchliessen()
 		'Effekt zum Beenden:
 		BildschirmHelfer.lockscreen
@@ -74,8 +78,8 @@ Namespace BildschirmHelfer
 		
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
 		Put(0,0),BildschirmHelfer.img2,pset
-		BildschirmHelfer.unlockscreen
-		BildschirmHelfer.Ueberblenden(6)
+		BildschirmHelfer.unlockscreen(false)
+		BildschirmHelfer.Ueberblenden(6, false)
 		Sleep 2000
 		imagedestroy img1
 		imagedestroy img2
