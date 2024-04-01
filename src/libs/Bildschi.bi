@@ -1,5 +1,6 @@
 #include once "fbgfx.bi"
 #include once "GrafikEi.bi"
+#include once "GrafikHe.bi"
 #include once "timer/delay.bi"
 #include once "GrafElem/Rechteck.bi"
 
@@ -7,13 +8,16 @@ Namespace BildschirmHelfer
 	Dim As Integer FPS = 43
 	Dim As Integer StepsPerFrame = 3
 	Dim Shared As FB.Image Ptr img1, img2
+	Dim as boolean locked = false
 
 	Sub lockScreen()
+		locked = true
 		ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
 		ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
 	End Sub
 	
 	Declare Sub FensterSchliessen()
+	Declare Sub AuswahlWirklichBeenden()
 	
 	sub SchliessenButtonAbarbeiten()
 		static as Rechteck schliessenButton
@@ -24,9 +28,12 @@ Namespace BildschirmHelfer
 		schliessenButton.y1 = 0
 		schliessenButton.x2 = GrafikEinstellungen.breite - 1
 		schliessenButton.y2 = (GrafikEinstellungen.groesseTextzeichen.x+2)*GrafikEinstellungen.skalierungsfaktor
-		schliessenButton.anzeigen()
+		
+		if locked then
+			schliessenButton.anzeigen()
+		end if
 		if schliessenButton.wirdGeklickt() then
-			FensterSchliessen()
+			AuswahlWirklichBeenden()
 		end if
 	end sub
 	
@@ -37,6 +44,7 @@ Namespace BildschirmHelfer
 		ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
 		ScreenSync               ' auf die Bildschirmaktualisierung warten
 		ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+		locked = false
 	End Sub
 
 
@@ -66,6 +74,96 @@ Namespace BildschirmHelfer
 		loop
 	End sub
 	
+	Sub AuswahlWirklichBeendenZeichnen(i as Double, startbild as Any Ptr)' 0 <= i <= 255
+		if not locked then BildschirmHelfer.lockscreen()
+		
+		'Weißer Hintergrund
+		cls
+		Line (0,0)-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe), RGB(255,255,255), BF
+		
+		'Frage zeichnen
+		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/2, GrafikEinstellungen.hoehe/3/2, "Programm wirklich beenden?",GrafikEinstellungen.skalierungsfaktor , RGB(0,0,0))
+		
+		'Nein
+		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/3*2 + GrafikEinstellungen.breite/3/2, GrafikEinstellungen.hoehe/2, "Nein.", GrafikEinstellungen.skalierungsfaktor , RGB(0,120,0))
+		
+		'Ja
+		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/3/2, GrafikEinstellungen.hoehe/3*2 + GrafikEinstellungen.hoehe/3/2, "Ja.",GrafikEinstellungen.skalierungsfaktor , RGB(164,0,0))
+		
+		'Statische Elemente:
+		put (0, GrafikEinstellungen.hoehe/3), startbild, (0,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite/3*2, GrafikEinstellungen.hoehe/3*2),PSET
+		put (GrafikEinstellungen.breite/3, GrafikEinstellungen.hoehe/3*2), startbild, (GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe),PSET
+		
+		'Dynamisches Schieben: Oberes Bildschirm-Drittel nach oben schieben:
+		put (0, 0), startbild, (0,int(GrafikEinstellungen.hoehe/3.0*(i/255.0)))-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe/3),PSET
+		
+		'Dynamisches Schieben: Mittleres, rechtes Bildschirm-Drittel nach rechts schieben:
+		put (int(GrafikEinstellungen.breite/3*(2+1*(i/255.0))), GrafikEinstellungen.hoehe/3), startbild, (GrafikEinstellungen.breite/3*2,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite-int(GrafikEinstellungen.breite/3*(i/255.0)), GrafikEinstellungen.hoehe/3*2),PSET
+		
+		'Dynamisches Schieben: Unteres, linkes Bildschirm-Drittel nach links schieben:
+		put (0, GrafikEinstellungen.hoehe/3*2), startbild, (int(GrafikEinstellungen.breite/3.0*(i/255.0)), GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe),PSET
+				
+		unlockscreen(false)
+		sleep 10
+	end sub
+	
+	Sub AuswahlWirklichBeenden()
+		'Speichern der aktuellen Bildschirm-Sperrsituation.
+		Dim as Boolean wasLocked = locked
+		
+		'Sicherstellen, das Bildschirm am Anfang dieser Sub immer geblockt ist.
+		if not wasLocked then
+			lockScreen()
+		end if
+		
+		'Bildschirminhalt beim Start dieser Sub sichern.
+		Dim startbild As Any Ptr 
+		startbild= ImageCreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe)
+		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),startbild
+		
+		'Eingangsanimation
+		Dim as Double starttime = timer
+		Dim as Double i = 0
+		Dim as Double dauer = 3'Sekunden
+		do while i < 255 
+			i = timelerp(starttime,dauer,0,255)
+			AuswahlWirklichBeendenZeichnen(i, startbild)
+		loop
+		
+		dim as integer xm, ym, MM,MDruck
+		do' warten, bis die Maustaste gedrückt wurde
+			sleep 10
+			GetMouse xm,ym,MM,MDruck
+		loop until MDruck > 0
+		do' warten, bis die Maustaste wieder losgelassen wurde
+			sleep 10
+			GetMouse xm,ym,MM,MDruck
+		loop until MDruck = 0
+		
+		'Ausgangsanimation
+		starttime = timer
+		i = 0
+		dauer = 3'Sekunden
+		do while i < 255 
+			i = timelerp(starttime,dauer,0,255)
+			AuswahlWirklichBeendenZeichnen(255-i, startbild)
+		loop
+		
+		if xm < GrafikEinstellungen.breite/3 and ym > GrafikEinstellungen.hoehe/3*2 then
+			'Ausgangsanimation
+			FensterSchliessen()
+		end if
+		
+		'Aufräumen
+		If startbild Then ImageDestroy startbild
+		
+		'Wiederherstellung der Anfangs-Bildschirm-Sperrsituation.
+		if not wasLocked and locked then
+			unlockScreen()
+		elseif wasLocked and not locked then
+			lockScreen()
+		end if
+	end sub
 	
 	Sub FensterSchliessen()
 		'Effekt zum Beenden:

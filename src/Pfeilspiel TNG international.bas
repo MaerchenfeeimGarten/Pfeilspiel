@@ -303,8 +303,8 @@ namespace MenueFuehrung
 		Next
 		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img1
 		Put(0,0),BildschirmHelfer.img2,pset
-		BildschirmHelfer.unlockscreen
-		BildschirmHelfer.ueberblenden
+		BildschirmHelfer.unlockscreen()
+		BildschirmHelfer.ueberblenden()
 		'Auswahlbuttons abfragen:
 
 		Do
