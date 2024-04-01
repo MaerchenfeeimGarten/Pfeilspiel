@@ -44,6 +44,7 @@ Namespace Uebersetzungen
 		AUFGABE_PFEIL_ZEIGT_AUF_BLAUES_RECHTECK
 		COMPUTERFEHLER
 		SPRACHE_WAEHLEN
+		PROGRAMM_WIRKLICH_BEENDEN
 	end enum 
 
 	enum SpracheEnum explicit
@@ -61,6 +62,7 @@ Namespace Uebersetzungen
 End Namespace
 
 Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as Uebersetzungen.TextEnum) As String
+	if s = 0 then s = Uebersetzungen.SpracheEnum.ENGLISCH
 	select case T
 		case TextEnum.WELCHES_LEVEL:
 			select case s
@@ -236,10 +238,17 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 				case SpracheEnum.ENGLISCH: return "EN: Please choose a language. "
 				case SpracheEnum.FRANZOESISCH: return "FR: Veuillez choisir une langue"
 			end select
+		case TextEnum.PROGRAMM_WIRKLICH_BEENDEN
+			select Case s
+				case SpracheEnum.DEUTSCH: return "Wollen Sie das Programm wirklich beenden?"
+				case SpracheEnum.ENGLISCH: return "Do you like to close this app?"
+				case SpracheEnum.FRANZOESISCH: return "Voulez-vous vraiment terminer le programme ?"
+			end select
 	end select 'TextId
 end function
 
 function Uebersetzungen.ersetzteFarbennameVonPfeil(s as Uebersetzungen.SpracheEnum, text as string, f as TextFarbe) as String
+	if s = 0 then s = Uebersetzungen.SpracheEnum.ENGLISCH
 	select case f
 		case TextFarbe.ROT
 			return text

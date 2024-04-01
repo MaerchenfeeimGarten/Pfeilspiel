@@ -3,6 +3,7 @@
 #include once "GrafikHe.bi"
 #include once "timer/delay.bi"
 #include once "GrafElem/Rechteck.bi"
+#include once "i18n/Ueberset.bi"
 
 Namespace BildschirmHelfer
 	Dim As Integer FPS = 43
@@ -82,13 +83,13 @@ Namespace BildschirmHelfer
 		Line (0,0)-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe), RGB(255,255,255), BF
 		
 		'Frage zeichnen
-		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/2, GrafikEinstellungen.hoehe/3/2, "Programm wirklich beenden?",GrafikEinstellungen.skalierungsfaktor , RGB(0,0,0))
+		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/2, GrafikEinstellungen.hoehe/3/2, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.PROGRAMM_WIRKLICH_BEENDEN),GrafikEinstellungen.skalierungsfaktor , RGB(0,0,0))
 		
 		'Nein
-		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/3*2 + GrafikEinstellungen.breite/3/2, GrafikEinstellungen.hoehe/2, "Nein.", GrafikEinstellungen.skalierungsfaktor , RGB(0,120,0))
+		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/3*2 + GrafikEinstellungen.breite/3/2, GrafikEinstellungen.hoehe/2,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.NEIN), GrafikEinstellungen.skalierungsfaktor , RGB(0,120,0))
 		
 		'Ja
-		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/3/2, GrafikEinstellungen.hoehe/3*2 + GrafikEinstellungen.hoehe/3/2, "Ja.",GrafikEinstellungen.skalierungsfaktor , RGB(164,0,0))
+		GrafikHelfer.zentriertSchreiben(GrafikEinstellungen.breite/3/2, GrafikEinstellungen.hoehe/3*2 + GrafikEinstellungen.hoehe/3/2, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.JA),GrafikEinstellungen.skalierungsfaktor , RGB(164,0,0))
 		
 		'Statische Elemente:
 		put (0, GrafikEinstellungen.hoehe/3), startbild, (0,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite/3*2, GrafikEinstellungen.hoehe/3*2),PSET
@@ -172,7 +173,7 @@ Namespace BildschirmHelfer
 		
 		put (0,0), Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32), PSET
 		
-		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - Version 0.0.4 - von MaerchenfeeImGarten - 2024", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
+		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - v0.0.5 - (c) MaerchenfeeImGarten 2024 - APGL-3.0", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
 		
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
 		Put(0,0),BildschirmHelfer.img2,pset
