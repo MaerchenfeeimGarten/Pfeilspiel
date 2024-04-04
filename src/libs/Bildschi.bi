@@ -94,14 +94,16 @@ Namespace BildschirmHelfer
 		'Statische Elemente:
 		put (0, GrafikEinstellungen.hoehe/3), startbild, (0,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite/3*2, GrafikEinstellungen.hoehe/3*2),PSET
 		put (GrafikEinstellungen.breite/3, GrafikEinstellungen.hoehe/3*2), startbild, (GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe),PSET
+		
+		'Dynamische Elemente:
 		if not i>=254.98 then 'Dynamische Elemente nicht zeichnen, wenn der Scrollewert i auf Maximum ist (Abzüglich von ein wenig wegen Double-Ungenauigkeiten). Dies ist eine Fehlerbehebung für einen of-by-one-Fehler.
 			'Dynamisches Schieben: Oberes Bildschirm-Drittel nach oben schieben:
 			put (0, 0), startbild, (0,int(GrafikEinstellungen.hoehe/3.0*(i/255.0)))-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe/3),PSET
 			
-			'Dynamisches Schieben: Mittleres, rechtes Bildschirm-Drittel nach rechts schieben:
+			'Dynamisches Schieben: Mittleres, rechtes Bildschirm-Neuntel nach rechts schieben:
 			put (int(GrafikEinstellungen.breite/3*(2+1*(i/255.0))), GrafikEinstellungen.hoehe/3), startbild, (GrafikEinstellungen.breite/3*2,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite-int(GrafikEinstellungen.breite/3*(i/255.0)), GrafikEinstellungen.hoehe/3*2),PSET
 			
-			'Dynamisches Schieben: Unteres, linkes Bildschirm-Drittel nach links schieben:
+			'Dynamisches Schieben: Unteres, linkes Bildschirm-Neuntel nach links schieben:
 			put (0, GrafikEinstellungen.hoehe/3*2), startbild, (int(GrafikEinstellungen.breite/3.0*(i/255.0)), GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe),PSET
 		end if
 		unlockscreen(false)
@@ -139,7 +141,7 @@ Namespace BildschirmHelfer
 			sleep 10
 			GetMouse xm,ym,MM,MDruck
 		loop until MDruck > 0
-		do' warten, bis die Maustaste wieder losgelassen wurde
+		do' warten, bis die Maustaste wieder losgelassen wurde, und dann Mausposition speichern.
 			sleep 10
 			GetMouse xm,ym,MM,MDruck
 		loop until MDruck = 0
@@ -153,6 +155,7 @@ Namespace BildschirmHelfer
 			AuswahlWirklichBeendenZeichnen(255-i, startbild)
 		loop
 		
+		'Programm beenden, wenn Mausposition auf "Nein"-Feld war.
 		if xm < GrafikEinstellungen.breite/3 and ym > GrafikEinstellungen.hoehe/3*2 then
 			'Ausgangsanimation
 			FensterSchliessen()
