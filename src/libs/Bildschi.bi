@@ -94,16 +94,16 @@ Namespace BildschirmHelfer
 		'Statische Elemente:
 		put (0, GrafikEinstellungen.hoehe/3), startbild, (0,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite/3*2, GrafikEinstellungen.hoehe/3*2),PSET
 		put (GrafikEinstellungen.breite/3, GrafikEinstellungen.hoehe/3*2), startbild, (GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe),PSET
-		
-		'Dynamisches Schieben: Oberes Bildschirm-Drittel nach oben schieben:
-		put (0, 0), startbild, (0,int(GrafikEinstellungen.hoehe/3.0*(i/255.0)))-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe/3),PSET
-		
-		'Dynamisches Schieben: Mittleres, rechtes Bildschirm-Drittel nach rechts schieben:
-		put (int(GrafikEinstellungen.breite/3*(2+1*(i/255.0))), GrafikEinstellungen.hoehe/3), startbild, (GrafikEinstellungen.breite/3*2,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite-int(GrafikEinstellungen.breite/3*(i/255.0)), GrafikEinstellungen.hoehe/3*2),PSET
-		
-		'Dynamisches Schieben: Unteres, linkes Bildschirm-Drittel nach links schieben:
-		put (0, GrafikEinstellungen.hoehe/3*2), startbild, (int(GrafikEinstellungen.breite/3.0*(i/255.0)), GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe),PSET
-				
+		if not i>=254.98 then 'Dynamische Elemente nicht zeichnen, wenn der Scrollewert i auf Maximum ist (Abzüglich von ein wenig wegen Double-Ungenauigkeiten). Dies ist eine Fehlerbehebung für einen of-by-one-Fehler.
+			'Dynamisches Schieben: Oberes Bildschirm-Drittel nach oben schieben:
+			put (0, 0), startbild, (0,int(GrafikEinstellungen.hoehe/3.0*(i/255.0)))-(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe/3),PSET
+			
+			'Dynamisches Schieben: Mittleres, rechtes Bildschirm-Drittel nach rechts schieben:
+			put (int(GrafikEinstellungen.breite/3*(2+1*(i/255.0))), GrafikEinstellungen.hoehe/3), startbild, (GrafikEinstellungen.breite/3*2,GrafikEinstellungen.hoehe/3)-(GrafikEinstellungen.breite-int(GrafikEinstellungen.breite/3*(i/255.0)), GrafikEinstellungen.hoehe/3*2),PSET
+			
+			'Dynamisches Schieben: Unteres, linkes Bildschirm-Drittel nach links schieben:
+			put (0, GrafikEinstellungen.hoehe/3*2), startbild, (int(GrafikEinstellungen.breite/3.0*(i/255.0)), GrafikEinstellungen.hoehe/3*2)-(GrafikEinstellungen.breite/3,GrafikEinstellungen.hoehe),PSET
+		end if
 		unlockscreen(false)
 		sleep 10
 	end sub
@@ -179,7 +179,7 @@ Namespace BildschirmHelfer
 		
 		put (0,0), Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32), PSET
 		
-		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - v0.0.5 - (c) MaerchenfeeImGarten 2024 - AGPL-3.0", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
+		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - v0.0.6 - (c) MaerchenfeeImGarten 2024 - AGPL-3.0", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
 		
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
 		Put(0,0),BildschirmHelfer.img2,pset
