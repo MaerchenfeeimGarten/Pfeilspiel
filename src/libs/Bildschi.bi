@@ -63,7 +63,7 @@ Namespace BildschirmHelfer
 
 	
 	Sub Ueberblenden(dauer as Double = 3, schliessenButton as Boolean = true)
-		Dim as Double starttime = timer
+		Dim as MaerchenZeit starttime = getAktuelleMaerchenZeit()
 		Dim as Double i = 0
 		do while i < 255 
 			i = timelerp(starttime,dauer,0,255)
@@ -109,6 +109,9 @@ Namespace BildschirmHelfer
 	end sub
 	
 	Sub AuswahlWirklichBeenden()
+		'Speichern der aktuellen MaerchenZeit
+		Dim as MaerchenZeit StartZeit = getAktuelleMaerchenZeit()
+		
 		'Speichern der aktuellen Bildschirm-Sperrsituation.
 		Dim as Boolean wasLocked = locked
 		
@@ -123,7 +126,7 @@ Namespace BildschirmHelfer
 		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),startbild
 		
 		'Eingangsanimation
-		Dim as Double starttime = timer
+		Dim as MaerchenZeit starttime = getAktuelleMaerchenZeit()
 		Dim as Double i = 0
 		Dim as Double dauer = 3'Sekunden
 		do while i < 255 
@@ -142,7 +145,7 @@ Namespace BildschirmHelfer
 		loop until MDruck = 0
 		
 		'Ausgangsanimation
-		starttime = timer
+		starttime = getAktuelleMaerchenZeit()
 		i = 0
 		dauer = 3'Sekunden
 		do while i < 255 
@@ -157,6 +160,9 @@ Namespace BildschirmHelfer
 		
 		'Aufräumen
 		If startbild Then ImageDestroy startbild
+		
+		'Wiederherstellen der StartZeit
+		setAktuelleMaerchenZeit(StartZeit)
 		
 		'Wiederherstellung der Anfangs-Bildschirm-Sperrsituation.
 		if not wasLocked and locked then

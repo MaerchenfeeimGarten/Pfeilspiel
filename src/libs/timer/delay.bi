@@ -1,5 +1,25 @@
 '  delay_regulate_framerate.bi
+Type MaerchenZeit 'Zeitangabe mit Zeitreisefunktion
+    public:
+        AS Double zeitangabe = 0
+End Type
 
+'TODO: Aus diesem Kram ein Singelton machen, damit der MaerchenZeitOffset nicht von überall aus schreib- und lesbar ist.
+    Dim Shared as Double MaerchenZeitOffset = 0
+    
+    Declare Function getAktuelleMaerchenZeit() as MaerchenZeit
+    Function getAktuelleMaerchenZeit() as MaerchenZeit
+        Dim As MaerchenZeit rueckgabewert
+        rueckgabewert.zeitangabe = timer + MaerchenZeitOffset
+        return rueckgabewert
+    End Function
+    
+    Declare Sub setAktuelleMaerchenZeit(mz as MaerchenZeit)
+    Sub setAktuelleMaerchenZeit(mz as MaerchenZeit)
+        MaerchenZeitOffset += mz.zeitangabe - getAktuelleMaerchenZeit().zeitangabe 
+    End Sub
+'End TODO
+    
 #if defined(__FB_WIN32__)
 Declare Sub delay(ByVal amount As Single, ByVal threshold As Ulong = 2 * 16)
 Declare Function regulate(ByVal MyFps As Ulong, ByVal threshold As Ulong = 2 * 16) As Single
@@ -10,7 +30,7 @@ Declare Function regulateHR(ByVal MyFps As Ulong, ByVal threshold As Ulong = 2 *
 Sub delayHR(ByVal amount As Single, ByVal threshold As Ulong)
     '' 'amount'  : requested temporisation to apply, in milliseconds
     '' 'thresold' : fixing threshold for fine-grain temporisation (by waiting loop), in milliseconds
-    Dim As Double t1 = Timer
+    Dim As Double t1 = getAktuelleMaerchenZeit().zeitangabe
     Dim As Double t2
     Dim As Double t3 = t1 + amount / 1000
     If amount > threshold + 0.5 Then
@@ -20,11 +40,11 @@ Sub delayHR(ByVal amount As Single, ByVal threshold As Ulong)
     End If
     Do
     #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
-        t2 = Timer
+        t2 = getAktuelleMaerchenZeit().zeitangabe
         If t2 < t1 Then t1 -= 24 * 60 * 60 : t3 -= 24 * 60 * 60
     Loop Until t2 >= t3
     #else
-    Loop Until Timer >= t3
+    Loop Until getAktuelleMaerchenZeit().zeitangabe >= t3
     #endif
 End Sub
 Function regulateHR(ByVal MyFps As Ulong, ByVal threshold As Ulong) As Single
@@ -33,13 +53,13 @@ Function regulateHR(ByVal MyFps As Ulong, ByVal threshold As Ulong) As Single
     '' 'thresold' : fixing threshold for fine-grain temporisation (by waiting loop), in milliseconds
     Static As Double t1
     Dim As Single tf = 1 / MyFps
-    Dim As Double t2 = Timer
+    Dim As Double t2 = getAktuelleMaerchenZeit().zeitangabe
     #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
     If t2 < t1 Then t1 -= 24 * 60 * 60
     #endif
     Dim As Single dt = (tf - (t2 - t1)) * 1000
     delayHR(dt, threshold)
-    t1 = Timer
+    t1 = getAktuelleMaerchenZeit().zeitangabe
     Return dt
 End Function
 #elseif defined(__FB_LINUX__)
@@ -60,17 +80,17 @@ Declare Function framerate() As Ulong
 Sub delay(ByVal amount As Single, ByVal threshold As Ulong)
     '' 'amount'  : requested temporisation to apply, in milliseconds
     '' 'thresold' : fixing threshold for fine-grain temporisation (by waiting loop), in milliseconds
-    Dim As Double t1 = Timer
+    Dim As Double t1 = getAktuelleMaerchenZeit().zeitangabe
     Dim As Double t2
     Dim As Double t3 = t1 + amount / 1000
     If amount > threshold + 0.5 Then Sleep amount - threshold, 1
     Do
     #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
-        t2 = Timer
+        t2 = getAktuelleMaerchenZeit().zeitangabe
         If t2 < t1 Then t1 -= 24 * 60 * 60 : t3 -= 24 * 60 * 60
     Loop Until t2 >= t3
     #else
-    Loop Until Timer >= t3
+    Loop Until getAktuelleMaerchenZeit().zeitangabe >= t3
     #endif
 End Sub
 
@@ -80,20 +100,20 @@ Function regulate(ByVal MyFps As Ulong, ByVal threshold As Ulong) As Single
     '' 'thresold' : fixing threshold for fine-grain temporisation (by waiting loop), in milliseconds
     Static As Double t1
     Dim As Single tf = 1 / MyFps
-    Dim As Double t2 = Timer
+    Dim As Double t2 = getAktuelleMaerchenZeit().zeitangabe
     #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
     If t2 < t1 Then t1 -= 24 * 60 * 60
     #endif
     Dim As Single dt = (tf - (t2 - t1)) * 1000
     delay(dt, threshold)
-    t1 = Timer
+    t1 = getAktuelleMaerchenZeit().zeitangabe
     Return dt
 End Function
 
 Function framerate() As Ulong
     '' function return : measured FPS value (for debug), in frames per second
     Static As Double t1
-    Dim As Double t2 = Timer
+    Dim As Double t2 = getAktuelleMaerchenZeit().zeitangabe
 #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
     If t2 < t1 Then t1 -= 24 * 60 * 60
 #endif
@@ -102,12 +122,12 @@ Function framerate() As Ulong
     Return tf
 End Function 
 
-Function timelerp(starttime as Double, durationInSecs as Double, startvalue as double, endvalue as double) as double
-    Dim As Double t2 = Timer
+Function timelerp(starttime as MaerchenZeit, durationInSecs as Double, startvalue as double, endvalue as double) as double
+    Dim As Double t2 = getAktuelleMaerchenZeit().zeitangabe
 #if Not defined(__FB_WIN32__) And Not defined(__FB_LINUX__)
-    If t2 < starttime Then starttime -= 24 * 60 * 60
+    If t2 < starttime.zeitangabe Then starttime.zeitangabe -= 24 * 60 * 60
 #endif
-    Dim as Double diff = (t2 - starttime)
+    Dim as Double diff = (t2 - starttime.zeitangabe)
     if diff < 0 then
         return 0
     elseif diff < durationInSecs then
