@@ -151,7 +151,7 @@ function standardSpielAufgabe.pfeilRichtungVerfolgen() as trinaer
 	dim as integer jj = 0
 	dim as integer start = 0
 	dim as integer stopp = Sqr(GrafikEinstellungen.breite^2+(GrafikEinstellungen.hoehe/4)^2)
-	dim as MaerchenZeit starttime = getAktuelleMaerchenZeit()
+	dim as MaerchenZeit starttime = MaerchenZeitAngeber()
 	dim as double dauer = 6
 	dim as integer naechsteBildschirmaktualisierungBei = 1
 	do
@@ -279,7 +279,7 @@ sub standardSpielAufgabe.zeigeKorrekteWahlAn(i as Short)
 	'Richtiges Rechteck grün:
 	dim as integer zielfarbe = RGB(0,255,0)
 	dim as integer startfarbe = variablesRechteckArray(i).farbe
-	Dim as MaerchenZeit starttime = getAktuelleMaerchenZeit()
+	Dim as MaerchenZeit starttime = MaerchenZeitAngeber()
 	Dim as Double j = 0
 	dim as double dauer = 1.7
 	
@@ -301,7 +301,7 @@ sub standardSpielAufgabe.zeigeInkorrekteWahlAn(i as Short, eingabe as Short)
 		
 		'Falsches Rechteck rot:
 		
-		Dim as MaerchenZeit starttime = getAktuelleMaerchenZeit()
+		Dim as MaerchenZeit starttime = MaerchenZeitAngeber()
 		Dim as Double j = 0
 		dim as double dauer = 1.7
 		do while j < 255 
