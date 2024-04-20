@@ -1,16 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Pfeilspiel TNG international v0.0.6</title>
-    <style>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+ 
+<title>Pfeilspiel TNG international v0.0.6</title>
+
+<style>
+@font-face {
+  font-family: 'MainFont';
+  src:  url('fonts/kalam.woff2') format('woff2');
+}
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
       textarea.emscripten { font-family: monospace; width: 80%; }
-      div.emscripten { text-align: center; }
-      div.emscripten_border { border: 1px solid black; }
+      div.emscripten { text-align: center;}
+      div.emscripten_border { border: 0px none; }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-      canvas.emscripten { border: 0px none; }
+      canvas.emscripten { border: 0px none; max-width:100%;height:auto; }
 
       .spinner {
         height: 50px;
@@ -44,93 +50,112 @@
         to {transform: rotate(360deg);}
       }
 
+body {
+  font-family: 'MainFont';
+  background-color: #f1debe;
+}
 .termInnerChrome {
-	background: #A2A2A2;
-	padding: 0px;
-	border-width: 1px;
-	border-top-color: #747474;
-	border-left-color: #747474;
-	border-right-color: #D0D0D0;
-	border-bottom-color: #D0D0D0;
-	border-style: solid;
-	border-spacing: 0px;
+        background: #A2A2A2;
+        padding: 0px;
+        border-width: 1px;
+        border-top-color: #747474;
+        border-left-color: #747474;
+        border-right-color: #D0D0D0;
+        border-bottom-color: #D0D0D0;
+        border-style: solid;
+        border-spacing: 0px;
 }
 .termBody {
-	font-family: courier,fixed,swiss,sans-serif;
-	font-size: 1em;
-	background: #333333;
-	padding: 0px;
-	border-width: 0px;
-	border-style: none;
+        font-family: 'MainFont';
+        font-size: 150%;
+        background: #333333;
+        padding: 0px;
+        border-width: 0px;
+        border-style: none;
 }
 .termHeader {
-	font-family: arial,helvetica,sans-serif;
-	font-size: 12px;
-	letter-spacing: 1px;
-	color: #ffffff;
-	background: #000089;
-	padding: 1px;
-	padding-left: 6px;
-	border-width: 2px;
-	border-top-color: #B0B0D8;
-	border-left-color: #B0B0D8;
-	border-right-color: #0B0B55;
-	border-bottom-color: #0B0B55;
-	border-style: solid;
-	cursor: pointer;
-}	  
-    </style>
-  </head>
-  <body>
-    <h2 style="font-size: 250%;" >Pfeilspiel TNG international v0.0.6</h2>
-    <hr/>
-    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>emscripten</strong></center></figure>
-    <div class="emscripten" id="status">Downloading...</div>
-    <div class="emscripten">
-      <progress value="0" max="100" id="progress" hidden=1></progress>  
-    </div>
-    <hr/>
-    <div class="emscripten">
-      <!--<input type="checkbox" id="resize">Resize canvas
-      <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer-->
-      &nbsp;&nbsp;&nbsp;
-      <input type="button" style="font-size: 250%; padding: 2vh;" value="Fullscreen | Vollbild | plein écran" onclick="Module.requestFullscreen(false, false)">
-    </div>
-    <div class="emscripten_border">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    </div>
-    
-    <hr/>
+        font-family: 'MainFont';
+        font-size: 150%;
+        letter-spacing: 1px;
+        color: #ffffff;
+        background: #000089;
+        padding: 1px;
+        padding-left: 6px;
+        border-width: 2px;
+        border-top-color: #B0B0D8;
+        border-left-color: #B0B0D8;
+        border-right-color: #0B0B55;
+        border-bottom-color: #0B0B55;
+        border-style: solid;
+        cursor: pointer;
+}         
+</style>
+</head>
+<body>
 
-	<div hidden id="termContainer">
-		<table class="termOuterChrome" cellpadding="1" cellspacing="0">
-			<tr><td><table class="termInnerChrome" cellpadding="0" cellspacing="0">
-				<tr><td class="termHeader" id="termHeader">
-					<div style="float:left;">Console</div>
-					<div style="float:right;" onclick="__fb_rtlib.console.close();">[x]</div>
-					<div style="float:right;" onclick="__fb_rtlib.console.requestFullScreen();">[^]</div>
-				</td></tr>
-				<tr><td class="termBody"><div id="termDiv" style="position:relative;"></div></td></tr>
-			</table></td></tr>
-		</table>
-	</div>	
-	
-    <hr>
-    <script type='text/javascript'>
+<h2 style="font-size: 250%; text-align: center; letter-spacing: 0.1em;">Pfeilspiel TNG international
+v0.0.6</h2>
+
+<figure style="overflow:visible;" id="spinner">
+<div class="spinner"></div>
+<div style="margin-top:0.5em; text-align: center;">
+<strong>emscripten</strong></div>
+</figure>
+<div class="emscripten" id="status">Downloading...</div>
+<div class="emscripten"><progress value="0" max="100" id="progress" hidden></progress></div>
+
+<div class="emscripten">
+<!--<input type="checkbox" id="resize">Resize canvas
+      <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer-->
+&nbsp;&nbsp;&nbsp; <input type="button" style=
+"font-size: min(6vw,250%) ; padding: 2vh; font-family: 'MainFont'; max-width:100%; height:auto;" value=
+"Fullscreen | Vollbild | plein écran" onclick=
+"Module.requestFullscreen(false, false)"></div>
+<div class="emscripten_border">
+<canvas class="emscripten" id="canvas" oncontextmenu=
+"event.preventDefault()"></canvas>
+</div>
+
+<div hidden id="termContainer">
+<table class="termOuterChrome" style="margin-left: auto; margin-right: auto; padding: 1px; border-collapse: collapse; border-spacing: 0;">
+<tr>
+<td>
+<table class="termInnerChrome" style="padding: 0px; border-collapse: collapse; border-spacing: 0;">
+<tr>
+<td class="termHeader" id="termHeader">
+<div style="float:left;">Console</div>
+<div style="float:right;" onclick="__fb_rtlib.console.close();">
+[x]</div>
+<div style="float:right;" onclick=
+"__fb_rtlib.console.requestFullScreen();">[^]</div>
+</td>
+</tr>
+<tr>
+<td class="termBody">
+<div id="termDiv" style="position:relative;"></div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</div>
+
+<script>
       var statusElement = document.getElementById('status');
       var progressElement = document.getElementById('progress');
       var spinnerElement = document.getElementById('spinner');
 
       var Module = {
-		preRun: [function() {
-			__fb_rtlib.console.open(80, 25);
-		}],
+                preRun: [function() {
+                        __fb_rtlib.console.open(80, 25);
+                }],
         postRun: [],
         print: (function() {
           return function(text) {
             if (arguments.length > 1) 
-				text = Array.prototype.slice.call(arguments).join(' ');
-			__fb_rtlib.console.write(text);
+                                text = Array.prototype.slice.call(arguments).join(' ');
+                        __fb_rtlib.console.write(text);
           };
         })(),
         printErr: function(text) {
@@ -181,9 +206,16 @@
           if (text) Module.printErr('[post-exception status] ' + text);
         };
       };
-    </script>
-    <script async type="text/javascript" src="Pfeilspiel%20TNG%20international.js"></script>
-    <p><a style="font-size: 250%;" href="https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel">Code source sur Codeberg | Source code on Codeberg | Quellcode auf Codeberg</a></p>
-    <p><a style="font-size: 250%;" href="https://github.com/MaerchenfeeimGarten/Pfeilspiel">Code source sur GitHub | Source code on GitHub | Quellcode auf GitHub</a></p>
-  </body>
+</script> 
+<script src=
+"Pfeilspiel%20TNG%20international.js"></script>
+<p style=" vertical-align: middle; text-align: center;"><a style="font-size: 250%;" href=
+"https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel">Code source
+sur Codeberg | Source code on Codeberg | Quellcode auf
+Codeberg</a></p>
+
+<p style="vertical-align: middle; text-align: center;"><a style="font-size: 250%;" href=
+"https://github.com/MaerchenfeeimGarten/Pfeilspiel">Code source sur
+GitHub | Source code on GitHub | Quellcode auf GitHub</a></p>
+</body>
 </html>
