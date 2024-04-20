@@ -34,6 +34,10 @@ Auf Deutsch, auf Englisch, in vielleicht noch ein paar mehr Sprachen. Der schlec
  
 ## Lizenz
 
-Das Programm bzw. die Programme in diesem Repo sowie weitere Dateien dort wie z. B. Screenshots stehen unter der agpl-3.0-Lizenz. 
+Das Programm bzw. die Programme in diesem Repo sowie weitere Dateien dort wie z. B. Screenshots stehen, falls nicht anders vermerkt, unter der agpl-3.0-Lizenz.
 
 https://www.gnu.org/licenses/agpl-3.0.txt
+
+### Teile, die nicht unter der agpl-3.0-Lizenz stehen
+
+ * `src/fonts/kalam.woff2` steht unter der `SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007` (siehe src/fonts/OFL.txt).
