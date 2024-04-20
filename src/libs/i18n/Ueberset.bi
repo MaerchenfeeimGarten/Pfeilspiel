@@ -236,7 +236,7 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 			select Case s
 				case SpracheEnum.DEUTSCH: return "DE: Bitte eine Sprache w„hlen."
 				case SpracheEnum.ENGLISCH: return "EN: Please choose a language. "
-				case SpracheEnum.FRANZOESISCH: return "FR: Veuillez choisir une langue"
+				case SpracheEnum.FRANZOESISCH: return "FR: Veuillez choisir une langue."
 			end select
 		case TextEnum.PROGRAMM_WIRKLICH_BEENDEN
 			select Case s
