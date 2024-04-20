@@ -9,6 +9,7 @@ Type StandardAbbrechenButton extends GrafikElement
 		Declare Constructor()
 		Declare virtual sub anzeigen()
 		Declare function wurdeGeklickt() as Boolean
+		Declare function getAbbrechenRechteck() as Rechteck
 End Type
 
 Constructor StandardAbbrechenButton()
@@ -27,3 +28,7 @@ End Sub
 Function StandardAbbrechenButton.wurdeGeklickt() As Boolean
 	Return AbbrechenRechteck.wirdGeklickt() 
 End Function 
+
+Function StandardAbbrechenButton.getAbbrechenRechteck() as Rechteck
+	Return AbbrechenRechteck
+End Function

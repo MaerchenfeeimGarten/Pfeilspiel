@@ -86,13 +86,18 @@ namespace MenueFuehrung
 		Weiter.farbe = RGB(100,250,100)
 		Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
 		
+
+		
 		'Anzeige
 		BildschirmHelfer.lockScreen()
-			Weiter.anzeigen()
 			Dim abbruchbutton as StandardAbbrechenButton
 			if AbbrechenAnbieten then
 				abbruchbutton.anzeigen()
+			else
+				Weiter.x2 = abbruchbutton.getAbbrechenRechteck.x2
+				Weiter.y2 = abbruchbutton.getAbbrechenRechteck.y2
 			end if
+			Weiter.anzeigen()
 		BildschirmHelfer.unlockScreen()
 		
 		'Logik
