@@ -53,11 +53,11 @@ Namespace BildschirmHelfer
 	Sub HintergrundZeichnen(R1 As integer,G1 As Integer,B1 As Integer,R2 As Integer,G2 As Integer,B2 As Integer)
 		dim as integer y
 		For y = 0 To GrafikEinstellungen.hoehe
-			Dim As Integer ueberblendetes_r, ueberblendetes_g, ueberblendetes_b
-			ueberblendetes_r = R1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+R2*((y)/GrafikEinstellungen.hoehe)
-			ueberblendetes_g = G1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+G2*((y)/GrafikEinstellungen.hoehe) 
-			ueberblendetes_b = B1*((GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+B2*((y)/GrafikEinstellungen.hoehe)
-			Line (0,y)-(GrafikEinstellungen.breite,y),RGB( ueberblendetes_r ,  ueberblendetes_g , ueberblendetes_b )
+			Dim As double ueberblendetes_r, ueberblendetes_g, ueberblendetes_b
+			ueberblendetes_r = 1.0*R1*((1.0*GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+1.0*R2*((1.0*y)/GrafikEinstellungen.hoehe)
+			ueberblendetes_g = 1.0*G1*((1.0*GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+1.0*G2*((1.0*y)/GrafikEinstellungen.hoehe) 
+			ueberblendetes_b = 1.0*B1*((1.0*GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+1.0*B2*((1.0*y)/GrafikEinstellungen.hoehe)
+			Line (0,y)-(GrafikEinstellungen.breite,y),RGB( int(ueberblendetes_r) ,  int(ueberblendetes_g) , int(ueberblendetes_b))
 		Next
 	End Sub
 
@@ -69,7 +69,7 @@ Namespace BildschirmHelfer
 			i = timelerp(starttime,dauer,0,255)
 			BildschirmHelfer.lockscreen()
 			cls
-			put (0,0),img2,ALPHA,255
+			put (0,0),img2,PSET
 			put (0,0),img1,ALPHA,int(i)
 			BildschirmHelfer.unlockscreen(schliessenButton)
 		loop
