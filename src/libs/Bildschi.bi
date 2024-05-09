@@ -59,8 +59,8 @@ Namespace BildschirmHelfer
 			ueberblendetes_b = 1.0*B1*((1.0*GrafikEinstellungen.hoehe-y)/GrafikEinstellungen.hoehe)+1.0*B2*((1.0*y)/GrafikEinstellungen.hoehe)
 			Line (0,y)-(GrafikEinstellungen.breite,y),RGB( int(ueberblendetes_r) ,  int(ueberblendetes_g) , int(ueberblendetes_b))
 			
-			'Machbandeffekt austricksen
-			Line (0,y)-(GrafikEinstellungen.breite,y),RGB( int(ueberblendetes_r+0.3) ,  int(ueberblendetes_g+0.3) , int(ueberblendetes_b+0.3)), ,   &b1010101010101010
+			'Machbandeffekt austricksen durch Dithering
+			Line (y mod 2,y)-(GrafikEinstellungen.breite,y),RGB( int(ueberblendetes_r+0.3) ,  int(ueberblendetes_g+0.3) , int(ueberblendetes_b+0.3)), ,&b1010101010101010
 		Next
 	End Sub
 
