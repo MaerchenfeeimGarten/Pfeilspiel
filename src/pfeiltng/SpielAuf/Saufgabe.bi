@@ -12,14 +12,11 @@
 #Include once "libs/SpielEle/AbbruchB.bi"
 #Include once "libs/SpielEle/Logo.bi"
 #Include once "libs/Bildschi.bi"
+#Include once "libs/trinaer.bi"
 
 
 '=========================================SpielAufgabe==================================
-enum trinaer
-	_True
-	_False
-	_Null
-end enum
+
 
 
 type SpielAufgabenInterface extends Object
