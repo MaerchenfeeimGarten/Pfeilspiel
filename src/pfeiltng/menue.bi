@@ -23,7 +23,7 @@ namespace MenueFuehrung
 		BildschirmHelfer.lockscreen
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img2
 		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
-
+		
 		Color RGB(0,0,0),RGB(140,0,250)
 		GrafikHelfer.schreibeSkaliertInsGitter(1,-1,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WOLLEN_NEUES_SPIEL), GrafikEinstellungen.skalierungsfaktor)
 			dim as Integer j
@@ -265,7 +265,7 @@ namespace MenueFuehrung
 		BildschirmHelfer.lockscreen
 		get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
 		BildschirmHelfer.HintergrundZeichnen(215,133,44,129,47,90)
-
+		
 		Color RGB(0,0,0),RGB(140,0,250)
 		
 		ZeichneLogo(RGB(0,70,100))
