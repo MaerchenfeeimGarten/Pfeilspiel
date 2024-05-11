@@ -6,6 +6,8 @@
 #define RGBA_G( c ) ( CULng( c ) Shr  8 And 255 )
 #define RGBA_B( c ) ( CULng( c )        And 255 )
 #define RGBA_A( c ) ( CULng( c ) Shr 24         )
+#define MIN( a, b ) (IIF((a)<(b), (a), (b)))
+#define MAX( a, b ) (IIF((a)>(b), (a), (b)))
 
 Namespace GrafikHelfer
 
@@ -130,6 +132,12 @@ Namespace GrafikHelfer
 	
 	Declare sub TextSkaliertZeichnen(p as Punkt,text as String, skalierungsfaktor as single, _farbe as Integer = RGB(0,0,0))
 	sub TextSkaliertZeichnen(p as Punkt,text as String, skalierungsfaktor as single, _farbe as Integer = RGB(0,0,0))
+		if(len(text)=0) then
+			'1. Es ist nicht notwendig, viel rumzurechnen, um am Ende nichts zu zeichnen und zu tun.
+			'2. Es gibt einen Speicherfehler, wenn versucht wird, ein Text mit einer Länge von 0 Zeichen zu schreiben.
+			'   Dieser wird hierdurch auch verhindert.
+			RETURN
+		end if
 		Dim As Any Ptr a = ImageCreate( Len(text)*8, 16)
 		Draw String a,(0,0), text, _farbe 'mit Font 16x8 in ein Image schreiben
 		
@@ -144,8 +152,10 @@ Namespace GrafikHelfer
 			a = Image_x2(a)
 			a = Image_downscale(a, Punkt(Len(text)*GrafikEinstellungen.groesseTextzeichen.x*skalierungsfaktor, GrafikEinstellungen.groesseTextzeichen.y*skalierungsfaktor))
 		end if
+			
 		
 		Put (p.x,p.y),a, TRANS
+		
 		if a then ImageDestroy a
 	end sub
 	
