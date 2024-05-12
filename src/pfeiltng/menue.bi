@@ -386,7 +386,7 @@ namespace MenueFuehrung
 			MenueFuehrung.Warten()
 			return true
 		else 
-			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE_ENDE), GrafikEinstellungen.skalierungsfaktor)
+			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE), GrafikEinstellungen.skalierungsfaktor)
 			MenueFuehrung.Warten()
 			return false
 		end if

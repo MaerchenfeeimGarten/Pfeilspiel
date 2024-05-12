@@ -45,6 +45,7 @@ Namespace Uebersetzungen
 		COMPUTERFEHLER
 		SPRACHE_WAEHLEN
 		PROGRAMM_WIRKLICH_BEENDEN
+		FALSCHE_EINGABE
 	end enum 
 
 	enum SpracheEnum explicit
@@ -243,6 +244,12 @@ Function Uebersetzungen.uebersetzterText(s as Uebersetzungen.SpracheEnum, t as U
 				case SpracheEnum.DEUTSCH: return "Wollen Sie das Programm wirklich beenden?"
 				case SpracheEnum.ENGLISCH: return "Do you like to close this app?"
 				case SpracheEnum.FRANZOESISCH: return "Voulez-vous vraiment terminer le programme ?"
+			end select
+		case TextEnum.FALSCHE_EINGABE
+			select case s
+				case SpracheEnum.DEUTSCH: return "Falsche Eingabe."
+				case SpracheEnum.ENGLISCH: return "Wrong Password."
+				case SpracheEnum.FRANZOESISCH: return "Mot de passe faux."
 			end select
 	end select 'TextId
 end function

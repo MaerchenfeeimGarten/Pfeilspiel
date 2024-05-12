@@ -45,9 +45,6 @@ Sub Programm()
 		
 		if levelcodeKorrekt then
 			spielobjekt->Spielen(level, spielnummer)
-		Else
-			BildschirmHelfer.FensterSchliessen()
-			End
 		end if
 	Loop Until not MenueFuehrung.Weiterspielen()
 End Sub
