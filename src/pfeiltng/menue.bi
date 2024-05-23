@@ -75,7 +75,42 @@ namespace MenueFuehrung
 	End Function
 
 
-	Declare sub Warten(AbbrechenAnbieten As Boolean = false) 
+	
+	Declare function Warten_mit_Abfrage() as boolean
+	function Warten_mit_Abfrage() as boolean 'Weiter = true, abbrechen = false
+		'Weiter-Button laden
+		Dim Weiter As Rechteck
+		Weiter.x1 = 0+GrafikEinstellungen.breite/20
+		Weiter.y1 = GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/10
+		Weiter.x2 = GrafikEinstellungen.breite/7+GrafikEinstellungen.breite/20
+		Weiter.y2 =  GrafikEinstellungen.hoehe - GrafikEinstellungen.hoehe/15 + 18
+		Weiter.farbe = RGB(100,250,100)
+		Weiter.beschriftung = Uebersetzungen.uebersetzterText( Uebersetzungen.Sprache,  Uebersetzungen.TextEnum.WEITER)
+		
+
+		
+		'Anzeige
+		BildschirmHelfer.lockScreen()
+			Dim abbruchbutton as StandardAbbrechenButton
+			abbruchbutton.anzeigen()
+			Weiter.anzeigen()
+		BildschirmHelfer.unlockScreen()
+		
+		'Logik
+		Do
+			BildschirmHelfer.SchliessenButtonAbarbeiten()
+			If abbruchbutton.wurdeGeklickt() Then
+				return false
+			EndIf
+			If Weiter.wirdGeklickt() then
+				return true
+			end if 
+			sleep 15
+		Loop
+		return true
+	End Function
+	
+	Declare sub Warten(AbbrechenAnbieten As Boolean = false) 'oder Programm beenden
 	sub Warten(AbbrechenAnbieten As Boolean = false)
 		'Weiter-Button laden
 		Dim Weiter As Rechteck
@@ -373,23 +408,41 @@ namespace MenueFuehrung
 
 	function ueberpruefeLevelCode(korrekterLevelCode as String, Level as Short) as boolean
 		Dim as String SEingabe
+
+		Dim as any ptr startbild = ImageCreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe)
+		get (0,0)-(GrafikEinstellungen.breite-1, GrafikEinstellungen.hoehe-1), startbild
 		
-		'init Textbox
-		dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
-		TextField.SetColour(rgb(0,0,0))
-		
-		If len(korrekterLevelCode) > 0 then
-			SEingabe =  LevelCodeInput(TextField)
-		end if
-		if SEingabe = korrekterLevelCode or "" = korrekterLevelCode then
-			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
-			MenueFuehrung.Warten()
-			return true
-		else 
-			GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE), GrafikEinstellungen.skalierungsfaktor)
-			MenueFuehrung.Warten()
-			return false
-		end if
-		
+		do
+			
+			'init Textbox
+			dim TextField as textboxtype=textboxtype(2,1,40) 'Neue Textbox erzeugen
+			TextField.SetColour(rgb(0,0,0))
+			
+			If len(korrekterLevelCode) > 0 then
+				SEingabe =  LevelCodeInput(TextField)
+			end if
+			if SEingabe = korrekterLevelCode or "" = korrekterLevelCode then
+				GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach,Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.WILLKOMMEN_BEI_LEVEL)+str(Level)+" !", GrafikEinstellungen.skalierungsfaktor)
+				MenueFuehrung.Warten()
+				return true
+			else 
+				GrafikHelfer.schreibeSkaliertInsGitterMitUmbruch(2,3, GrafikEinstellungen.umbruchNach, Uebersetzungen.uebersetzterText(Uebersetzungen.Sprache, Uebersetzungen.TextEnum.FALSCHE_EINGABE), GrafikEinstellungen.skalierungsfaktor)
+				dim as boolean weiter = Warten_mit_Abfrage()
+				if not weiter then
+					return false
+				end if
+			end if
+			
+			'Originalbild für nächsten Durchlauf langsam überblendend wiederherstellen
+			BildschirmHelfer.lockscreen()
+				get (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1),BildschirmHelfer.img2
+				
+				Put (0,0), startbild, PSet
+				
+				GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
+				Put (0,0),BildschirmHelfer.img2,pset
+			BildschirmHelfer.unlockscreen
+			BildschirmHelfer.ueberblenden
+		loop
 	end function
 end namespace 'MenueFuehrung
