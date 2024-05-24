@@ -27,7 +27,7 @@
 <provides>
   <id>page.codeberg.maerchenfeeimgarten.Pfeilspiel</id>
 </provides>
-<icon>page.codeberg.maerchenfeeimgarten.Pfeilspiel</icon>
+<icon type="remote">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/7c55cff16af1dab916da23175ecaf02bae3e97e8/src/pfeiltng/Pfeilspiel_TNG.svg</icon>
 <content_rating type="oars-1.0">
     <content_attribute id="language-humor">mild</content_attribute>
 </content_rating>
