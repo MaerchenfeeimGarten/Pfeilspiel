@@ -5,18 +5,17 @@
 <metadata_license>CC0-1.0</metadata_license>
 <project_license>AGPL-3.0</project_license>
 <name>Pfeilspiel TNG international</name>
-<summary>An arrow points somewhere and you have to find out where exactly.</summary>
+<summary>An arrow points somewhere and you have to find out where exactly</summary>
 <developer id="io.codeberg.maerchenfeeimgarten">
   <name>MaerchenfeeimGarten</name>
 </developer>
 <description>
-    <p>An arrow points somewhere and you have to find out where exactly.</p>
-    <p>There are two games with different levels. You will have arrows with different colors and boxes with different colors to identify. There are several types of flying modes for the arrows, too.</p>
+    <p>An arrow points to an rectangle and you have to click on the correct one. There are two games with several different levels. You will have arrows with different colors and boxes with different colors to identify. There are several types of flying modes for the arrows, too.</p>
     <p>More information:</p>
     <ol>
         <li>Written in FreeBasic.</li>
         <li>Level codes to access the next level.</li>
-        <li>Available for the web (https://maerchenfeeimgarten.codeberg.page/pfeilspiel/), Linux, Windows and DOS.</li>
+        <li>Available for the web and on Linux, Windows and DOS.</li>
         <li>Bad programming style ;-) Most of its code was written before I learn to program in a good way - and now I do not have enough time to fix it...</li>
         <li>Hosted on Codeberg. Mirrored to GitHub.</li>
         <li>Translated to German, English and French language.</li>
@@ -24,9 +23,6 @@
     </ol>
 </description>
 <launchable type="desktop-id">page.codeberg.maerchenfeeimgarten.Pfeilspiel.desktop</launchable>
-<provides>
-  <id>page.codeberg.maerchenfeeimgarten.Pfeilspiel</id>
-</provides>
 <icon type="remote">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/7c55cff16af1dab916da23175ecaf02bae3e97e8/src/pfeiltng/Pfeilspiel_TNG.svg</icon>
 <content_rating type="oars-1.0">
     <content_attribute id="language-humor">mild</content_attribute>
@@ -69,3 +65,4 @@
     </description>
   </release>
 </releases>
+</component>
