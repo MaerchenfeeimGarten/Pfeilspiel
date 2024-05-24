@@ -27,7 +27,7 @@
 <provides>
   <id>page.codeberg.maerchenfeeimgarten.Pfeilspiel</id>
 </provides>
-<icon type="stock">page.codeberg.maerchenfeeimgarten.Pfeilspiel</icon>
+<icon>page.codeberg.maerchenfeeimgarten.Pfeilspiel</icon>
 <content_rating type="oars-1.0">
     <content_attribute id="language-humor">mild</content_attribute>
 </content_rating>
