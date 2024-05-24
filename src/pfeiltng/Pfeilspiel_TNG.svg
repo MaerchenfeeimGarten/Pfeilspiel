@@ -78,16 +78,14 @@
       <g class="com.sun.star.drawing.CustomShape">
        <g id="id4">
         <rect class="BoundingBox" stroke="none" fill="none" x="-141" y="-141" width="20283" height="20283"/>
-        <g style="opacity: 0.780392156862745">
-         <g>
-          <defs>
-           <linearGradient id="gradient1" x1="10000" y1="0" x2="10000" y2="20000" gradientUnits="userSpaceOnUse">
-            <stop offset="0" style="stop-color:rgb(215,133,44)"/>
-            <stop offset="1" style="stop-color:rgb(129,47,90)"/>
-           </linearGradient>
-          </defs>
-          <path style="fill:url(#gradient1)" d="M 10000,20000 L 0,20000 0,0 20000,0 20000,20000 10000,20000 Z"/>
-         </g>
+        <g>
+         <defs>
+          <linearGradient id="gradient1" x1="10000" y1="0" x2="10000" y2="20000" gradientUnits="userSpaceOnUse">
+           <stop offset="0" style="stop-color:rgb(245,173,84)"/>
+           <stop offset="1" style="stop-color:rgb(169,87,130)"/>
+          </linearGradient>
+         </defs>
+         <path style="fill:url(#gradient1)" d="M 10000,20000 L 0,20000 0,0 20000,0 20000,20000 10000,20000 Z"/>
         </g>
         <path fill="none" stroke="rgb(102,102,102)" stroke-width="282" stroke-linejoin="round" d="M 10000,20000 L 0,20000 0,0 20000,0 20000,20000 10000,20000 Z"/>
        </g>
