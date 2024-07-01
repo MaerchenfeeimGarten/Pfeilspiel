@@ -1,3 +1,9 @@
+'
+' SPDX-FileCopyrightText: 2010 Ray Britton, 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier: X11
+'
+
 'Draw string/inkey input type
 
 'Ray Britton (C) 2010

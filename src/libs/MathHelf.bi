@@ -1,3 +1,8 @@
+'
+' SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier:  AGPL-3.0-only
+'
 #include once "Punkt.bi"
 Const Pi = 3.14159265358979323846
 Const Epsilon = 0.000001

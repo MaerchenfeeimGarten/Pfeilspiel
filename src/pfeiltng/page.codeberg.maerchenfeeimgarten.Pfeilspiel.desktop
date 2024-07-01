@@ -1,4 +1,10 @@
 #!/usr/bin/env xdg-open
+#
+# SPDX-FileCopyrightText: 2024 MaerchenfeeimGarten
+# 
+# SPDX-License-Identifier: CC0-1.0
+#
+
 [Desktop Entry]
 Name=Pfeilspiel TNG international
 Exec=Pfeilspiel_TNG_international

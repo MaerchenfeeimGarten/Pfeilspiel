@@ -1,3 +1,8 @@
+'
+' SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier:  AGPL-3.0-only
+'
 #include once "../GrafElem/Rechteck.bi"
 #include once "../i18n/Ueberset.bi"
 #include once "../GrafikEi.bi"

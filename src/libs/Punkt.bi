@@ -1,3 +1,8 @@
+'
+' SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier:  AGPL-3.0-only
+'
 Type Punkt
 	as integer x
 	as integer y

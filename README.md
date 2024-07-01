@@ -1,3 +1,11 @@
+<!--
+
+ SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+ 
+ SPDX-License-Identifier:  AGPL-3.0-only
+
+--->
+
 # Pfeilspiel
 
 Pfeilspiel ist ein Spiel, dass ich in der ersten TOS-Version während meiner Schulzeit weit vor meinem Informatikstudium programmiert habe. 
@@ -34,10 +42,6 @@ Auf Deutsch, auf Englisch, in vielleicht noch ein paar mehr Sprachen. Der schlec
  
 ## Lizenz
 
-Das Programm bzw. die Programme in diesem Repo sowie weitere Dateien dort wie z. B. Screenshots stehen, falls nicht anders vermerkt, unter der agpl-3.0-Lizenz.
+Die Lizenz-Informationen werden in diesem Repo anhand der [REUSE-Spezifikation 3.0](https://reuse.software/) bei Text-Dateien in an derem Anfang und bei anderen Dateien in `dateiname.dateiendung.lizence` angegeben. Der Lizenz-Text selber befindet sich im Unterordner `LICENSES`.
 
-https://www.gnu.org/licenses/agpl-3.0.txt
-
-### Teile, die nicht unter der agpl-3.0-Lizenz stehen
-
- * `src/fonts/kalam.woff2` steht unter der `SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007` (siehe src/fonts/OFL.txt).
+Das Programm bzw. die Programme _Pfeilspiel TOS_, _Pfeilspiel TOS international_ sowie _Pfeilspiel TNG (international)_ in diesem Repo stehen unter der [agpl-3.0-only-Lizenz](https://www.gnu.org/licenses/agpl-3.0.txt).

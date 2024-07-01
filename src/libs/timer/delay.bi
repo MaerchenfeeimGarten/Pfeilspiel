@@ -1,3 +1,9 @@
+'
+' SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier:  AGPL-3.0-only
+'
+
 '  delay_regulate_framerate.bi
 
 Type MaerchenZeit 'Zeitangabe mit Zeitreisefunktion

@@ -1,3 +1,9 @@
+'
+' SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier:  AGPL-3.0-only
+'
+
 namespace strings
 
     sub InsertStr overload (byref s1 as string, byref s2 as const string, _

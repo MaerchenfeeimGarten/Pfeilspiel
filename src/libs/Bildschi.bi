@@ -1,3 +1,9 @@
+'
+' SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
+' 
+' SPDX-License-Identifier:  AGPL-3.0-only
+'
+
 #include once "fbgfx.bi"
 #include once "GrafikEi.bi"
 #include once "GrafikHe.bi"
