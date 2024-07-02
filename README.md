@@ -84,6 +84,6 @@ Danach lässt sich das Spiel mit der Eingabe des Namens der Programmdatei öffne
 
 ## Lizenz
 
-Die Lizenz-Informationen werden in diesem Repo anhand der [REUSE-Spezifikation 3.0](https://reuse.software/) bei Text-Dateien in an derem Anfang und bei anderen Dateien in `dateiname.dateiendung.lizence` angegeben. Der Lizenz-Text selber befindet sich im Unterordner `LICENSES`.
+Die Lizenz-Informationen werden in diesem Repo anhand der [REUSE-Spezifikation 3.0](https://reuse.software/) bei Text-Dateien in an derem Anfang und bei anderen Dateien in `dateiname.dateiendung.license` angegeben. Der Lizenz-Text selber befindet sich im Unterordner `LICENSES`.
 
 Das Programm bzw. die Programme _Pfeilspiel TOS_, _Pfeilspiel TOS international_ sowie _Pfeilspiel TNG (international)_ in diesem Repo stehen unter der [agpl-3.0-only-Lizenz](https://www.gnu.org/licenses/agpl-3.0.txt).
