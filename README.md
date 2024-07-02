@@ -1,4 +1,4 @@
-<!--
+ti<!--
 
  SPDX-FileCopyrightText: 2023-2024 MaerchenfeeimGarten
  
@@ -39,7 +39,49 @@ Nur auf Deutsch, da der Quellcode seit der Schulzeit nicht mehr verändert worde
 ### Pfeilspiel TOS international: (The Original Spiel):
 
 Auf Deutsch, auf Englisch, in vielleicht noch ein paar mehr Sprachen. Der schlechte Programmierstiel bleibt aus Authentizitätsgründen bestehen. Es ist wirklich nur eine Übersetzung der TOS-Variante - mehr nicht.
- 
+
+## Bauen/Compilieren
+
+Zum Bauen von Pfeilspien TNG international gibt es einen [_Docker-Container in einem weiteren Git-Repo_](https://codeberg.org/MaerchenfeeimGarten/pfeilspiel-fbc).
+Dieser compiliert automatisch für alle hier erwähnten Platformen und speichert die Ergebnisse im Unterordner `bin`.
+
+## Installieren
+
+Dieses Programm muss nicht installiert werden - es reicht, die entsprechende Programmdatei direkt zu starten.
+
+### Windows
+
+Unter Windows einfach die Programmdatei anklicken.
+
+### Linux
+
+Um das Programm unter Linux zu starten, muss die Programmdatei erst einmal ausführbar gemacht werden.
+Dazu einem Dateimanager (z. B. Dolphin) mit der rechten Maustaste auf die Datei klicken und im daraufhin auftauchenden Kontextmenü den Punkt "Eigenschaften" auswählen. Bei den meisten Linux-Distributionen befindet sich im dann auftauchenden Fenster direkt oder in einem der dort erscheinenden Tabs die Möglichkeit, das Programm als "Ausführbar" zu kennzeichnen.
+
+Wer fit auf der Komandozeile ist, kann stattdessen folgenden Befehl verwenden:
+
+```
+chmod +x <Programmdatei>
+```
+
+### DOS
+
+Pfeilspiel benötigt - wie alle in FreeBasic geschriebene Software - einen sogenannten DOS-Extender.
+Dazu kann der in FreeDOS direkt mitgelieferte Open-Source-DOS-Extender `cwsdpmi` verwendet werden.
+Er kann unter einen der folgenden Links heruntergeladen werden:
+
+ - [Originalwebseite](https://sandmann.dotster.com/cwsdpmi/)
+ - [Info über das Mitliefern in FreeDOS](https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/repositories/1.3/pkg-html/cwsdpmi.html)
+ - [Download aus dem pfeilspiel-fbc-Repo](https://codeberg.org/MaerchenfeeimGarten/pfeilspiel-fbc/src/commit/0172accadbe5bb3f2f6ddf86e9a9b8009d17f742/cwsdpmi.zip)
+
+Nachdem diese Software in Ihre DOS-Installation integriert wurde, kann diese mit folgendem Befehl geladen werden:
+
+`cwsdpmi -p `
+
+Danach lässt sich das Spiel mit der Eingabe des Namens der Programmdatei öffnen - vorausgesetzt, sie befinden sich in dem Ordner, in dem diese abgelegt worden ist (hier am Beispiel der Version 0.0.8):
+
+`PFEIL008`
+
 ## Lizenz
 
 Die Lizenz-Informationen werden in diesem Repo anhand der [REUSE-Spezifikation 3.0](https://reuse.software/) bei Text-Dateien in an derem Anfang und bei anderen Dateien in `dateiname.dateiendung.lizence` angegeben. Der Lizenz-Text selber befindet sich im Unterordner `LICENSES`.
