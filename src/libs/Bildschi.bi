@@ -220,7 +220,7 @@ Namespace BildschirmHelfer
 			put (0,0),img2,PSET
 			put (0,0),img1,ALPHA,int(i)
 			BildschirmHelfer.unlockscreen(schliessenButton)
-			sleep 1
+			'sleep 1
 		loop
 	End sub
 	
