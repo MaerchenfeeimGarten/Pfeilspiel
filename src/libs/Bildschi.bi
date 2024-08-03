@@ -231,7 +231,7 @@ Namespace BildschirmHelfer
 		
 		put (0,0), Imagecreate(GrafikEinstellungen.breite, GrafikEinstellungen.hoehe, RGBA(0, 0, 0, 255),32), PSET
 		
-		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - v0.0.8 - (c) MaerchenfeeImGarten 2024 - AGPL-3.0", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
+		GrafikHelfer.schreibeSkaliertInsGitter(0,int(GrafikEinstellungen.hoehe/GrafikEinstellungen.groesseTextzeichen.y/GrafikEinstellungen.skalierungsfaktor-1),"Pfeilspiel TNG international - v0.0.9 - (c) MaerchenfeeImGarten 2024 - AGPL-3.0", GrafikEinstellungen.skalierungsfaktor, RGB(45,60,45))
 		
 		GET (0,0)-(GrafikEinstellungen.breite-1,GrafikEinstellungen.hoehe-1) , BildschirmHelfer.img1
 		Put(0,0),BildschirmHelfer.img2,pset
