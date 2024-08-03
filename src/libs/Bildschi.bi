@@ -300,7 +300,7 @@ Namespace BildschirmHelfer
 		' &h20000  GFX_ACCUMULATION_BUFFER  Accumulation Buffer (nur im OpenGL-Modus)
 		' &h40000  GFX_MULTISAMPLE          Bewirkt im Vollbildmodus Antialiasing durch die ARB_multisample-Erweiterung
 		'   -1     GFX_NULL                 Grafikmodus ohne visuelles Feedback
-		ScreenRes  GrafikEinstellungen.breite,GrafikEinstellungen.hoehe ,32,2, &h04 Or 8 Or &h01
+		ScreenRes  GrafikEinstellungen.breite,GrafikEinstellungen.hoehe ,32,2,&h01
 		
 		
 		
