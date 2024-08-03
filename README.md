@@ -30,7 +30,7 @@ Ein Pfeil zeigt irgendwo hin und man muss herausfinden, wohin genau.
 [<u>**--> Download-Bereich <--**</u>](https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/releases)
 
 Bildschirmfotos:
-![4 Bildschirmfotos von Pfeilspiel TNG: 1. Sprachauswahl, 2. Spielauswahl, 3. Richtung des Pfeiles wird animiert, 4. Auflösung, ob das ausgewählte Rechteck das richtige ist.](https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/branch/main/doc/Pfeilspiel%20TNG%20international/screenshots/001-004.webp "Pfeilspiel TNG international v0.0.5")
+![11 Bildschirmfotos von Pfeilspiel TNG: 1. Sprachauswahl, 2. Spielauswahl, 3. Levelauswahl, 4. Aufgabe mit Pfeil, der auf blaues Rechteck zeigt, 5. Richtung des Pfeiles wird animiert, 6. Auflösung, ob das ausgewählte Rechteck das richtige ist, 7. Eingabefeld für Levelcode, 8. Sehr schweres Level mit sehr vielen sehr kleinen Rechtecken, 9. Aufgabe mit Flugkurve wurde nicht korrekt beantwortet, 10. Beispiel einer Aufgabe mit verschiedenen Farben, 11. Animation der Pfeilrichtung mit 2 Pfeilen.](https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/778b574f59afec995ccb1edc3d20ca85585db702/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/001-011.webp "Pfeilspiel TNG international v0.0.9")
 
 ### Pfeilspiel TOS: (Tas Originale Spiel) 
 
