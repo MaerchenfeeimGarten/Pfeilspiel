@@ -22,17 +22,19 @@ Namespace BildschirmHelfer
 		
 	Sub lockScreen()
 		locked = true
-		ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
-		ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
+		SCREENLOCK
+		'ScreenCopy 0, 1          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+		'ScreenSet 1, 0           ' eine Seite anzeigen, während die andere bearbeitet wird
 	End Sub
 	
 	Sub unlockScreen(schliessenbutton as boolean = True)
 		if schliessenbutton then
 			SchliessenButtonAbarbeiten()
 		end if 
-		ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
+		SCREENUNLOCK
+		'ScreenSet 0, 0           ' die aktive Seite auf die sichtbare Seite einstellen
 		ScreenSync               ' auf die Bildschirmaktualisierung warten
-		ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
+		'ScreenCopy 1, 0          ' Bild von der vorher aktiven Seite auf die sichtbare Seite kopieren
 		locked = false
 	End Sub
 	
@@ -215,10 +217,10 @@ Namespace BildschirmHelfer
 		do while i < 255 
 			i = timelerp(starttime,dauer,0,255)
 			BildschirmHelfer.lockscreen()
-			cls
 			put (0,0),img2,PSET
 			put (0,0),img1,ALPHA,int(i)
 			BildschirmHelfer.unlockscreen(schliessenButton)
+			sleep 1
 		loop
 	End sub
 	
@@ -282,7 +284,26 @@ Namespace BildschirmHelfer
 		end if
 		Print "Skalierungsfaktor= " & GrafikEinstellungen.skalierungsfaktor
 		
-		ScreenRes  GrafikEinstellungen.breite,GrafikEinstellungen.hoehe ,32,2, &h04 Or 8 
+		
+		' Wert     Symbol                   Wirkung
+		' -------------------------------------------------------------------------------------------------------------
+		' &h00     GFX_WINDOWED             Normaler Fenstermodus ==> Standard-Option
+		' &h01     GFX_FULLSCREEN           Vollbildmodus
+		' &h02     GFX_OPENGL               OpenGL-Modus
+		' &h04     GFX_NO_SWITCH            kein Moduswechsel
+		' &h08     GFX_NO_FRAME             kein Rahmen
+		' &h10     GFX_SHAPED_WINDOW        Splashscreen-Modus
+		' &h20     GFX_ALWAYS_ON_TOP        Fenster, das immer auf oberster Ebene bleibt
+		' &h40     GFX_ALPHA_PRIMITIVES     Bearbeite auch ALPHA-Werte bei Drawing Primitives wie PSET, LINE, etc.
+		' &h80     GFX_HIGH_PRIORITY        Höhere Priorität für Grafikprozesse, nur unter Win32
+		' &h10000  GFX_STENCIL_BUFFER       Stencil Buffer (Schablonenpuffer) verwenden (nur im OpenGL-Modus)
+		' &h20000  GFX_ACCUMULATION_BUFFER  Accumulation Buffer (nur im OpenGL-Modus)
+		' &h40000  GFX_MULTISAMPLE          Bewirkt im Vollbildmodus Antialiasing durch die ARB_multisample-Erweiterung
+		'   -1     GFX_NULL                 Grafikmodus ohne visuelles Feedback
+		ScreenRes  GrafikEinstellungen.breite,GrafikEinstellungen.hoehe ,32,2, &h04 Or 8 Or &h01
+		
+		
+		
 		Width GrafikEinstellungen.breite\8, GrafikEinstellungen.hoehe\16 ' für eine Schriftgröße von 8x16
 		' Für eine Schriftgröße von 8x14 muss hoch\14 gesetzt
 		' werden, für eine Schriftgröße von 8x8 entsprechend hoch\8
