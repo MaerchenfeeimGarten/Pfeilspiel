@@ -12,7 +12,7 @@
 <metadata_license>CC0-1.0</metadata_license>
 <project_license>AGPL-3.0</project_license>
 <name>Pfeilspiel TNG international</name>
-<summary>An arrow points somewhere and you have to find out where exactly</summary>
+<summary>A game about arrows that requires a close look.</summary>
 <developer id="io.codeberg.maerchenfeeimgarten">
   <name>MaerchenfeeimGarten</name>
 </developer>
@@ -41,21 +41,25 @@
 <url type="vcs-browser">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel</url>
 <screenshots>
     <screenshot type="default">
-        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/8710d52eb5d411110432cb3c6d3a4037eac00a33/doc/Pfeilspiel%20TNG%20international/screenshots/001.png</image>
-        <caption>Choose a language.</caption>
+        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/006.png</image>
+        <caption>Look carefully and solve the exercise.</caption>
     </screenshot>
     <screenshot >
-        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/8710d52eb5d411110432cb3c6d3a4037eac00a33/doc/Pfeilspiel%20TNG%20international/screenshots/002.png</image>
-        <caption>Choose a game..</caption>
+        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/011.png</image>
+        <caption>There are different types of levels and exervices...</caption>
     </screenshot>
     <screenshot>
-        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/8710d52eb5d411110432cb3c6d3a4037eac00a33/doc/Pfeilspiel%20TNG%20international/screenshots/003.png</image>
-        <caption>Play the game...</caption>
+        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/009.png</image>
+        <caption>...some of them are difficult, especially if you don't reade carefully.</caption>
     </screenshot>
     <screenshot>
-        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/8710d52eb5d411110432cb3c6d3a4037eac00a33/doc/Pfeilspiel%20TNG%20international/screenshots/004.png</image>
-        <caption>...and make progress.</caption>
+        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/001.png</image>
+        <caption>Several languages available.</caption>
     </screenshot>
+    <screenshot>
+        <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/007.png</image>
+        <caption>Touch friendly level code input.</caption>
+    </screenshot>    
 </screenshots>
 <releases>
   <release version="0.0.8" date="2024-05-23">
