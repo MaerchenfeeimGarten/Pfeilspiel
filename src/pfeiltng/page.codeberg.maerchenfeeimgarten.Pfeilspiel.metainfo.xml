@@ -17,7 +17,7 @@
   <name>MaerchenfeeimGarten</name>
 </developer>
 <description>
-    <p>An arrow points to an rectangle and you have to click on the correct one. There are two games with several different levels. You will have arrows with different colors and boxes with different colors to identify. There are several types of flying modes for the arrows, too.</p>
+    <p>An arrow points to an rectangle and you have to click on the correct one. Although this may seem simple, it is actually a great and exciting challenge that demands more from level to level. Will you manage to successfully master all game variants in all levels? There are two games with several different levels. You will have arrows with different colors and boxes with different colors to identify. There are several types of flying modes for the arrows, too.</p>
     <p>More information:</p>
     <ol>
         <li>Written in FreeBasic.</li>
@@ -30,7 +30,7 @@
     </ol>
 </description>
 <launchable type="desktop-id">page.codeberg.maerchenfeeimgarten.Pfeilspiel.desktop</launchable>
-<icon type="remote">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/7c55cff16af1dab916da23175ecaf02bae3e97e8/src/pfeiltng/Pfeilspiel_TNG.svg</icon>
+<icon type="remote">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/b8c7daf1003a7ea142bbf5d734feeb94ac1dcf92/src/pfeiltng/Pfeilspiel_TNG.svg</icon>
 <content_rating type="oars-1.0">
     <content_attribute id="language-humor">mild</content_attribute>
 </content_rating>
