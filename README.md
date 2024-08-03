@@ -71,7 +71,7 @@ Dazu kann der in FreeDOS direkt mitgelieferte Open-Source-DOS-Extender `cwsdpmi`
 Er kann unter einen der folgenden Links heruntergeladen werden:
 
  - [Originalwebseite](https://sandmann.dotster.com/cwsdpmi/)
- - [Info über das Mitliefern in FreeDOS](https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/repositories/1.3/pkg-html/cwsdpmi.html)
+ - [Aus der Liste der in FreeDOS 1.3 mitgelieferten Programme](https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/repositories/1.3/pkg-html/cwsdpmi.html)
  - [Download aus dem pfeilspiel-fbc-Repo](https://codeberg.org/MaerchenfeeimGarten/pfeilspiel-fbc/src/commit/0172accadbe5bb3f2f6ddf86e9a9b8009d17f742/cwsdpmi.zip)
 
 Nachdem diese Software in Ihre DOS-Installation integriert wurde, kann diese mit folgendem Befehl geladen werden:
