@@ -17,7 +17,7 @@
   <name>MaerchenfeeimGarten</name>
 </developer>
 <description>
-    <p>An arrow points to an rectangle and you have to click on the correct one. Although this may seem simple, it is actually a great and exciting challenge that demands more from level to level. Will you manage to successfully master all game variants in all levels? There are two games with several different levels. You will have arrows with different colors and boxes with different colors to identify. There are several types of flying modes for the arrows, too.</p>
+    <p>An arrow points to a rectangle - and you have to click on it. That sounds very simple, right? But it's not - it's a challenge! It gets more difficult from level to level. Can you manage to play through all the levels and all the game variants? There are two game variants, each with 6 levels. It will be necessary to look and read carefully to avoid careless mistakes. It's easy to overlook the fact that an arrow can not only point, but also fly...</p>
     <p>More information:</p>
     <ol>
         <li>Written in FreeBasic.</li>
@@ -62,6 +62,20 @@
     </screenshot>    
 </screenshots>
 <releases>
+  <release version="0.0.9" date="2024-08-03">
+  <url type="details">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/releases/tag/v0.0.9</url>
+    <description>
+      <p>Pfeilspiel TNG International Version v0.0.ß</p>
+        <ul>
+            <li>True full screen mode - taskbar no longer obscures the game.</li>
+            <li>Flickering reduced during transitions.</li>
+            <li>New icon with the same font as in the game.</li>
+            <li>More up-to-date sample images.</li>
+            <li><li>Built-in SCREEN(UN)LOCK commands are used.</li>
+            <li>Other minor improvements.</li>
+        </ul>
+    </description>
+  </release>
   <release version="0.0.8" date="2024-05-23">
   <url type="details">https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/releases/tag/v0.0.8</url>
     <description>
