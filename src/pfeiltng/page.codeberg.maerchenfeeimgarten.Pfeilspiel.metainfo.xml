@@ -46,11 +46,11 @@
     </screenshot>
     <screenshot >
         <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/011.png</image>
-        <caption>There are different types of levels and exervices...</caption>
+        <caption>There are different types of levels and exercise...</caption>
     </screenshot>
     <screenshot>
         <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/009.png</image>
-        <caption>...some of them are difficult, especially if you don't reade carefully.</caption>
+        <caption>...some of them are difficult, especially if you don't read carefully.</caption>
     </screenshot>
     <screenshot>
         <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/001.png</image>
@@ -58,7 +58,7 @@
     </screenshot>
     <screenshot>
         <image>https://codeberg.org/MaerchenfeeimGarten/Pfeilspiel/raw/commit/ebb8e298884a9db23bb909406092afd5f3c5448a/doc/Pfeilspiel%20TNG%20international/screenshots/0.0.8/007.png</image>
-        <caption>Touch friendly level code input.</caption>
+        <caption>Touch friendly level code interface.</caption>
     </screenshot>    
 </screenshots>
 <releases>
@@ -67,9 +67,9 @@
     <description>
       <p>Pfeilspiel TNG International Version v0.0.ß</p>
         <ul>
-            <li>True full screen mode - taskbar no longer obscures the game.</li>
+            <li>True full screen mode - taskbar no longer cover the game.</li>
             <li>Flickering reduced during transitions.</li>
-            <li>New icon with the same font as in the game.</li>
+            <li>New icon with the same font as the game.</li>
             <li>More up-to-date sample images.</li>
             <li>Built-in SCREEN(UN)LOCK commands are used.</li>
             <li>Other minor improvements.</li>
